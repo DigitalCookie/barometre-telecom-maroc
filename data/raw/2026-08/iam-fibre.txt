@@ -12,8 +12,8 @@ Fibre optique
 Illimités vers les fixes nationaux
 50 H vers mobiles
 dont 10 H vers l’international Zone 1
-Frais Installation: 200 DH
-Mise à disposition de l’équipement: 200 DH
+Frais Installation:
+Mise à disposition de l’équipement: 
 Acheter
 Fibre optique
 400 DH/mois
@@ -21,8 +21,8 @@ Fibre optique
 Illimités vers les fixes nationaux
 10 H vers mobile
 dont 2 H vers l’international Zone 1
-Frais Installation: 200 DH
-Mise à disposition de l’équipement: 200 DH
+Frais Installation:
+Mise à disposition de l’équipement: 
 Acheter
 Fibre optique
 500 DH/mois
@@ -30,8 +30,8 @@ Fibre optique
 Illimités vers les fixes nationaux
 20 H vers mobile
 dont 4 H vers l’international Zone 1
-Frais Installation: 200 DH
-Mise à disposition de l’équipement: 200 DH
+Frais Installation:
+Mise à disposition de l’équipement: 
 Acheter
 Fibre optique
 1000 DH/mois
@@ -39,8 +39,8 @@ Fibre optique
 Illimité vers les fixes et mobiles nationaux
 20 H vers l’international
 Zone 1
-Frais Installation: 200 DH
-Mise à disposition de l’équipement: 200 DH
+Frais Installation:
+Mise à disposition de l’équipement: 
 Acheter
 *L’équipement reste la propriété de Maroc Telecom, en cas de résiliation, le client doit le restituer suivant les modalités définies dans le catalogue des offres.
 
