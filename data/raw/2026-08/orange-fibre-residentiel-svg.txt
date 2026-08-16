@@ -1,0 +1,3181 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="lt-ie9"  lang="fr_FR"><![endif]-->
+<!--[if gte IE 9]><!--><html lang="fr"  ><!--<![endif]-->
+<head>
+<script type="text/javascript">
+(function(){
+window["loaderConfig"] = "/TSPD/?type=20";
+})();
+
+</script>
+
+<script type="text/javascript" src="/TSPD/?type=18"></script>
+
+<APM_DO_NOT_TOUCH>
+
+<script type="text/javascript">
+(function(){
+window.sHgF=!!window.sHgF;try{(function(){(function(){var O={decrypt:function(O){try{return JSON.parse(function(O){O=O.split("l");var Z="";for(var S=0;S<O.length;++S)Z+=String.fromCharCode(O[S]);return Z}(O))}catch(S){}}};return O={configuration:O.decrypt("123l34l97l99l116l105l118l101l34l58l34l110l111l34l44l34l100l101l98l117l103l103l105l110l103l34l58l34l110l111l34l44l34l109l111l100l117l108l101l49l34l58l34l101l110l97l98l108l101l100l34l44l34l109l111l100l117l108l101l50l34l58l34l101l110l97l98l108l101l100l34l44l34l109l111l100l117l108l101l51l34l58l34l101l110l97l98l108l101l100l34l44l34l109l111l100l117l108l101l52l34l58l34l101l110l97l98l108l101l100l34l125")}})();
+var SO=70;try{var iO,jO,LO=z(632)?1:0,js=z(146)?1:0,Js=z(182)?1:0,ls=z(276)?1:0,Ls=z(667)?1:0,OS=z(364)?1:0,sS=z(185)?1:0,SS=z(734)?1:0;for(var Oz=(z(353),0);Oz<jO;++Oz)LO+=z(439)?2:1,js+=(z(474),2),Js+=z(502)?2:1,ls+=(z(322),2),Ls+=z(806)?2:1,OS+=(z(384),2),sS+=(z(523),2),SS+=z(624)?3:1;iO=LO+js+Js+ls+Ls+OS+sS+SS;window.sZ===iO&&(window.sZ=++iO)}catch(sz){window.sZ=iO}var Sz=!0;function I(O,Z){O+=Z;return O.toString(36)}
+function lz(O){var Z=73;!O||document[s(Z,191,178,188,178,171,178,181,178,189,194,156,189,170,189,174)]&&document[_(Z,191,178,188,178,171,178,181,178,189,194,156,189,170,189,174)]!==I(68616527593,Z)||(Sz=!1);return Sz}function _(O){var Z=arguments.length,S=[];for(var J=1;J<Z;++J)S.push(arguments[J]-O);return String.fromCharCode.apply(String,S)}function Lz(){}lz(window[Lz[_(SO,180,167,179,171)]]===Lz);lz(typeof ie9rgb4!==I(1242178186129,SO));
+lz(RegExp("\x3c")[I(1372135,SO)](function(){return"\x3c"})&!RegExp(I(42819,SO))[I(1372135,SO)](function(){return"'x3'+'d';"}));
+var oz=window[_(SO,167,186,186,167,169,174,139,188,171,180,186)]||RegExp(_(SO,179,181,168,175,194,167,180,170,184,181,175,170),I(-52,SO))[I(1372135,SO)](window["\x6e\x61vi\x67a\x74\x6f\x72"]["\x75\x73e\x72A\x67\x65\x6et"]),zZ=+new Date+(z(353)?6E5:385665),ZZ,_Z,iZ,jZ=window[s(SO,185,171,186,154,175,179,171,181,187,186)],LZ=oz?z(526)?3E4:35217:z(856)?6E3:5181;
+document[s(SO,167,170,170,139,188,171,180,186,146,175,185,186,171,180,171,184)]&&document[s(SO,167,170,170,139,188,171,180,186,146,175,185,186,171,180,171,184)](s(SO,188,175,185,175,168,175,178,175,186,191,169,174,167,180,173,171),function(O){var Z=61;document[_(Z,179,166,176,166,159,166,169,166,177,182,144,177,158,177,162)]&&(document[s(Z,179,166,176,166,159,166,169,166,177,182,144,177,158,177,162)]===I(1058781922,Z)&&O[s(Z,166,176,145,175,178,176,177,162,161)]?iZ=!0:document[s(Z,179,166,176,166,
+159,166,169,166,177,182,144,177,158,177,162)]===I(68616527605,Z)&&(ZZ=+new Date,iZ=!1,oZ()))});function s(O){var Z=arguments.length,S=[],J=1;while(J<Z)S[J-1]=arguments[J++]-O;return String.fromCharCode.apply(String,S)}function oZ(){if(!document[_(29,142,146,130,143,150,112,130,137,130,128,145,140,143)])return!0;var O=+new Date;if(O>zZ&&(z(183)?6E5:593907)>O-ZZ)return lz(!1);var Z=lz(_Z&&!iZ&&ZZ+LZ<O);ZZ=O;_Z||(_Z=!0,jZ(function(){_Z=!1},z(584)?1:0));return Z}oZ();
+var zs=[z(490)?17795081:19485820,z(870)?27611931586:2147483647,z(909)?1558153217:1011095231];function ss(O){var Z=80;O=typeof O===s(Z,195,196,194,185,190,183)?O:O[s(Z,196,191,163,196,194,185,190,183)](z(947)?36:18);var S=window[O];if(!S||!S[_(Z,196,191,163,196,194,185,190,183)])return;var J=""+S;window[O]=function(O,Z){_Z=!1;return S(O,Z)};window[O][_(Z,196,191,163,196,194,185,190,183)]=function(){return J}}for(var Ss=(z(456),0);Ss<zs[_(SO,178,171,180,173,186,174)];++Ss)ss(zs[Ss]);
+lz(!1!==window[s(SO,185,142,173,140)]);window.iz=window.iz||{};window.iz.SoL="08b4f58c2a16e800d882f75d57abc4e8656345a0f16c845d682d2addbc4a33b925899c2f18350ed454b8fdabffe57dd619eed757fed2a385fc75ee63ada5cde0ebede04c10917159d1c4df9b3eef4e3bad202e6e180484c8249cf9ec1feecfe3bf8ceced87b59d9031abfc269fc0f5b074c1b2af19788285662ed98e33cea8818877175e4e1b2eddbe655d0bd1146e125e7421673d8af29163a079e0ad8caec1053b8243b7b3c0af53b78a83c22d38583889af6f1b00a5bc4234ebce21fc8bd5d9b7a5b3861e0959b712ddb92374498f542fa6c1ce986aad5d4e1d9712f2c60c0191c441d25a0572b3167d7e5cbff7fe";function is(O){var Z=+new Date,S;!document[_(19,132,136,120,133,140,102,120,127,120,118,135,130,133,84,127,127)]||Z>zZ&&(z(153)?6E5:413192)>Z-ZZ?S=lz(!1):(S=lz(_Z&&!iZ&&ZZ+LZ<Z),ZZ=Z,_Z||(_Z=!0,jZ(function(){_Z=!1},z(296)?1:0)));return!(arguments[O]^S)}function z(O){return 974>O}(function _S(Z){Z&&"number"!==typeof Z||("number"!==typeof Z&&(Z=1E3),Z=Math.max(Z,1),setInterval(function(){_S(Z-10)},Z))})(!0);})();}catch(x){}finally{ie9rgb4=void(0);};function ie9rgb4(a,b){return a>>b>>0};
+
+})();
+
+</script>
+</APM_DO_NOT_TOUCH>
+
+<script type="text/javascript" src="/TSPD/08f494b448ab20000187d1c2b46e40f6094c7588edf4343a70cdbb6396da2cd9c27cad6f1bcea7cc?type=17"></script>
+
+            <!-- start Omniconvert.com code -->
+        <link rel="dns-prefetch" href="//app.omniconvert.com" />
+        <script type="text/javascript">window._mktz=window._mktz||[];</script>
+        <script src="//cdn.omniconvert.com/js/v15c3e9.js"></script>
+        <!-- end Omniconvert.com code -->
+    
+    
+            <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl= l!='dataLayer' ? '&l='+l : '';
+                j.async=true;
+                j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5DFP8H');
+        </script>
+        <!-- End Google Tag Manager -->
+                            <script type="text/javascript">
+                FollowAnalytics.initialize({
+                    FAID: 'DO0Abd3r28I7uQ',
+                    bundleId: 'com.orange.ma'
+                });
+
+                FollowAnalytics.registerForPushNotifications()
+            </script>
+            
+                                    
+    <title>La Fibre d&#039;Orange - Orange</title>
+
+                <meta charset="utf-8">
+        <meta http-equiv="content-language" content="fr_FR" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Mobile Meta Tag -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta content="noodp" name="robots" />
+
+                            
+        <meta name="theme-color" content="#999999">
+        <!-- PWA - Add to home screen settings for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Todo List">
+
+    
+    
+
+    
+    
+<meta name="description" content="Orange vous propose sa gamme d’offres Fibre Optique avec un accès Internet à Très Haut Débit et une ligne téléphonique incluse pour passer ou recevoir vos appels."/>
+<meta name="keywords" content="Orange, téléphone, mobile, internet, 3G, SMS"/>
+
+<meta name="author" content="Orange">
+<meta name="copyright" content="Orange">
+<meta name="date-creation-yyyymmdd" content="20060725">
+
+<meta property="og:title" content="La Fibre d&#039;Orange" />
+<meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.orange.ma/var/meditel/storage/images/www.orange.ma/wifi-a-la-maison/fibre-d-orange/offres-fibre-d-orange/2429344-18-fre-FR/Offres-Fibre-d-Orange.png" />
+
+<meta property="og:url" content="http://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange" />
+<meta property="og:description" content="Orange vous propose sa gamme d’offres Fibre Optique avec un accès Internet à Très Haut Débit et une ligne téléphonique incluse pour passer ou recevoir vos appels." />
+
+
+    
+    
+            <!-- Fav and touch icons -->
+        <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico" />
+        <link rel="apple-touch-icon" href="/img/favicon-apple.png"/>
+        <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon-apple72.png"/>
+        <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon-apple114.png"/>
+    
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+                                <link rel="stylesheet" type="text/css" href="/css/orange.v1.9.278.css"/>
+        
+                <style type="text/css" media="print">
+            .block_step,.breadcrumbs,.btn,.footer-middle,.footer-middle-social,.footer-top,.list-footer-bottom li a,.sticky-wrapper .navbar,.sticky-wrapper .sb-search-link,.top-wrapper{display:none}.block-content-step{margin-bottom:10px}.n1-title,h1{width:100%;text-align:left}.w70,.w80{width:100%}.block-login .block-loginCont-col-1 h2:before,.block-login .block-loginCont-col-2 h2:before{display:none!important}.block-banner,.pager{display:none}.item-block__action:before,.item-block__list li:before,.no-print{display:none!important}
+            .block-simulateur .simulateur-error-msg {display: none; }.block-simulateur .simulateur-left-content {display: none; }.block-simulateur .simulateur-right-content{padding: 0;width: 100%;}  .block-simulateur .simulateur-right-content form {width: 95%; } .block-simulateur .simulateur-right-content .flex.justify-content-space-between.mbm{display: none; }.block-simulateur .simulateur-right-content .saut-page-print {page-break-after: always; }.block-simulateur .simulateur-right-content .print-mt-100 {margin-top: 100px;}
+        </style>
+                        
+            <style>
+        header li#nav-location-85274 a {color: #ff7900;}
+    </style>
+</head>
+<body>
+            <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DFP8H" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    
+    <!-- Header area: START -->
+                                                                                
+                                <a id="switch_language_link" href="/language/switcher/59789" class="hidden">&nbsp;</a>
+                                                                    <header class="header container-large">
+        <!--header-top-->
+    <div class="top-wrapper hidden-tiny">
+        <div class="container">
+            <div class="clearfix">
+                                                                    <ul class="top-link toListe">
+                                                                        <li  class="nav-location-public_49943  first">                    
+                    <a href="https://www.orange.ma"  title="Particuliers" id=""                >
+    
+            Particuliers
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-entreprise_49944 ">                    
+                    <a href="https://entreprise.orange.ma"  title="Entreprises" id=""                >
+    
+            Entreprises
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-pro_82441 ">                    
+                    <a href="https://pro.orange.ma"  title="Pro" id=""                >
+    
+            Pro
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-corporate_50244 ">                    
+                    <a href="https://corporate.orange.ma"  title="Corporate" id=""                >
+    
+            Corporate
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-52874  last">                    
+                    <a href="https://www.orange.ma/Wholesale"  title="Wholesale" id="Wholesale"                >
+    
+            Wholesale
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+            
+                <ul class="top-buttons">
+                                                                                                                    <li class="item-compte-login"                 >                                    <div class="js-compte link-element hidden">
+                                <a href="https://espace-client.orange.ma"   title="Mon espace client"                                     >
+                    <i class="ic-My_Account"></i>
+            </a>
+
+                    </div>
+                    <div class="js-compte hidden">
+                                            </div>
+                    <div class="js-compte hidden">
+                                            </div>
+                            
+                
+        </li>
+    
+                                    <li                >                                            <a href="https://www.orange.ma/Agences-Orange"   title="Boutique Orange"                                     >
+                    <i class="ic-My_Boutique2"></i>
+            </a>
+
+                                                                    
+                
+        </li>
+    
+                                    <li                 class="item-compte-cart" >                                    <div class="js-cart">
+                         <span class="cart-item on" data-toggle="collapse" data-close=".cart-close" data-target="#cart-mini" data-reset="#hd-search,#navigation">
+                            <a href="https://boutique.orange.ma/checkout/cart">
+                                <i class="ic-buy"></i>
+                                <span class="nb-cart">0</span>
+                            </a>
+                        </span>
+                    </div>
+                            
+                
+        </li>
+    
+
+    
+                                                                <li class="list-language-switcher">
+                            <div class="language-switcher">
+                                                                    <a class="arab language_switcher" href="//www.orange.ma/ar"><small>العربية</small></a>
+                                    <a class="current" href="#"><small>FR</small></a>
+                                                            </div>
+                        </li>
+                                    </ul>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <div class=" changeuser popin-block" id="vider-panier">
+            <div class="container-popup">
+                <h2 class="mbm">Annulation de panier</h2>
+                <p class="mbm minicartMsg">Souhaitez-vous vider votre panier?<br/>
+                    </p>
+                <a class="btn  mbs" href="javascript:$.colorbox.close();">Annuler</a>
+                <a class="btn btn--important clearCart" href="#">Vider le panier</a>
+            </div>
+        </div>
+    </div>
+    <!--eshop mini cart-->
+    <!--menu-->
+    <div class="sticky-wrapper">
+        <div class="container">
+            <div class="clearfix">
+                <a class="nav-logo" href="https://www.orange.ma/">
+                    <img alt="Orange Logo" src=//www.orange.ma/img/contenus/logo.png class="hidden-tiny" >
+                    <img alt="Orange Logo" src=//www.orange.ma/img/contenus/logo-small.png class="visible-tiny">
+                </a>
+                <!-- BEGIN MAIN MENU -->
+                <nav class="navbar">
+                    <button type="button" class="navbar-toggle collapsed visible-tiny" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="block-navbar navbar-collapse collapse" id="navbar">
+                                                    <div class="language-switcher visible-tiny">
+                                                                    <a class="arab language_switcher" href="//www.orange.ma/ar">العربية</a>
+                                    <a class="current" href="#">FR</a>
+                                                            </div>
+                                                                                <ul class="nav navbar-nav main-menu">
+                    <li class="dropdown first"  id="nav-location-85231">        <a href="#" data-target="ssmenu-level2-85231" title="Recharges" >Recharges</a>        
+    </li>
+
+        <li class="dropdown"  id="nav-location-85232">        <a href="#" data-target="ssmenu-level2-85232" title="Forfaits" >Forfaits</a>        
+    </li>
+
+        <li class="external"  id="nav-location-83881">        <a href="https://yoxo.ma" data-target="ssmenu-level2-83881" title="Yoxo.ma" >Yoxo.ma</a>        
+    </li>
+
+        <li class="dropdown"  id="nav-location-85274">        <a href="#" data-target="ssmenu-level2-85274" title="WiFi à la Maison" >WiFi à la Maison</a>        
+    </li>
+
+        <li class="dropdown"  id="nav-location-85233">        <a href="#" data-target="ssmenu-level2-85233" title="Divertissement" >Divertissement</a>        
+    </li>
+
+        <li class="dropdown"  id="nav-location-76213">        <a href="https://www.orange.ma/orangemoney" data-target="ssmenu-level2-76213" title="Orange Money" >Orange Money</a>        
+    </li>
+
+        <li class="external lastli"  id="nav-location-66579">        <a href="https://www.orange.ma/Assistance" data-target="ssmenu-level2-66579" title="Assistance" >Assistance</a>        
+    </li>
+
+
+    </ul>
+
+                    </div>
+                </nav>
+                <!-- END MAIN MENU -->
+                <!-- BEGIN SEARCH -->
+                <a class="sb-search-link" href="#">
+                    <i class="icon ic-search"></i>
+                </a>
+                <!-- END SEARCH -->
+            </div>
+        </div>
+    </div>
+    <!--end menu-->
+    <!-- search-->
+    <div class="sb-search">
+    <div class="container">
+        <form action="https://search.orange.ma/fr/" method="get">
+            <div class="form-group-search clearfix grid-4-1">
+                <div class="first-elementgroup">
+                    <a href="#" id="click-delete"><i class="icon  ic-Delete"></i></a>
+                    <input id="input-delete" autocomplete="off" type="search" placeholder="Mots clés" name="kw" class="form-control sb-search-input-header">
+                </div>
+                <div class="second-elementgroup">
+                    <input class="sb-search-submit-header btn btn--important btn-large inactive inactive" type="submit" value="Recherche" disabled />
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>    <!--search-->
+    <!--ssmenu-->
+    <div class="ssmenu-items">
+                            <div class="ssmenu ssmenu-level2-85231">
+    <div class="container">
+        <span class="headband-title">
+                            Recharges
+                    </span>
+        <div class="grid-4-tiny-1">
+            
+                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Recharge Internet
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-80048  first">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Reseaux-Sociaux-6"  title="Réseaux Sociaux *6" id="Recharges-Recharge-Internet-Reseaux-Sociaux-6"                >
+    
+            Réseaux Sociaux *6
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-80074 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Internet-3"  title="Internet *3" id="Recharges-Recharge-Internet-Internet-3"                >
+    
+            Internet *3
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-83929 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Tiktok-Youtube-et-Reseaux-sociaux-5"  title="Tiktok, Youtube et Réseaux sociaux *5" id="Recharges-Recharge-Internet-Tiktok-Youtube-et-Reseaux-sociaux-5"                >
+    
+            Tiktok, Youtube et Réseaux sociaux *5
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87530 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Internet-en-heures-33"  title="Internet en heures *33" id="Recharges-Recharge-Internet-Internet-en-heures-33"                >
+    
+            Internet en heures *33
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87904 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Maaax-Internet-30"  title="Maaax Internet *30" id="Recharges-Recharge-Internet-Maaax-Internet-30"                >
+    
+            Maaax Internet *30
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88402  last">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Illimite-internet-33"  title="Illimité internet *33" id="Recharges-Recharge-Internet-Illimite-internet-33"                >
+    
+            Illimité internet *33
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Recharge Appels
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-80085  first">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Appels/Appels-Nationaux-1"  title="Appels Nationaux *1" id="Recharges-Recharge-Appels-Appels-Nationaux-1"                >
+    
+            Appels Nationaux *1
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-80032 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Appels/Recharge-X15"  title="Multiple X25" id="Recharges-Recharge-Appels-Recharge-X15"                >
+    
+            Multiple X25
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-80078 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Appels/Appels-illimites-vers-Orange-8"  title="Appels illimités vers Orange *8" id="Recharges-Recharge-Appels-Appels-illimites-vers-Orange-8"                >
+    
+            Appels illimités vers Orange *8
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-80081  last">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Appels/Appels-nationaux-et-internationaux-4"  title="Appels nationaux et internationaux *4" id="Recharges-Recharge-Appels-Appels-nationaux-et-internationaux-4"                >
+    
+            Appels nationaux et internationaux *4
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Bons Plans
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-61304  first">                    
+                    <a href="https://www.orange.ma/Recharges/Bons-Plans/Divertissement-9"  title="Divertissement *9" id="Recharges-Bons-Plans-Divertissement-9"                >
+    
+            Divertissement *9
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-80051 ">                    
+                    <a href="https://www.orange.ma/Recharges/Bons-Plans/Appels-et-Internet-2"  title="Appels et Internet *2" id="Recharges-Bons-Plans-Appels-et-Internet-2"                >
+    
+            Appels et Internet *2
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85287 ">                    
+                    <a href="/Recharges/Recharge-Appels/Recharge-X15"  title="Multiple X25" id="Recharge-X15"                >
+    
+            Multiple X25
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85288 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet"  title="Internet *3" id="Recharges-Recharge-Internet-Recharge-Internet"                >
+    
+            Internet *3
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85289 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Reseaux-Sociaux"  title="Réseaux Sociaux *6" id="Recharges-Recharge-Internet-Recharge-Reseaux-Sociaux"                >
+    
+            Réseaux Sociaux *6
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86291 ">                    
+                    <a href="https://www.orange.ma/Recharges/Recharge-Appels/Recharge-national"  title="Appels nationaux *22" id="Recharges-Recharge-Appels-Recharge-national"                >
+    
+            Appels nationaux *22
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86992 ">                    
+                    <a href="https://www.orange.ma/Recharges/Bons-Plans/Recharge-Marhaba-66"  title="Recharge Marhaba*66" id="Recharges-Bons-Plans-Recharge-Marhaba-66"                >
+    
+            Recharge Marhaba*66
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87975 ">                    
+                    <a href="https://www.orange.ma/Recharges/Bons-Plans/Roaming-7"  title="Roaming *7" id="Recharges-Bons-Plans-Roaming-7"                >
+    
+            Roaming *7
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87981  last">                    
+                    <a href="https://www.orange.ma/Recharges/Bons-Plans/Recharge-offres-speciales-Roaming-77"  title="Recharge offres spéciales Roaming *77" id="Recharges-Bons-Plans-Recharge-offres-speciales-Roaming-77"                >
+    
+            Recharge offres spéciales Roaming *77
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                                                <div class="item-ssmenu item-ssmenu-direction">
+                        <span class="n3-title--alt mbs">
+                            
+                            <a href="https://www.orange.ma/Recharges/Acheter-une-ligne-recharge" title="Acheter une ligne recharge">
+                                                                Acheter une ligne recharge
+                                                            </a>
+                                                    </span>
+                    </div>
+                
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Déjà client ?
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-85238  first">                    
+                    <a href="https://espace-client.orange.ma/"  title="Consulter mon solde" id=""                >
+    
+            Consulter mon solde
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85239 ">                    
+                    <a href="https://espace-client.orange.ma/recharger-numero/identification"  title="Recharger ma ligne" id="recharger-numero-identification"                >
+    
+            Recharger ma ligne
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85240  last">                    
+                    <a href="/Recharges/Identification"  title="Identifier ma ligne" id=""                >
+    
+            Identifier ma ligne
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                    </div>
+        <div class="grid-4-tiny-1">
+            
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                    <div class="ssmenu ssmenu-level2-85232">
+    <div class="container">
+        <span class="headband-title">
+                            Forfaits
+                    </span>
+        <div class="grid-4-tiny-1">
+            
+                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Les Forfaits Yo Max
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-88182  first">                    
+                    <a href="https://boutique.orange.ma/choisir/forfait-yo-max-99dh-25go-1h-d-appel"  title="Forfait Yo Max 5G 99 Dh" id="choisir-forfait-yo-max-99dh-25go-1h-d-appel"                >
+    
+            Forfait Yo Max 5G 99 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88183 ">                    
+                    <a href="https://boutique.orange.ma/choisir/forfait-yo-max-52go-10h-d-appels-199dh"  title="Forfait Yo Max 5G 199 Dh" id="choisir-forfait-yo-max-52go-10h-d-appels-199dh"                >
+    
+            Forfait Yo Max 5G 199 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88184 ">                    
+                    <a href="https://boutique.orange.ma/choisir/forfait-yo-max-80go-2go-roaming-299dh"  title="Forfait Yo Max 5G 299 Dh" id="choisir-forfait-yo-max-80go-2go-roaming-299dh"                >
+    
+            Forfait Yo Max 5G 299 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88185 ">                    
+                    <a href="https://boutique.orange.ma/choisir/forfait-yo-max-illimite-national-120go-5go-roaming-399dh"  title="Forfait Yo Max 5G 399 Dh" id="choisir-forfait-yo-max-illimite-national-120go-5go-roaming-399dh"                >
+    
+            Forfait Yo Max 5G 399 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88186 ">                    
+                    <a href="https://boutique.orange.ma/choisir/forfait-yo-max-illimite-national-160go-8go-roaming-499dh"  title="Forfait Yo Max 5G 499 Dh" id="choisir-forfait-yo-max-illimite-national-160go-8go-roaming-499dh"                >
+    
+            Forfait Yo Max 5G 499 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88187  last">                    
+                    <a href="https://boutique.orange.ma/choisir/forfait-yo-max-tout-illimite-10go-roaming-649dh-5-services"  title="Forfait Yo Max 5G 649 Dh" id="choisir-forfait-yo-max-tout-illimite-10go-roaming-649dh-5-services"                >
+    
+            Forfait Yo Max 5G 649 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Les Forfaits Yo
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-85249  first">                    
+                    <a href="https://boutique.orange.ma/offres-mobile?monthly_payment=49-49"  title="Forfait Yo 49 Dh" id="offres-mobile?monthly_payment=49-49"                >
+    
+            Forfait Yo 49 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85250 ">                    
+                    <a href="https://boutique.orange.ma/offres-mobile?monthly_payment=99-99"  title="Forfait Yo 99 Dh" id="offres-mobile?monthly_payment=99-99"                >
+    
+            Forfait Yo 99 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85251 ">                    
+                    <a href="https://boutique.orange.ma/offres-mobile?monthly_payment=149-149"  title="Forfait Yo 149 Dh" id="offres-mobile?monthly_payment=149-149"                >
+    
+            Forfait Yo 149 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85252 ">                    
+                    <a href="https://boutique.orange.ma/offres-mobile?monthly_payment=199-199"  title="Forfait Yo 199 Dh" id="offres-mobile?monthly_payment=199-199"                >
+    
+            Forfait Yo 199 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87509  last">                    
+                    <a href="https://www.orange.ma/Forfaits/Les-Forfaits-Yo/Forfait-Yo-Flex"  title="Forfait Yo Flex" id="Forfaits-Les-Forfaits-Yo-Forfait-Yo-Flex"                >
+    
+            Forfait Yo Flex
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Les Forfaits Yoxo
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-85255  first">                    
+                    <a href="https://www.yoxo.ma/forfait-yoxo-50dh"  title="Forfait Yoxo 50 Dh" id="forfait-yoxo-50dh"                >
+    
+            Forfait Yoxo 50 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85256 ">                    
+                    <a href="https://www.yoxo.ma/forfait-yoxo-100dh"  title="Forfait Yoxo 100 Dh" id="forfait-yoxo-100dh"                >
+    
+            Forfait Yoxo 100 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85257 ">                    
+                    <a href="https://www.yoxo.ma/forfait-yoxo-200dhs"  title="Forfait Yoxo 200 Dh" id="forfait-yoxo-200dhs"                >
+    
+            Forfait Yoxo 200 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86754 ">                    
+                    <a href="https://www.yoxo.ma/forfait-yoxo-250dhs"  title="Forfait Yoxo 250 Dh" id="forfait-yoxo-250dhs"                >
+    
+            Forfait Yoxo 250 Dh
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85258  last">                    
+                    <a href="https://www.yoxo.ma/#dev_yoxo"  title="Comment devenir Yoxo.ma ?" id="#dev_yoxo"                >
+    
+            Comment devenir Yoxo.ma ?
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Les Pass
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-85262  first last">                    
+                    <a href="https://espace-client.orange.ma/recharger-numero/identification"  title="Pass Roaming" id="recharger-numero-identification"                >
+    
+            Pass Roaming
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                                                <div class="item-ssmenu item-ssmenu-direction">
+                        <span class="n3-title--alt mbs">
+                            
+                            <a href="https://www.orange.ma/Offres-services/Offres-Mobile/eSIM" title="eSIM">
+                                                                eSIM
+                                                            </a>
+                                                    </span>
+                    </div>
+                
+                                                                                <div class="item-ssmenu item-ssmenu-direction">
+                        <span class="n3-title--alt mbs">
+                            
+                            <a href="https://www.orange.ma/Offres-services/Services-Orange/Roamin/International-clients-forfaits" title="International ">
+                                                                International 
+                                                            </a>
+                                                    </span>
+                    </div>
+                
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Déjà client ?
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-85265  first">                    
+                    <a href="https://espace-client.orange.ma/"  title="Changer mon offre" id=""                >
+    
+            Changer mon offre
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85266 ">                    
+                    <a href="https://espace-client.orange.ma/payez-vos-factures"  title="Payer ma facture" id="payez-vos-factures"                >
+    
+            Payer ma facture
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85267  last">                    
+                    <a href="https://espace-client.orange.ma/recharger-numero/identification"  title="Acheter un Pass" id="recharger-numero-identification"                >
+    
+            Acheter un Pass
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                    </div>
+        <div class="grid-4-tiny-1">
+            
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                    <div class="ssmenu ssmenu-level2-83881">
+    <div class="container">
+        <span class="headband-title">
+            <a  href="https://yoxo.ma" title="Yoxo.ma" >                Yoxo.ma
+            </a>        </span>
+        <div class="grid-4-tiny-1">
+                            <div class="item-ssmenu item-ssmenu-direction display-tab-mob">
+                    <span class="n3-title--alt mbs"><a href="https://yoxo.ma" title="Yoxo.ma" >Accueil Yoxo.ma</a></span>
+                </div>
+            
+                    </div>
+        <div class="grid-4-tiny-1">
+            
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                    <div class="ssmenu ssmenu-level2-85274">
+    <div class="container">
+        <span class="headband-title">
+                            WiFi à la Maison
+                    </span>
+        <div class="grid-4-tiny-1">
+            
+                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Fibre d&#039;Orange
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-59789  first">                    
+                    <a href="https://boutique.orange.ma/fibre-d-orange"  title="Offres Fibre d&#039;Orange" id="fibre-d-orange"                >
+    
+            Offres Fibre d&#039;Orange
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86946  last">                    
+                    <a href="https://www.orange.ma/Quiz/Demenagement/"  title="Je déménage" id="Quiz-Demenagement-"                >
+    
+            Je déménage
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Dar Box 5G
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-87750  first last">                    
+                    <a href="https://boutique.orange.ma/offres-dar-box/dar-box-5g"  title="Forfaits Dar Box 5G" id="offres-dar-box-dar-box-5g"                >
+    
+            Forfaits Dar Box 5G
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Dar Box 4G+
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-62330  first">                    
+                    <a href="https://boutique.orange.ma/dar-box"  title="Forfaits Dar Box 4G+" id="dar-box"                >
+    
+            Forfaits Dar Box 4G+
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85406 ">                    
+                    <a href="https://www.orange.ma/WiFi-a-la-Maison/Dar-Box-4G/Pack-WiFi-D-jib-rechargeable"  title="Pack WiFi D’jib rechargeable" id="WiFi-a-la-Maison-Dar-Box-4G-Pack-WiFi-D-jib-rechargeable"                >
+    
+            Pack WiFi D’jib rechargeable
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85296  last">                    
+                    <a href="https://espace-client.orange.ma/recharger-numero/identification"  title="Recharger mon Pack" id="recharger-numero-identification"                >
+    
+            Recharger mon Pack
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                ADSL ULTRA
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-84914  first">                    
+                    <a href="https://www.orange.ma/WiFi-a-la-Maison/ADSL-ULTRA/Offres-ADSL-ULTRA"  title="Offres ADSL ULTRA" id="WiFi-a-la-Maison-ADSL-ULTRA-Offres-ADSL-ULTRA"                >
+    
+            Offres ADSL ULTRA
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85294  last">                    
+                    <a href="https://www.orange.ma/Quiz/ADSL"  title="Commander l&#039;ADSL ULTRA" id="Quiz-ADSL"                >
+    
+            Commander l&#039;ADSL ULTRA
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Déjà client ?
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-85291  first last">                    
+                    <a href="/Assistance/Equipement-internet"  title="Assistance" id=""                >
+    
+            Assistance
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                    </div>
+        <div class="grid-4-tiny-1">
+            
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                    <div class="ssmenu ssmenu-level2-85233">
+    <div class="container">
+        <span class="headband-title">
+                            Divertissement
+                    </span>
+        <div class="grid-4-tiny-1">
+            
+                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Gaming
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-87347  first">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/PUBG"  title="PUBG " id="Divertissement-Gaming-PUBG"                >
+    
+            PUBG 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-52256 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/Gameloft"  title="Gameloft" id="Divertissement-Gaming-Gameloft"                >
+    
+            Gameloft
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-83166 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/Playweez"  title="Playweez" id="Divertissement-Gaming-Playweez"                >
+    
+            Playweez
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85286 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/Freefire"  title="Freefire" id="Divertissement-Gaming-Freefire"                >
+    
+            Freefire
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87103 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/ARENA"  title="ARENA" id="Divertissement-Gaming-ARENA"                >
+    
+            ARENA
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87224 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/Age-of-Ashes"  title="Age of Ashes" id="Divertissement-Gaming-Age-of-Ashes"                >
+    
+            Age of Ashes
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87553 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/MegaWin"  title="MegaWin" id="Divertissement-Gaming-MegaWin"                >
+    
+            MegaWin
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87626 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/Delta-Force"  title="Delta Force" id="Divertissement-Gaming-Delta-Force"                >
+    
+            Delta Force
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87928  last">                    
+                    <a href="https://www.orange.ma/Divertissement/Gaming/Blacknut"  title="Blacknut" id="Divertissement-Gaming-Blacknut"                >
+    
+            Blacknut
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Musique
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-53511  first">                    
+                    <a href="https://www.orange.ma/Divertissement/Musique/Tonalite-D-appel"  title="Tonalité D’appel " id="Divertissement-Musique-Tonalite-D-appel"                >
+    
+            Tonalité D’appel 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-84954 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Musique/Spotify"  title="Spotify" id="Divertissement-Musique-Spotify"                >
+    
+            Spotify
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87520 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Musique/Playup"  title="Playup" id="Divertissement-Musique-Playup"                >
+    
+            Playup
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88165  last">                    
+                    <a href="https://www.orange.ma/Divertissement/Musique/Anghami-Plus"  title="Anghami Plus" id="Divertissement-Musique-Anghami-Plus"                >
+    
+            Anghami Plus
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Films &amp; Séries
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-83128  first">                    
+                    <a href="https://www.orange.ma/Divertissement/Films-Series/Playvod"  title="Playvod+" id="Divertissement-Films-Series-Playvod"                >
+    
+            Playvod+
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-83730 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Films-Series/MBC-Shahid"  title="MBC Shahid" id="Divertissement-Films-Series-MBC-Shahid"                >
+    
+            MBC Shahid
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86096 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Films-Series/Shofha"  title="Shofha" id="Divertissement-Films-Series-Shofha"                >
+    
+            Shofha
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86558 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Films-Series/Viu"  title="Viu" id="Divertissement-Films-Series-Viu"                >
+    
+            Viu
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87916 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Films-Series/Watch-it"  title="Watch it" id="Divertissement-Films-Series-Watch-it"                >
+    
+            Watch it
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88159  last">                    
+                    <a href="https://www.orange.ma/Divertissement/Films-Series/OSN-Plus"  title="OSN Plus" id="Divertissement-Films-Series-OSN-Plus"                >
+    
+            OSN Plus
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Sport
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-82564  first">                    
+                    <a href="https://www.orange.ma/Divertissement/Sport/LaLiga-Xtra"  title="LaLiga Xtra" id="Divertissement-Sport-LaLiga-Xtra"                >
+    
+            LaLiga Xtra
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-83117 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Sport/ClicNscores"  title="ClicNscores" id="Divertissement-Sport-ClicNscores"                >
+    
+            ClicNscores
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87962  last">                    
+                    <a href="https://www.orange.ma/Divertissement/Sport/GameSport"  title="GameSport" id="Divertissement-Sport-GameSport"                >
+    
+            GameSport
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Store
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-83727  first">                    
+                    <a href="https://www.orange.ma/Divertissement/Store/HUAWEI"  title="HUAWEI" id="Divertissement-Store-HUAWEI"                >
+    
+            HUAWEI
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87208 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Store/Karti"  title="Karti" id="Divertissement-Store-Karti"                >
+    
+            Karti
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87581  last">                    
+                    <a href="https://www.orange.ma/Divertissement/Store/Carry1st"  title="Carry1st" id="Divertissement-Store-Carry1st"                >
+    
+            Carry1st
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Life Style &amp; E-learning
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-83170  first">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Kidjo"  title="Kidjo" id="Divertissement-Life-Style-E-learning-Kidjo"                >
+    
+            Kidjo
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85042 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/YouScribe"  title="YouScribe" id="Divertissement-Life-Style-E-learning-YouScribe"                >
+    
+            YouScribe
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-85052 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Busuu"  title="Busuu" id="Divertissement-Life-Style-E-learning-Busuu"                >
+    
+            Busuu
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86191 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Yumami-by-Oukla"  title="Yumami by Oukla" id="Divertissement-Life-Style-E-learning-Yumami-by-Oukla"                >
+    
+            Yumami by Oukla
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86705 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Fitness24"  title="Fitness24" id="Divertissement-Life-Style-E-learning-Fitness24"                >
+    
+            Fitness24
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87040 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Mini-Me-Games"  title="Mini Me Games" id="Divertissement-Life-Style-E-learning-Mini-Me-Games"                >
+    
+            Mini Me Games
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87201 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Deeny"  title="Deeny" id="Divertissement-Life-Style-E-learning-Deeny"                >
+    
+            Deeny
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-87791 ">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Hello-Code"  title="Hello Code" id="Divertissement-Life-Style-E-learning-Hello-Code"                >
+    
+            Hello Code
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-88441  last">                    
+                    <a href="https://www.orange.ma/Divertissement/Life-Style-E-learning/Kidzinmind"  title="Kidzinmind" id="Divertissement-Life-Style-E-learning-Kidzinmind"                >
+    
+            Kidzinmind
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                    </div>
+        <div class="grid-4-tiny-1">
+            
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                    <div class="ssmenu ssmenu-level2-76213">
+    <div class="container">
+        <span class="headband-title">
+            <a  href="https://www.orange.ma/orangemoney" title="Orange Money" >                Orange Money
+            </a>        </span>
+        <div class="grid-4-tiny-1">
+                            <div class="item-ssmenu item-ssmenu-direction display-tab-mob">
+                    <span class="n3-title--alt mbs"><a href="https://www.orange.ma/orangemoney" title="Orange Money" >Accueil Orange Money</a></span>
+                </div>
+            
+                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Bienvenue
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-77310  first">                    
+                    <a href="https://www.orange.ma/orangemoney/Bienvenue/Presentation-Orange-Money"  title="Présentation Orange Money " id="orangemoney-Bienvenue-Presentation-Orange-Money"                >
+    
+            Présentation Orange Money 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77722 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Bienvenue/Ouvrir-un-compte"  title="Ouvrir un compte " id="orangemoney-Bienvenue-Ouvrir-un-compte"                >
+    
+            Ouvrir un compte 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77734 ">                    
+                    <a href="https://www.orange.ma/Agences-Orange?service=orange%20money"  title="Trouver un point de vente" id="Agences-Orange?service=orange%20money"                >
+    
+            Trouver un point de vente
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-80774  last">                    
+                    <a href="https://www.orange.ma/orangemoney/Bienvenue/Tarifs-Orange-Money"  title="Tarifs Orange Money" id="orangemoney-Bienvenue-Tarifs-Orange-Money"                >
+    
+            Tarifs Orange Money
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Au quotidien
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-80661  first">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Transfert-d-argent-depuis-l-etranger"  title="Transfert d’argent depuis l’étranger" id="orangemoney-Au-quotidien-Transfert-d-argent-depuis-l-etranger"                >
+    
+            Transfert d’argent depuis l’étranger
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-81028 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Alimenter-le-compte"  title="Alimenter le compte" id="orangemoney-Au-quotidien-Alimenter-le-compte"                >
+    
+            Alimenter le compte
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77750 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Envoyer-l-argent"  title="Envoyer l&#039;argent" id="orangemoney-Au-quotidien-Envoyer-l-argent"                >
+    
+            Envoyer l&#039;argent
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77736 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Retrait-d-argent"  title="Retrait d&#039;argent" id="orangemoney-Au-quotidien-Retrait-d-argent"                >
+    
+            Retrait d&#039;argent
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77760 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Acheter-une-recharge"  title="Acheter une recharge " id="orangemoney-Au-quotidien-Acheter-une-recharge"                >
+    
+            Acheter une recharge 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77755 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Payer-une-facture"  title="Payer une facture " id="orangemoney-Au-quotidien-Payer-une-facture"                >
+    
+            Payer une facture 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77765 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Payer-un-commercant"  title="Payer un commerçant" id="orangemoney-Au-quotidien-Payer-un-commercant"                >
+    
+            Payer un commerçant
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-83325  last">                    
+                    <a href="https://www.orange.ma/orangemoney/Au-quotidien/Virement-bancaire"  title="Virement bancaire" id="orangemoney-Au-quotidien-Virement-bancaire"                >
+    
+            Virement bancaire
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Gérer mon compte
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-77775  first">                    
+                    <a href="https://www.orange.ma/orangemoney/Gerer-mon-compte/Augmenter-mon-plafond"  title="Augmenter mon plafond" id="orangemoney-Gerer-mon-compte-Augmenter-mon-plafond"                >
+    
+            Augmenter mon plafond
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77798 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Gerer-mon-compte/Code-secret"  title="Code secret" id="orangemoney-Gerer-mon-compte-Code-secret"                >
+    
+            Code secret
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77800 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Gerer-mon-compte/M-wallet"  title="M-wallet" id="orangemoney-Gerer-mon-compte-M-wallet"                >
+    
+            M-wallet
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-77802  last">                    
+                    <a href="https://www.orange.ma/orangemoney/Gerer-mon-compte/Assistance"  title="Assistance" id="orangemoney-Gerer-mon-compte-Assistance"                >
+    
+            Assistance
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                                                                Pratique
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                                                                            <li  class="nav-location-77829  first">                    
+                    <a href="https://www.orange.ma/orangemoney/Pratique/Calculateur-de-frais"  title="Calculateur de frais" id="orangemoney-Pratique-Calculateur-de-frais"                >
+    
+            Calculateur de frais
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-78855 ">                    
+                    <a href="https://www.orange.ma/orangemoney/Pratique/144"  title="#144#" id="orangemoney-Pratique-144"                >
+    
+            #144#
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-82246  last">                    
+                    <a href="https://www.orange.ma/orangemoney/Pratique/Video-tuto"  title="Vidéo tuto" id="orangemoney-Pratique-Video-tuto"                >
+    
+            Vidéo tuto
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                                            
+                                    <div class="item-ssmenu">
+                        <span class="n3-title--alt mbs">
+                            
+                                <a href="https://www.orange.ma/orangemoney/Nos-partenaires" title="Nos partenaires">
+                                                                Nos partenaires
+                                                            </a>
+                                                    </span>
+
+                                                    <ul class="list-ssmenu">
+                                                            <li class="list-ssmenu__accueil"><a href="https://www.orange.ma/orangemoney/Nos-partenaires" title="Nos partenaires" >Accueil Nos partenaires</a></li>
+                                                                                            <li  class="nav-location-82386  first last">                    
+                    <a href="https://www.orange.ma/orangemoney/Nos-partenaires/Devenir-agent-Orange-Money"  title="Devenir agent Orange Money" id="orangemoney-Nos-partenaires-Devenir-agent-Orange-Money"                >
+    
+            Devenir agent Orange Money
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                    </div>
+                                    </div>
+        <div class="grid-4-tiny-1">
+                <span class="link-picto"><a href="/orangemoney/Bienvenue/Presentation-Orange-Money" title="Simplicité "  ><i class="icon ic-Simplicity ic-FS-35"></i>Simplicité </a></span>
+    <span class="link-picto"><a href="/orangemoney/Bienvenue/Presentation-Orange-Money" title="Sécurité "  ><i class="icon ic-Lock ic-FS-35"></i>Sécurité </a></span>
+    <span class="link-picto"><a href="/orangemoney/Bienvenue/Presentation-Orange-Money" title="Rapidité "  ><i class="icon ic-Clock ic-FS-35"></i>Rapidité </a></span>
+    <span class="link-picto"><a href="orangemoney/Bienvenue/Presentation-Orange-Money" title="Autonomie "  ><i class="icon ic-Orange_Experts_Expert ic-FS-35"></i>Autonomie </a></span>
+
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                    <div class="ssmenu ssmenu-level2-66579">
+    <div class="container">
+        <span class="headband-title">
+            <a  href="https://www.orange.ma/Assistance" title="Assistance" >                Assistance
+            </a>        </span>
+        <div class="grid-4-tiny-1">
+                            <div class="item-ssmenu item-ssmenu-direction display-tab-mob">
+                    <span class="n3-title--alt mbs"><a href="https://www.orange.ma/Assistance" title="Assistance" >Accueil Assistance</a></span>
+                </div>
+            
+                    </div>
+        <div class="grid-4-tiny-1">
+            
+        </div>
+        <a class="close-ssmenu" href="#"><i class="icon ic-Delete"></i></a>
+    </div>
+</div>
+                <!---->
+    </div>
+    <!--end ssmenu-->
+</header>
+
+                        
+    <!-- Header area: END -->
+    <main class="main  ">
+                        <div class="container-large">
+                                                <input type="hidden" value="public" id="siteaccess_name">
+                                                    <div class="breadcrumbs">
+    <div class="container">
+        <ul>
+            <li class="home">
+                                                                                <a href="/" title="Accueil">Accueil</a>
+            </li>
+
+            <li class="last">
+                                    Offres Fibre d&#039;Orange
+                            </li>
+        </ul>
+    </div>
+</div>
+            
+                                                                                                                                                                                
+                                    <section class="block-banner block-banne--wbreadcrumbs  no-menu-toggle">
+                        <div class="container">
+                            <div class="block-banner__content">
+                                
+                                                                    <h1>
+                                        La Fibre d&#039;Orange
+                                    </h1>
+                                                            </div>
+
+                                                    </div>
+                    </section>
+                            
+                        <div class="block">
+            <div class="container">
+                <article class="onlineediteur">
+                    <div class="ezxmltext-field"><script>
+  window.location.href = "https://boutique.orange.ma/fibre-d-orange";
+</script></div>
+                </article>
+            </div>
+        </div>
+                
+                        <section class="block bg-gray7 block--n block--nb" id="address-bf1b196db1fb90c6feb9f0edfcdc8fac">
+    <div class="container">
+                <article class="onlineediteur onlineediteur--block">
+            <div class="ezxmltext-field"><section id="block_77"><div class="container-large"><article class="onlineediteur onlineediteur--block"><div class="ezxmltext-field "><style>
+                                        /**
+            * Owl Carousel v2.3.4
+            * Copyright 2013-2018 David Deutsch
+            * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+            */
+
+
+
+
+
+                                        .owl-carousel,
+                                        .owl-carousel .owl-item {
+                                          -webkit-tap-highlight-color: transparent;
+                                          position: relative
+                                        }
+  
+                                        .owl-carousel {
+                                          display: none;
+                                          width: 100%;
+                                          z-index: 1
+                                        }
+  
+                                        .owl-carousel .owl-stage {
+                                          position: relative;
+                                          -ms-touch-action: pan-Y;
+                                          touch-action: manipulation;
+                                          -moz-backface-visibility: hidden
+                                        }
+  
+                                        .owl-carousel .owl-stage:after {
+                                          content: ".";
+                                          display: block;
+                                          clear: both;
+                                          visibility: hidden;
+                                          line-height: 0;
+                                          height: 0
+                                        }
+  
+                                        .owl-carousel .owl-stage-outer {
+                                          position: relative;
+                                          overflow: hidden;
+                                          -webkit-transform: translate3d(0, 0, 0)
+                                        }
+  
+                                        .owl-carousel .owl-item,
+                                        .owl-carousel .owl-wrapper {
+                                          -webkit-backface-visibility: hidden;
+                                          -moz-backface-visibility: hidden;
+                                          -ms-backface-visibility: hidden;
+                                          -webkit-transform: translate3d(0, 0, 0);
+                                          -moz-transform: translate3d(0, 0, 0);
+                                          -ms-transform: translate3d(0, 0, 0)
+                                        }
+  
+                                        .owl-carousel .owl-item {
+                                          min-height: 1px;
+                                          float: left;
+                                          -webkit-backface-visibility: hidden;
+                                          -webkit-touch-callout: none
+                                        }
+  
+                                        .owl-carousel .owl-item img {
+                                          display: block;
+                                          width: 100%
+                                        }
+  
+                                        .owl-carousel .owl-dots.disabled,
+                                        .owl-carousel .owl-nav.disabled {
+                                          display: none
+                                        }
+  
+                                        .no-js .owl-carousel,
+                                        .owl-carousel.owl-loaded {
+                                          display: block
+                                        }
+  
+                                        .owl-carousel .owl-dot,
+                                        .owl-carousel .owl-nav .owl-next,
+                                        .owl-carousel .owl-nav .owl-prev {
+                                          cursor: pointer;
+                                          -webkit-user-select: none;
+                                          -khtml-user-select: none;
+                                          -moz-user-select: none;
+                                          -ms-user-select: none;
+                                          user-select: none
+                                        }
+  
+                                        .owl-carousel .owl-nav button.owl-next,
+                                        .owl-carousel .owl-nav button.owl-prev,
+                                        .owl-carousel button.owl-dot {
+                                          background: white;
+                                          color: inherit;
+                                          border: none;
+                                          padding: 0 !important;
+                                          font: inherit
+                                        }
+  
+                                        .owl-carousel.owl-loading {
+                                          opacity: 0;
+                                          display: block
+                                        }
+  
+                                        .owl-carousel.owl-hidden {
+                                          opacity: 0
+                                        }
+  
+                                        .owl-carousel.owl-refresh .owl-item {
+                                          visibility: hidden
+                                        }
+  
+                                        .owl-carousel.owl-drag .owl-item {
+                                          -ms-touch-action: pan-y;
+                                          touch-action: pan-y;
+                                          -webkit-user-select: none;
+                                          -moz-user-select: none;
+                                          -ms-user-select: none;
+                                          user-select: none
+                                        }
+  
+                                        .owl-carousel.owl-grab {
+                                          cursor: move;
+                                          cursor: grab
+                                        }
+  
+                                        .owl-carousel.owl-rtl {
+                                          direction: rtl
+                                        }
+  
+                                        .owl-carousel.owl-rtl .owl-item {
+                                          float: right
+                                        }
+  
+                                        .owl-carousel .animated {
+                                          animation-duration: 1s;
+                                          animation-fill-mode: both
+                                        }
+  
+                                        .owl-carousel .owl-animated-in {
+                                          z-index: 0
+                                        }
+  
+                                        .owl-carousel .owl-animated-out {
+                                          z-index: 1
+                                        }
+  
+                                        .owl-carousel .fadeOut {
+                                          animation-name: fadeOut
+                                        }
+  
+                                        @keyframes fadeOut {
+                                          0% {
+                                            opacity: 1
+                                          }
+  
+                                          100% {
+                                            opacity: 0
+                                          }
+                                        }
+  
+                                        .owl-height {
+                                          transition: height .5s ease-in-out
+                                        }
+  
+                                        .owl-carousel .owl-item .owl-lazy {
+                                          opacity: 0;
+                                          transition: opacity .4s ease
+                                        }
+  
+                                        .owl-carousel .owl-item .owl-lazy:not([src]),
+                                        .owl-carousel .owl-item .owl-lazy[src^=""] {
+                                          max-height: 0
+                                        }
+  
+                                        .owl-carousel .owl-item img.owl-lazy {
+                                          transform-style: preserve-3d
+                                        }
+  
+                                        .owl-carousel .owl-video-wrapper {
+                                          position: relative;
+                                          height: 100%;
+                                          background: #000
+                                        }
+  
+                                        .owl-carousel .owl-video-play-icon {
+                                          position: absolute;
+                                          height: 80px;
+                                          width: 80px;
+                                          left: 50%;
+                                          top: 50%;
+                                          margin-left: -40px;
+                                          margin-top: -40px;
+                                          background: url(owl.video.play.png) no-repeat;
+                                          cursor: pointer;
+                                          z-index: 1;
+                                          -webkit-backface-visibility: hidden;
+                                          transition: transform .1s ease
+                                        }
+  
+                                        .owl-carousel .owl-video-play-icon:hover {
+                                          -ms-transform: scale(1.3, 1.3);
+                                          transform: scale(1.3, 1.3)
+                                        }
+  
+                                        .owl-carousel .owl-video-playing .owl-video-play-icon,
+                                        .owl-carousel .owl-video-playing .owl-video-tn {
+                                          display: none
+                                        }
+  
+                                        .owl-carousel .owl-video-tn {
+                                          opacity: 0;
+                                          height: 100%;
+                                          background-position: center center;
+                                          background-repeat: no-repeat;
+                                          background-size: contain;
+                                          transition: opacity .4s ease
+                                        }
+  
+                                        .owl-carousel .owl-video-frame {
+                                          position: relative;
+                                          z-index: 1;
+                                          height: 100%;
+                                          width: 100%
+                                        }
+  
+                                        /**
+            * Owl Carousel v2.3.4
+            * Copyright 2013-2018 David Deutsch
+            * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+            */
+                                        .owl-theme .owl-dots,
+                                        .owl-theme .owl-nav {
+                                          text-align: center;
+                                          -webkit-tap-highlight-color: transparent
+                                        }
+  
+                                        .owl-theme .owl-nav {
+                                          margin-top: 10px
+                                        }
+  
+                                        .owl-theme .owl-nav [class*=owl-] {
+                                          color: #FFF;
+                                          font-size: 14px;
+                                          margin: 5px;
+                                          padding: 4px 7px;
+                                          background: #D6D6D6;
+                                          display: inline-block;
+                                          cursor: pointer;
+                                          border-radius: 3px
+                                        }
+  
+                                      
+  
+                                        .owl-theme .owl-nav .disabled {
+                                          opacity: .5;
+                                          cursor: default
+                                        }
+  
+                                        .owl-theme .owl-nav.disabled+.owl-dots {
+                                          margin-top: 10px
+                                        }
+  
+                                        .owl-theme .owl-dots .owl-dot {
+                                          display: inline-block;
+                                          zoom: 1
+                                        }
+  
+                                        .owl-theme .owl-dots .owl-dot span {
+                                          width: 10px;
+                                          height: 10px;
+                                          margin: 5px 7px;
+                                          background: #D6D6D6;
+                                          display: block;
+                                          -webkit-backface-visibility: visible;
+                                          transition: opacity .2s ease;
+                                          border-radius: 30px
+                                        }
+  
+                                        .owl-theme .owl-dots .owl-dot.active span,
+                                        .owl-theme .owl-dots .owl-dot:hover span {
+                                          background: #FFF
+                                        }
+                                      </style><div class="block bg-gray7
+            block--nb" id="address-b0ca3758f52014476474c73a908fb61f"><style>
+                                          .fibreone {
+                                            cursor: pointer;
+                                          }
+  
+                                          #fibre-cards div {
+                                            width: 100%;
+                                          }
+  
+                                          .ticket-top {
+                                            border: solid 0.5px #FFD200 !important;
+                                            text-align: center;
+                                            width: 70%;
+                                            background-color: #FFD200 !important;
+                                            margin-left: 12%;
+                                            padding: 3px 26px;
+                                            position: absolute;
+                                            top: -3%;
+                                            width: 75% !important;
+                                          }
+  
+                                          hr {
+                                            display: block !important;
+                                            height: 1px !important;
+                                            border: 0;
+                                            border-top: 0px solid grey !important;
+                                            margin: 1em 40px !important;
+                                            padding: 0 !important;
+                                            width: 75% !important;
+                                            margin-top: 52px !important;
+                                          }
+  
+                                          @media screen and (max-width: 1595px) {
+                                            #fibre-cards {
+                                              flex-wrap: wrap !important;
+                                            }
+                                          }
+  
+                                          .texts {
+                                            width: 98% !important;
+                                          }
+  
+                                          p small {
+                                            font-size: 1.1rem;
+                                          }
+  
+                                          /* .sticky-wrapper {
+                                            width: 100vw;
+                                          } */
+  
+                                          .owl-stage-outer {
+                                            width: 100vw !important;
+                                          }
+  
+                                          @media screen and (max-width: 575px) {
+                                            .fibreone {
+                                              margin-top: 13px;
+                                            }
+  
+                                            .ticket-top {
+                                              margin-left: 12.5%;
+                                            }
+                                          }
+  
+                                          @media screen and (max-width: 575px) {
+                                            .owl-carousel {
+                                              display: block !important;
+                                            }
+  
+                                            #tirer {
+                                              margin-top: 1px !important;
+                                            }
+                                          }
+  
+                                          .owl-stage-outer {
+                                            width: 100% !important;
+                                          }
+  
+                                          .owl-theme .owl-dots .owl-dot span {
+                                            width: 70px;
+                                            height: 10px;
+                                            margin: 5px 7px;
+                                            background: #ffff;
+                                            display: block;
+                                            -webkit-backface-visibility: visible;
+                                            transition: opacity .2s ease;
+                                            border-radius: 30px;
+                                          }
+  
+                                          .owl-theme .owl-dots .owl-dot.active span,
+                                          .owl-theme .owl-dots .owl-dot:hover span {
+                                            background: #ff7900;
+                                          }
+  
+                                          .owl-nav {
+                                            display: none;
+                                          }
+  
+                                          .owl-dots {
+                                            margin-top: 20px;
+                                          }
+  
+                                          .ezxmltext-field:first-of-type .container {
+                                            padding: 0 2px;
+                                          }
+  
+                                          .fibre-cards-container {
+                                          display: flex;
+                                          gap: 10px;
+                                          padding: 20px 0;
+                                          overflow-x: auto;
+                                          scroll-snap-type: x mandatory;
+                                          -webkit-overflow-scrolling: touch;
+                                          width: 100%;
+                                        }
+                                        
+                                        /* Cacher la scrollbar pour un look plus propre */
+                                        .fibre-cards-container::-webkit-scrollbar {
+                                          display: none;
+                                        }
+                                        
+                                        /* Style des cartes individuelles */
+                                        .fibre-card {
+                                          flex: 0 0 auto;
+                                          scroll-snap-align: start;
+                                          cursor: pointer;
+                                          transition: transform 0.2s;
+                                        }
+                                        
+                                        .fibre-card:hover {
+                                          transform: scale(1.02);
+                                        }
+                                        
+                                        .fibre-card img {
+                                          width: 282px;
+                                          height: auto;
+                                          border-radius: 8px;
+                                        }
+                                        
+                                        /* Desktop - affichage en grid */
+                                        @media (min-width: 575px) {
+                                          .fibre-cards-container {
+                                            display: grid;
+                                            grid-template-columns: repeat(3, 1fr);
+                                            gap: 15px;
+                                            overflow-x: visible;
+                                            justify-content: center;
+                                            padding: 30px 0;
+                                          }
+                                          
+                                          .fibre-card img {
+                                            width: 100%;
+                                          
+                                            margin: 0 auto;
+                                          }
+                                        }
+                                        
+                                        /* Styles pour la section des icônes */
+                                        .features-grid {
+                                          display: grid;
+                                          grid-template-columns: repeat(3, 1fr);
+                                          gap: 20px;
+                                          padding: 30px 0;
+                                          text-align: center;
+                                        }
+                                        
+                                        .feature-item {
+                                          display: flex;
+                                          flex-direction: column;
+                                          align-items: center;
+                                        }
+                                        
+                                        .feature-item img {
+                                          width: 55px;
+                                          margin-bottom: 10px;
+                                        }
+                                        
+                                        @media (max-width: 575px) {
+                                          .features-grid {
+                                            grid-template-columns: 1fr;
+                                            gap: 15px;
+                                          }
+                                        }
+  
+                                        .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev, .owl-carousel button.owl-dot:hover {
+  
+  
+                                          background: #fff !important;
+                                        }
+                                        </style><script
+                                          src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><div class="container con11 lg-cont"><!-- Conteneur des cartes Fibre --><div class="fibre-cards-container" ><div class="fibre-card"><img src="https://orange-maroc.net/FibreOrange/fibre-cards/20go.svg" alt="20 Méga"></div><div class="fibre-card"><img src="https://orange-maroc.net/FibreOrange/fibre-cards/50go.svg" alt="50 Méga"></div><div class="fibre-card"><img src="https://orange-maroc.net/FibreOrange/fibre-cards/100go.svg" alt="100 Méga"></div><div class="fibre-card"><img src="https://orange-maroc.net/FibreOrange/fibre-cards/200go.svg" alt="200 Méga"></div><div class="fibre-card"><img src="https://orange-maroc.net/FibreOrange/fibre-cards/500go.svg" alt="500 Méga"></div><div class="fibre-card"><img src="https://orange-maroc.net/FibreOrange/fibre-cards/1000go.svg" alt="1000 Méga"></div></div></div></div><script
+                                        src="https://orange-maroc.net/fibre_orange/owl.carousel.min.js"></script><script>
+                                        $('.fibre-card img').click(function (e) {
+  
+                                          window.location.href = "https://www.orange.ma/Quiz/La-Fibre-d-Orange"
+  
+                                        })
+                                        if (window.matchMedia("(min-width: 575px) and (max-width: 1000px)").matches) {
+    //   $('.fibre-cards-container').addClass('owl-carousel owl-theme');
+      $('.lg-cont').removeClass('con11')
+
+    $('.lg-cont').css(
+      {
+      'max-width':'initial !important'
+      }
+    )
+      $('.owl-carousel').owlCarousel({
+          loop: false,
+          margin: 15,
+          nav: true,
+          dots :false,
+          items: 3,
+          navText: [
+              '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="#FF7900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+              '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="#FF7900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          ],
+          responsive: {
+              0: { items: 3 },
+              600: { items: 3 },
+              700: { items: 3 },
+              1000: { items: 3 }
+          }
+      });
+  
+      // Style personnalisé pour les flèches
+      $('.owl-nav').css({
+          'position': 'absolute',
+          'top': '50%',
+          'width': '100%',
+          'transform': 'translateY(-50%)',
+          'display': 'flex',
+          'justify-content': 'space-between',
+          'pointer-events': 'none'
+      });
+  
+      $('.owl-prev, .owl-next').css({
+          'pointer-events': 'auto',
+          'background': 'rgba(255,255,255,0.8) !important',
+          'border-radius': '50%',
+          'width': '40px',
+          'height': '40px',
+          'display': 'flex',
+          'align-items': 'center',
+          'justify-content': 'center',
+          'box-shadow': '0 2px 5px rgba(0,0,0,0.2)'
+      });
+  
+      $('.owl-prev').css('margin-left', '-50px');
+      $('.owl-next').css('margin-right', '-50px');
+  }
+  
+                                      </script></div></article><section class="block     bg-gray7 block--wb-mob"><style>
+                                      .ic-Gauge-Mon-Reseau:before {
+                                        font-size: 6rem !important;
+                                      }
+  
+                                      .ic-Setup_and_Repair_cog:before {
+                                        font-size: 6rem !important;
+                                      }
+  
+                                      .ic-device_TV:before {
+                                        font-size: 6rem !important;
+                                      }
+                                    </style><div ><div class="grid-4-tiny-2"><article class="mob-txtcenter mob-mbs2"><a
+                                            class="grid-1-2 flex-center-v disabled-link"><img
+                                              src="https://orange-maroc.net/osm/img/4.svg" style="width: 55px;
+                  padding-top: 4px;" class="img-debit-symétique"><p class="mls mob-souligne">
+                                              Wifi sans
+                                              coupures
+                                            </p></a></article><article class="mob-txtcenter mob-mbs2"><a
+                                            class="grid-1-2 flex-center-v disabled-link"><img
+                                              src="https://orange-maroc.net/osm/img/1.svg" style="width: 55px;
+                  padding-top: 4px;" class="img-debit-symétique"><p class="mls mob-souligne" id="ultras-hd">
+                                              Ultra HD
+                                            </p></a></article></div></div><style>
+                                      @media only screen and (max-width: 575px) {
+                                        .img-debit-symétique {
+                                          margin: auto !important;
+                                        }
+  
+                                        #img-debit-symétique {
+                                          margin-left: 0rem !important;
+                                        }
+  
+                                        #txt-debit-symétique {
+                                          padding-top: 10px !important;
+                                        }
+                                      }
+                                    </style></section><script>
+                                    var parent1 = $('#block_77').parent();
+                                    console.log(parent1.html())
+                                    var parent2 = parent1.parent();
+                                    parent2.removeClass('onlineediteur onlineediteur--block');
+  
+                                  </script><script defer>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                      var elements = document.querySelectorAll('.onlineediteur.onlineediteur--block');
+                                      elements.forEach(function (element) {
+                                        element.classList.remove('onlineediteur', 'onlineediteur--block');
+                                        element.classList.add('osm');
+                                      });
+                                    });
+                                  </script><script defer>
+                                    // JavaScript code to disable link behavior and href
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                      // Get the disabled link element
+                                      var disabledLink = document.querySelector('.disabled-link');
+  
+                                      // Check if the link element exists
+                                      if (disabledLink) {
+                                        // Disable link behavior
+                                        disabledLink.addEventListener('click', function (event) {
+                                          event.preventDefault();
+                                        });
+  
+                                        // Disable href attribute
+                                        disabledLink.setAttribute('');
+  
+                                        // Add styles to make it look like a paragraph
+                                        disabledLink.classList.add('disabled-link');
+                                      }
+                                    });
+                                  </script><style>
+                                    /* Media query for mobile displays */
+                                    @media only screen and (max-width: 767px) {
+                                      #ultras-hd {
+                                        margin-top: 10px;
+                                      }
+                                    }
+                                  </style><style>
+                                    @media only screen and (max-width: 600px) {
+                                      #fibre-cards div {
+                                        width: 100%;
+                                      }
+  
+                                      .btn-fixed {
+                                        display: none;
+                                      }
+  
+                                      .owl-dots {
+                                        margin-left: 1px !important;
+                                        width: 106% !important;
+                                      }
+                                    }
+                                  </style></div></section></div>
+        </article>
+    </div>
+</section>
+
+                        <section class="block block-bg-stand bg-black color-white block--n block--nb" id="address-0439eaf76264693988985e81838cb8b0">
+    <div class="container">
+                <article class="onlineediteur onlineediteur--block">
+            <div class="ezxmltext-field"><section class="block bg-gray7 block--n malivebox new-block" style="background-color: #000;padding-top: 40px;padding-bottom: 40px;/* color: #FFFFFF; */"><style>
+  @media screen and (max-width: 767px){
+               #livebox {
+                                 font-size: 2rem !important;
+                                 
+                }
+       #sectlivebox{
+         display: block !important;
+      }
+  
+   .modone{
+        margin-top: -6% !important;
+   }
+   .modtwo{
+        margin-top: -4% !important;
+   }
+   .allli{
+    text-indent: -1em;
+    
+   }
+   .allli:first-line {
+  text-align:justify;
+}
+   
+  }
+  #sectionlivebox ul li {
+         list-style: none;
+   
+        }
+  #sectionlivebox img {
+    margin-bottom: 0.5rem;
+}
+  @media screen and (max-width: 575px) {
+  #livebox-adapt{
+   margin-left:10px !important;
+  }
+  }
+  @media screen and (min-width: 580px) {
+  #livebox-adapt{
+   margin-left:10px !important;
+  }
+  }
+ </style><div class="container" style="display:grid;grid-template-columns: 2fr 1fr;" id="sectlivebox"><article class="onlineediteur onlineediteur--block" id="sectionlivebox"><div class="ezxmltext-field"><span style="color: #f16e00;font-size: 2.4rem;" name="text_orange" id="livebox">Performance, design et simplicité</span><div class="ul-grid" style="display:grid;grid-template-columns:1fr 12fr;margin-top:20px;"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/check%20.png" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color: #FFF;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Une connexion ultra rapide</div></div><div class="ul-grid" style="display:grid;grid-template-columns: 1fr 12fr;margin-top: 0%;"><div class="ul-gridone" style="color: #000;"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/check%20.png" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color: #FFF;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Un nombre plus important d'équipements connectés sur le wifi</div></div><div class="ul-grid" style="display:grid;grid-template-columns: 1fr 12fr;/* margin-top: -4%; */"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/check%20.png" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color: #FFF;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;"> Jouer, naviguer, regarder votre TV et vos séries...</div></div><br><span style="color: #f16e00;font-size: 2.4rem;" name="text_orange" id="livebox">Comment brancher votre LiveBox?</span><div class="ul-grid" style="display:grid;grid-template-columns:1fr 12fr;margin-top:20px;"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/Asset%203.svg" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color: #FFF;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Récupérer votre nouvelle Livebox en boutique</div></div><div class="ul-grid" style="display:grid;grid-template-columns: 1fr 12fr;margin-top: -3%;"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/Asset%202.svg" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color: #FFF;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Débrancher l'ancienne Livebox</div></div><div class="ul-grid" style="display:grid;grid-template-columns: 1fr 12fr;margin-top: -3%;"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/check%20green.png
+    " style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color: #FFFF;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Brancher la nouvelle Livebox6 à sa place</div></div></div></article><article class="onlineediteur onlineediteur--block"><div class="ezxmltext-field" style="text-align:center
+    "><img src="https://orange-maroc.net/FibreOrange/new-images/LIveBox-NEW-Img.png" style="width:100%"></div></article></div></section></div>
+        </article>
+    </div>
+</section>
+
+                        <section class="block  block--nb" id="address-2dd7bce2815d8614642d187bcbc5ba13">
+    <div class="container">
+                <article class="onlineediteur onlineediteur--block">
+            <div class="ezxmltext-field"><section class="block bg-gray7 block--n malivebox" style="background-color:#FFFFFF;padding-top: 40px;padding-bottom: 40px;"><style>
+        @media screen and (max-width: 767px){
+                   #livebox {
+                                     font-size: 2rem !important;
+                                     
+                    }
+                    #sectlivebox{
+                            display: block !important;
+                   }
+            
+                .modone{
+                        margin-top: -6% !important;
+                }
+                .modtwo{
+                        margin-top: -4% !important;
+                }
+                .allli{
+                    text-indent: -1em;
+                    
+                }
+                .allli:first-line {
+      text-align:justify;
+    }
+                
+            }
+            #sectionlivebox ul li {
+             list-style: none;
+       
+            }
+            #sectionlivebox img {
+        margin-bottom: 0.5rem;
+    }
+            @media screen and (max-width: 575px) {
+            #livebox-adapt{
+                margin-left:10px !important;
+            }
+            }
+            @media screen and (min-width: 580px) {
+            #livebox-adapt{
+                margin-left:10px !important;
+            }
+            }
+        </style><div class="container" style="display:grid;grid-template-columns: 1fr 1fr;" id="sectlivebox"><article class="onlineediteur onlineediteur--block" id="sectionlivebox"><div class="ezxmltext-field"><div class="ul-grid" style="display:grid;grid-template-columns:1fr 7fr"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/Logo.svg" style="width: 100%;padding-top: 10px;"></div><div style="margin-left:10px;margin-top:20px;" class="ul-gridone" id="livebox-adapt"><span style="color: #f16e00;font-size: 2.4rem;" name="text_orange" id="livebox">Ma LiveBox?</span><br><span style="font-weight: bold;">Avec l'application Ma Livebox ,<br>vous gardez le contrôle sur votre Livebox</span></div></div><div class="ul-grid" style="display:grid;grid-template-columns:1fr 12fr;margin-top:20px;"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/149a8b5a-9b69-41ed-8c09-1ff794824632.jpg" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color:#000;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Autoriser des équipements à se connecter</div></div><div class="ul-grid" style="display:grid;grid-template-columns: 1fr 12fr;margin-top: 0%;"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/149a8b5a-9b69-41ed-8c09-1ff794824632.jpg" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color:#000;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;">Gérer votre wifi en augmentant ou en diminuant
+    la puissance du wifi</div></div><div class="ul-grid" style="display:grid;grid-template-columns: 1fr 12fr;/* margin-top: -4%; */"><div class="ul-gridone" style="color:#000"><img id="livebox-icone" src="https://orange-maroc.net/fibre_orange/img/149a8b5a-9b69-41ed-8c09-1ff794824632.jpg" style="width: 2em;padding-top: 10px;"></div><div class="ul-gridone" id="livebox-adapt" style="color:#000;padding-top: 20px;font-family: HelvNeueOrange,Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-weight: bold;"> Planifier la mise en marche de votre wifi</div></div><br><a href="https://play.google.com/store/apps/details?id=com.orange.ma.maliveboxfibre"><img src="https://orange-maroc.net/fibre_orange/img/t%C3%A9l%C3%A9chargement.png" style="    width: 7em;
+        margin-top: 20px;"></a><a href="https://itunes.apple.com/fr/app/id6443435461" style="margin-left:10px"><img src="https://orange-maroc.net/fibre_orange/img/appstore1.png" style="    width: 7em;
+        margin-top: 20px;"></a></div></article><article class="onlineediteur onlineediteur--block"><div class="ezxmltext-field"><img src="https://orange-maroc.net/fibre_orange/img/livebox.png" style="width:100%"></div></article></div></section><p><sub>*Votre iPhone doit être configure vers l’App Store Maroc</sub></p></div>
+        </article>
+    </div>
+</section>
+
+                        <section class="block  " id="address-2c0694e7f5700dc0d27faab73350dd52">
+    <div class="container">
+        <h2 class="mbm">La Fibre selon Orange</h2>        <article class="onlineediteur onlineediteur--block">
+            <div class="ezxmltext-field"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3><span style="color: #f16e00" name="text_orange">Vivez l'internet à très haut débit</span></h3><p>Avec La Fibre Optique, Orange vous propose une nouvelle technologie performante et vous permettant d’avoir une expérience de navigation unique.</p><p>Vous bénéficiez d’une connexion internet très haut débit, jusqu’à 20 fois plus rapide que l’ADSL et sans coupure.</p><p>Grâce à la Fibre d’Orange, la vitesse de navigation est décuplée : jouez à vos jeux en ligne préférés et regardez vos vidéos sans coupure, connectez plusieurs smartphones et tablettes simultanément en Wi-Fi.</p><p>Toute votre maison profite en même temps d'un débit idéal, sans interruption.</p><a name="eztoc_2_1_1_1" id="eztoc_2_1_1_1" class="eztoc"></a><h3><span style="color: #f16e00" name="text_orange">Pourquoi choisir Orange ?</span></h3><p>En choisissant Orange, vous faites confiance à l’un des plus grands opérateur mondiaux et à une entreprise toujours en quête d’innovation .</p><p>Vous profitez également d’une connexion performante 100% fibre, d’un service clients de qualité Élu Service Client de l’Année Maroc 2025 et d’un matériel à la pointe de la technologie.</p><a name="eztoc_3_1_1_1" id="eztoc_3_1_1_1" class="eztoc"></a><h3><span style="color: #f16e00" name="text_orange">Des offres adaptées à vos besoins et à votre budget</span></h3><p>La Fibre Orange est accessible à partir de 249 Dh par mois seulement.</p><p>Vous changez d'opérateur ? Orange s'occupe des démarches auprès de votre ancien opérateur.</p><a name="eztoc_4_1_1_1" id="eztoc_4_1_1_1" class="eztoc"></a><h3><span style="color: #f16e00" name="text_orange">Une installation à domicile simple et discrète</span></h3><p>La Fibre Orange est installée jusqu'à chez vous par un technicien expert Orange, dans le respect de votre intérieur. Le rendez-vous pour l’installation est convenu avec vous.</p><a name="eztoc_5_1_1_1" id="eztoc_5_1_1_1" class="eztoc"></a><h3><span style="color: #f16e00" name="text_orange">J’habite dans un quartier en plein chantier, ce qui impacte ma Fibre. Que faire ?</span></h3><p>Comme pour l’électricité et l’eau, la Fibre peut subir des coupures « travaux dans le quartier, inondations, pluie... ». Orange met à votre disposition le nouveau service « Wifi sans coupures » qui vous permet de rester connecté même en cas de non disponibilité du service Fibre. Ce service prend automatiquement le relai en switchant en 4G+ en attendant le rétablissement de votre ligne Fibre et ce sans aucune intervention de votre part.</p></div>
+        </article>
+    </div>
+</section>
+
+                        <section class="block  block--nb" id="address-eb91e1a4bc462840d564483d7f52a591">
+    <div class="container">
+        <h2 class="mbm">En savoir plus</h2>        <article class="onlineediteur onlineediteur--block">
+            <div class="ezxmltext-field"><div class="block-histoire" name="div1" inline="false"><div class="items-histoire" name="div2" inline="false"><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Comment souscrire à la Fibre ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false">Vérifiez votre éligibilité <u><a href="https://espace-client.orange.ma/fibre/eligibilite" target="_self">en ligne</a></u>, en agence ou en appelant le 05 2000 2000.<a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3>Vous  êtes éligible ?</h3><p>Vous pouvez souscrire :</p><ul><li>Dans l’une de nos agences Orange</li></ul><ul><li>En contactant le commercial au numéro visible sur le sticker en bas de votre immeuble</li></ul><ul><li>Ou en appelant le 05 2000 2000.</li></ul><p>Nos équipes commerciales sont à votre disposition pour vous apporter le support nécessaire pour finaliser votre dossier de souscription et confirmer votre éligibilité.</p><p>Vous aurez besoin des documents suivants :</p><ul><li>Une copie de la C.I.N. ou carte de résident pour les étrangers.</li><li>Un relevé d’identité bancaire ou spécimen de chèque et un formulaire Orange d’<u><a href="http://www.orange.ma/content/download/150943/2297909/version/3/file/Autorisation%20PB.pdf" target="_self">autorisation de prélèvement </a> </u><u><a href="http://www.orange.ma/content/download/150943/2297909/version/3/file/Autorisation%20PB.pdf" target="_self">bancaire</a></u> si vous optez pour le prélèvement bancaire.</li><li>Une facture récente de votre opérateur fixe actuel si vous souhaitez garder votre numéro fixe dans le cadre de la portabilité de numéro.</li></ul><p>Si votre logement est déjà raccordé, Orange s’engage à mettre en service votre service Fibre Optique dans un délai maximum de 2 jours ouvrables. Vous serez contacté par nous techniciens afin de convenir  d’un rendez-vous d’installation.</p><p>Offre valable pour un engagement de 12 mois sous réserve d’éligibilité à l’offre et d’acceptation du dossier par Orange.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Comment savoir si je peux bénéficier de la Fibre d’Orange ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Pour vérifier si votre logement est éligible à la Fibre d’Orange, il vous suffit d’opter pour l’une des options suivantes :</p><ul><li>Contacter le 05 2000 2000</li><li>Se rendre dans l’agence Orange la plus proche</li></ul><p>Si votre adresse se trouve dans des zones non couvertes par la Fibre d’Orange, nous vous proposons notre solution de partage d’infrastructure de la fibre optique. Cela signifie que, Orange Maroc utilise des infrastructures mutualisées avec d’autres opérateurs télécoms pour vous offrir une connexion internet rapide, fiable et performante à des tarifs compétitifs sans sacrifier la qualité du service. Nos équipes continuent d’étendre le réseau fibre pour couvrir davantage de zones. Dès que c’est fait, vous serez automatiquement migré sans frais et sans résiliation.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Quel débit est offert dans le cadre de cette offre, s’agit-il d’un débit garanti ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Le débit de téléchargement démarre à 20 Mbps et atteint 1 Gbps en fonction de l'offre, le volume de téléchargement est illimité. Il n’y a pas de débit minimal garanti, en revanche, Orange a dimensionné son réseau afin de vous offrir un confort maximal de chaque connexion.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Est-ce que Orange se charge de rendre internet disponible dans toutes les chambre de ma maison ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Le technicien d’installation vous indiquera le point de chute de la fibre Optique de Orange en fonction de l'architecture et des contraintes techniques de votre logement. Les équipements de connexion doivent être installés en fonction de ce point de chute. Notre routeur Wifi fournit une bonne couverture. Orange n'est pas responsable de votre câblage interne et ne peut prendre en charge les travaux de réalisation et/ou de réparation de ce câblage. Orange vous propose également des répéteurs Wifi pour booster votre signal, disponibles dans l’un de nos points de vente.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Que dois-je faire si j’ai déjà la Fibre d’Orange chez moi et que je veux le nouveau routeur Livebox Fibre ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Si vous souhaitez remplacer votre routeur fibre actuel par le nouveau routeur Livebox Fibre wifi 6, vous pouvez vous rendre en agence Orange. Votre conseiller commercial vous informera des modalités commerciales et vous remettra par la suite votre nouveau routeur wifi 6. Il sera activé immédiatement en agence et vous pourrez alors rapidement l’installer en quelques minutes chez vous.</p><p>Pour vous aider, il existe une vidéo pour vous assister à l’installation, ainsi que l’application Ma Livebox qui vous permet de contrôler votre Livebox.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Que dois-je faire en cas de problème ou de besoin d’informations ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Il vous suffit d’appeler le numéro  05 20 121 121 dédié aux clients Haut Débit. Nos conseillers sont à votre disposition pour toutes vos demandes d’information ou d’assistance technique.</p><p>Pour une assistance en ligne rapide, rejoignez-nous sur WhatsApp au 0520 121 121.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Que dois-je faire pour passer d’une offre à une autre ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Si vous êtes déjà client Orange et que vous désirez changer votre offre fibre, rien de plus simple. Vous avez le choix entre trois options, optez pour celle qui vous convient le mieux et profitez d’un débit plus adapté à vos besoins :</p><ul><li>Option 1 : Connectez-vous à votre espace client ou Max it et changez vous-même votre offre sans vous déplacer.</li><li>Option 2 : Rendez-vous à la boutique Orange la plus proche, nos agents prendront en charge votre demande.</li><li>Option 3 : Contactez notre centre relation client au 05 20 121 121</li></ul><p>Pour rappel, un seul changement est autorisé par cycle de facturation.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Mon logement est grand et le wifi ne couvre pas toutes les pièces. Que faire ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Orange vous offre une large gamme des accessoires wifi (répéteurs, amplificateurs, CPL, contrôle parental)</p><p>Choisissez et commandez par <a href="https://boutique.orange.ma/accessories?category_id=16" target="_self">ici </a>ou rendez vous dans un de nos points de vente.</p><p>Retrouvez également <a href="https://www.orange.ma/Ameliorer-votre-wifi/Astuces" target="_self">ici</a> tous nos conseils pour optimiser votre wifi.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Pourquoi opter pour le service « Wifi sans coupures » ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><ul><li>Vous et votre famille êtes en permanence en ligne parce que vous êtes en télétravail, homeschooling, ou Gamer en réseau.</li><li>Un service de secours simple à utiliser et disponible tout le temps à prix avantageux.</li><li>Une garantie de la continuité de connectivité de tous vos appareils à la maison : caméras intérieures et extérieures, alarme connectée, serrure connectée…</li><li>Une solution complètement automatisée.</li></ul></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Je souhaite bénéficier du service « Wifi sans coupures ». Comment faire ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Rien de plus simple ! Rendez-vous dans un <a href="https://www.orange.ma/Agences-Orange" target="_self">Smartstore</a> Orange, nos agents prendront en charge votre demande.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Installation « Wifi sans coupures », comment ça marche ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>La mise en place est simple et instantanée. Dès que votre modem 4G est banché à votre LiveBox, vous pouvez être rassuré du bon fonctionnement du service.</p></div></div><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Comment va fonctionner le « Wifi sans coupures » ?</h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>En cas de coupure, le service reprend le relai avec le débit MaaaX de la 4G+ en attendant le rétablissement de la Fibre qui vous permettra de reprendre votre débit symétrique Fibre.</p></div></div></div></div></div>
+        </article>
+    </div>
+</section>
+
+                        <section class="block  block--n" id="address-99c2699fb5c15efc9a4a67cb2381196c">
+    <div class="container">
+                <article class="onlineediteur onlineediteur--block">
+            <div class="ezxmltext-field"><div class="block-histoire" name="div1" inline="false"><div class="items-histoire" name="div2" inline="false"><div class="item-histoire" name="div3" inline="false"><a name="eztoc_1_1_1_1" id="eztoc_1_1_1_1" class="eztoc"></a><h3 class="n3-title--alt item-histoire__title js-st-title mbm">Liste des pays de la Zone 1 Fixe </h3><div class="item-histoire__centent simpletoggle-content mb50" name="div4" inline="false"><p>Andorre, Espagne, France, Grèce, Italie, Monaco, Portugal, République de St Marin, Vatican.</p></div></div></div></div></div>
+        </article>
+    </div>
+</section>
+
+    
+            
+                    </div>
+    </main>
+    <!-- Footer area: START -->
+                                        <footer class="footer container-large footer__w-menu">
+    <!--footer-top-->
+        <!--end footer-top-->
+    <!--footer-middle-social-->
+    <div class="footer-middle-social separator-gray">
+        <div class="container">
+            <div class="clearfix">
+                <span class="fl txt-social">Suivez-nous</span>
+                                                                <ul class="list-social fl">
+                            <li class="first"  id="nav-location-page_77828">                <a href="https://wa.me/212663121121?text=Bonjour" title="WhatsApp"   class="icon social-item  ic-whatsapp"  ></a>
+                
+    </li>
+
+        <li  id="nav-location-page_49953">                <a href="https://www.facebook.com/orangemaroc" title="Facebook"  target="_blank"   class="icon social-item  ic-Facebook"  ></a>
+                
+    </li>
+
+        <li  id="nav-location-page_52920">                <a href="https://twitter.com/orangemaroc" title="Twitter"  target="_blank"   class="icon social-item  ic-twitter"  ></a>
+                
+    </li>
+
+        <li  id="nav-location-page_75286">                <a href="https://www.instagram.com/orangemaroc/" title="Instagram"  target="_blank"   class="icon social-item  ic-instagram"  ></a>
+                
+    </li>
+
+        <li  id="nav-location-page_49954">                <a href="http://www.youtube.com/orangemaroc" title="Youtube"  target="_blank"   class="icon social-item  ic-youtube"  ></a>
+                
+    </li>
+
+        <li class="last"  id="nav-location-page_49955">                <a href="https://www.linkedin.com/company/orange-maroc" title="LinkedIn"  target="_blank"   class="icon social-item  ic-linkedin"  ></a>
+                
+    </li>
+
+
+        </ul>
+    
+                            </div>
+        </div>
+    </div>
+    <!--end footer-middle-social-->
+
+    <!--footer-middle-->
+    <div class="footer-middle separator-gray">
+        <div class="container">
+            <div class="grid-4-tiny-1">
+                                                            
+                        <div class="item-footer">
+                            <h3 class="title-footer">
+                                                                    Liens utiles
+                                                            </h3>
+                                                        <ul class="list-footer">
+                                                                        <li  class="nav-location-52793  first">                    
+                    <a href="https://espace-client.orange.ma/recharger-numero/identification"  title="Acheter une recharge ou un pass" id="recharger-numero-identification"                >
+    
+            Acheter une recharge ou un pass
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-64440 ">                    
+                    <a href="https://espace-client.orange.ma/payez-vos-factures"  title="Payer vos factures" id="payez-vos-factures"                >
+    
+            Payer vos factures
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-53199 ">                    
+                    <a href="https://configuration-mobile.orange.ma/"  title="Configurer votre mobile" id=""                >
+    
+            Configurer votre mobile
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-53326 ">                    
+                    <a href="https://www.orange.ma/Offres-services/Simulateur"  title="Estimer votre consommation internet" id="Offres-services-Simulateur"                >
+    
+            Estimer votre consommation internet
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-52791  last">                    
+                    <a href="/Agences-Orange"  title="Trouver une boutique" id=""                >
+    
+            Trouver une boutique
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                        </div>
+                                            
+                        <div class="item-footer">
+                            <h3 class="title-footer">
+                                                                    Boutique en ligne
+                                                            </h3>
+                                                        <ul class="list-footer">
+                                                                        <li  class="nav-location-50002  first">                    
+                    <a href="https://boutique.orange.ma/smartphones?brand=Xiaomi"  title="Xiaomi" id="smartphones?brand=Xiaomi"                >
+    
+            Xiaomi
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49998 ">                    
+                    <a href="https://boutique.orange.ma/smartphones?brand=Apple"  title="Apple" id="smartphones?brand=Apple"                >
+    
+            Apple
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49999 ">                    
+                    <a href="https://boutique.orange.ma/smartphones?brand=Samsung"  title="Samsung" id="smartphones?brand=Samsung"                >
+    
+            Samsung
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-50000 ">                    
+                    <a href="https://boutique.orange.ma/fr/smartphones.html?brand=Huawei"  title="Huawei" id="fr-smartphones.html?brand=Huawei"                >
+    
+            Huawei
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-50001  last">                    
+                    <a href="https://boutique.orange.ma/fr/smartphones.html?brand=STG"  title="STG" id="fr-smartphones.html?brand=STG"                >
+    
+            STG
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                        </div>
+                                            
+                        <div class="item-footer">
+                            <h3 class="title-footer">
+                                <a href="http://www.orange.ma/Assistance" title="Assistance" >                                    Assistance
+                                </a>                            </h3>
+                                                        <ul class="list-footer">
+                                                                        <li  class="nav-location-49989  first">                    
+                    <a href="http://www.orange.ma/Assistance/Forfait-Orange"  title="Forfait Orange" id="Assistance-Forfait-Orange"                >
+    
+            Forfait Orange
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-66581 ">                    
+                    <a href="http://www.orange.ma/Assistance/Recharge-Orange"  title="Recharge Orange" id="Assistance-Recharge-Orange"                >
+    
+            Recharge Orange
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-86165 ">                    
+                    <a href="https://espace-client.orange.ma/restitution"  title="Récupérer mon numéro" id="restitution"                >
+    
+            Récupérer mon numéro
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49994 ">                    
+                    <a href="http://www.orange.ma/Assistance/Autres2"  title="Questions fréquentes" id="Assistance-Autres2"                >
+    
+            Questions fréquentes
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49993 ">                    
+                    <a href="http://www.orange.ma/Assistance#address-028867c7b3fe162478db56343120addf"  title="Urgences et dépannage" id="Assistance#address-028867c7b3fe162478db56343120addf"                >
+    
+            Urgences et dépannage
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49992 ">                    
+                    <a href="http://www.orange.ma/Assistance/Espace-client"  title="Espace client" id="Assistance-Espace-client"                >
+    
+            Espace client
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49991 ">                    
+                    <a href="http://www.orange.ma/Assistance/Equipement-internet"  title="Equipements" id="Assistance-Equipement-internet"                >
+    
+            Equipements
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49990  last">                    
+                    <a href="http://www.orange.ma/Assistance/Factures-et-paiements2"  title="Factures et paiements" id="Assistance-Factures-et-paiements2"                >
+    
+            Factures et paiements
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                        </div>
+                                            
+                        <div class="item-footer">
+                            <h3 class="title-footer">
+                                <a href=" https://www.orange.ma/orange-et-moi" title="Espace client" >                                    Espace client
+                                </a>                            </h3>
+                                                        <ul class="list-footer">
+                                                                        <li  class="nav-location-52794  first">                    
+                    <a href="https://www.orange.ma/orange-et-moi"  title="Espace client " id="orange-et-moi"                >
+    
+            Espace client 
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-78699 ">                    
+                    <a href=" https://www.orange.ma/Application-Orange-et-moi"  title="Max it" id="Application-Orange-et-moi"                >
+    
+            Max it
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-70257 ">                    
+                    <a href="https://www.orange.ma/Cadeau-du-vendredi"  title="Cadeau du vendredi" id="Cadeau-du-vendredi"                >
+    
+            Cadeau du vendredi
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49952 ">                    
+                    <a href="https://espace-client.orange.ma/mes-lignes"  title="Ma ligne" id="mes-lignes"                >
+    
+            Ma ligne
+    
+            </a>
+    
+                                
+        </li>
+    
+                                    <li  class="nav-location-49988  last">                    
+                    <a href="https://www.orange.ma/Offres-services/Services-Orange/Divertissement/Orange-Cineday"  title="Orange Cinéday" id="Offres-services-Services-Orange-Divertissement-Orange-Cineday"                >
+    
+            Orange Cinéday
+    
+            </a>
+    
+                                
+        </li>
+    
+
+        </ul>
+    
+                        </div>
+                                    
+            </div>
+        </div>
+    </div>
+    <!--end footer-middle-->
+
+    <!--footer-bottom-->
+    <div class="footer-bottom">
+        <div class="container">
+            <div>
+                                                                <ul class="list-footer-bottom">
+                            <li class="first"  id="nav-location-49956">                <a href="https://www.orange.ma/Contactez-nous"  title="Contactez-nous"                         >
+                    Contactez-nous
+            </a>
+                
+    </li>
+
+        <li  id="nav-location-page_81840">                <a href="https://www.orange.ma/Politique-de-protection"  title="Politique de protection des données"                         >
+                    Politique de protection des données
+            </a>
+                
+    </li>
+
+        <li  id="nav-location-49957">                <a href="https://www.orange.ma/CGU"  title="Conditions générales d&#039;utilisation"                         >
+                    Conditions générales d&#039;utilisation
+            </a>
+                
+    </li>
+
+        <li  id="nav-location-page_64370">                <a href="https://www.orange.ma/content/download/184400/2954295/version/3/file/CATALOGUE%2BTARIFAIRE%2B+Mobile+Pr%C3%A9pay%C3%A9+Mai+2023+DEF+%2BFixe+Juin+2023+DEF_compressed.pdf"  title="Catalogue tarifaire"                         >
+                    Catalogue tarifaire
+            </a>
+                
+    </li>
+
+        <li class="last"  id="nav-location-50011">                <a href="https://www.orange.ma/Plan-du-site"  title="Plan du site"                         >
+                    Plan du site
+            </a>
+                
+    </li>
+
+
+            <li class="last-link">
+                <span>© 2026 Orange</span>
+            </li>
+        </ul>
+    
+                            </div>
+        </div>
+    </div>
+    <!-- end footer-bottom-->
+</footer>
+                            <!-- Footer area: END -->
+
+    <!-- Footer script area: START -->
+    <script type="text/javascript">
+        var getCartUrl = 'https://boutique.orange.ma/fr/api-mini-cart/api/minicarthtml';
+        var clearCartUrl = 'https://boutique.orange.ma/fr/checkout/cart/cleartohomeall/';
+        var defaul_error_msg='Une erreur inattendue est survenue, merci de réessayer ultérieurement.';
+    </script>
+
+                            <script type="text/javascript" src="/js/orange.v1.9.278.js"></script>
+                    <script type="text/javascript" src="/js/vendor/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="/js/vendor/quagga.min.js"></script>
+        <script type="text/javascript" src="/js/vendor/customRangeSlider.js"></script>
+        <script type="text/javascript" src="/js/vendor/d3.v4.min.js"></script>
+        <script type="text/javascript" src="/js/vendor/d3-simple-slider.js"></script>
+        <script type="text/javascript" src="/js/vendor/rangerSlideDefinition.js"></script>
+        <script type="text/javascript" src="/js/vendor/hammer.min.js"></script>
+
+                        <script type="text/javascript">
+        if ($('.popin-offline').text().length !== 0 ) {
+            $('.popin-offline').parent().removeClass('hidden');
+        } else {
+            $('.link-element').removeClass('hidden');
+        }
+    </script>
+        <script>
+    pushToDataLayer('connectedUserInfo');
+
+    function pushToDataLayer(cookieName) {
+        if (null == getCookie(cookieName)) {
+            return;
+        }
+
+        const NEW_CONNECTION = 'N';
+        const OLD_CONNECTION = 'O';
+        const USER_INFO = 'connectedUserInfo';
+
+        var decodedInfo = urldecode(getCookie(cookieName))
+        var dataLayerInfo = JSON.parse(decodedInfo)
+
+        if (cookieName.includes(USER_INFO)) {
+            if (null != getCookie('newConnection')) {
+                dataLayerInfo['CN'] = OLD_CONNECTION;
+            } else {
+                setCookie('newConnection', 'newConnection', 1)
+                dataLayerInfo['CN'] = NEW_CONNECTION;
+            }
+        }
+
+        window.dataLayer.push(
+            dataLayerInfo
+        );
+    }
+
+    function urldecode(url) {
+        return decodeURIComponent(url.replace(/\+/g, ' '));
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1);
+            if (c.indexOf(nameEQ) != -1) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+</script>        <script>
+    pushToDataLayer('connectedUserInfo');
+
+    function pushToDataLayer(cookieName) {
+        if (null == getCookie(cookieName)) {
+            return;
+        }
+
+        const USER_INFO = 'connectedUserInfo';
+
+        var decodedInfo = urldecode(getCookie(cookieName))
+        var dataLayerInfo = JSON.parse(decodedInfo)
+
+        // Setting the named user
+        var namedUser = setNamedUser(dataLayerInfo.ID);
+
+        // Setting tag Groups
+        setTags(dataLayerInfo);
+
+        // Setting attributes
+        setAttributes(dataLayerInfo);
+
+    }
+
+    function setNamedUser(name){
+        UA.then(sdk => {
+            sdk.getChannel().then(channel => {
+                channel.namedUser.set(name)
+            })
+        })
+    }
+
+    function setAttributes(data) {
+        UA.then(function(sdk) {
+            sdk.channel.attributes
+                .set({ID: data.ID,Status: data.STAT, DC: data.DC, DIR: data.DIR})
+                .then(result => console.log("Attributes ID, Status, DC DIR, set!"))
+                .catch(err => console.error("An error occured while setting attributes: %s", err))
+        })
+    }
+
+    function setTags(data) {
+        UA.then(sdk => {
+            sdk.getChannel().then(channel => {
+                channel.tags.add(data.PT, 'PT');
+                channel.tags.add(data.SG, 'SG');
+                channel.tags.add(data.UO, 'UO');
+                channel.tags.add(data.MD, 'MD');
+            })
+
+        })
+    }
+
+
+
+    function urldecode(url) {
+        return decodeURIComponent(url.replace(/\+/g, ' '));
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1);
+            if (c.indexOf(nameEQ) != -1) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+</script>
+                <script type="text/javascript">
+            jQuery(function () {
+                $('#business').click(function (event) {
+                    if (null !== getCookie('BH')) {
+                        event.preventDefault()
+                        const decodedInfo = urldecode(getCookie('BH'));
+                        if (decodedInfo) {
+                            const dataLayerInfo = JSON.parse(decodedInfo);
+                            let location = '';
+                            location =  dataLayerInfo['BH'] == 'entreprise' ?  "//entreprise.orange.ma" :  "//pro.orange.ma";
+                            window.location.replace(window.location.protocol.concat(location));
+                        }
+                    }
+                });
+            });
+        </script>
+
+                <script type="text/javascript">
+            async function registerForNotifications() {
+                try {
+                    // Check if the browser supports push notifications
+                    if ('Notification' in window && navigator.serviceWorker) {
+                        // Check if the user has already granted permission
+                        if (Notification.permission === 'granted') {
+                            return true; // Permission is already granted
+                        } else if (Notification.permission !== 'denied') {
+                            // Request permission from the user
+                            const permission = await Notification.requestPermission();
+                            return permission === 'granted';
+                        } else {
+                            return false; // Permission is denied
+                        }
+                    } else {
+                        return false; // Push notifications are not supported
+                    }
+                } catch (error) {
+                    return false; // Registration failed
+                }
+            }
+
+            // Call the registerForNotifications function when the document is ready
+            document.addEventListener("DOMContentLoaded", function() {
+                UA.then(sdk => {
+                    registerForNotifications(sdk).then(result => {
+                        if (result === true) {
+                            sdk.register()
+                        } else {
+                            console.error("Airship registration failed")
+                        }
+                    });
+                });
+            });
+        </script>
+
+    
+    <!-- Footer script area: END -->
+</body>
+</html>
+<script id="f5_cspm">(function(){var f5_cspm={f5_p:'NKJIGCEHNFJHMGLNPBJKPOIFOLLFHFECHCOBPDHLIDAGHFHFNAPFMBDKKBHNDDOELGOBPCGGAACLLKJNJJOAFBHIAALFHGENOEANBHEPCEIHDBHNAKKJLJNBGCIEJLON',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,40,(latency>>8));str=f5_cspm.set_byte(str,41,(latency&0xff));str=f5_cspm.set_byte(str,35,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='f5avr1960109916aaaaaaaaaaaaaaaa_cspm_='+encodeURIComponent(cookie_val)+';path=/;'+'';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'&&pair[1]=='1234')
+{var d=new Date();d.setTime(d.getTime()-1000);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;'+';';setTimeout(f5_cspm.wait_perf_data,100);}}}}
+f5_cspm.go();}());</script>
