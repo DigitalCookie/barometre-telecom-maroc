@@ -66,19 +66,26 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
 - Relancer `run` le même mois remplace le relevé du mois (pas de doublon).
 - Une page qui rend 0 offre = signal que l'opérateur a refondu son site.
 
+## Constats du premier run réel (16/08/2026, runner GitHub Actions)
+- Le relevé mensuel tourne via `.github/workflows/barometre.yml` (le 2 du
+  mois, 8h Maroc) et committe `data/` sur main. Runner GitHub : tous les
+  domaines `.ma` joignables **sauf** les pages HTTP de iam.ma (403 sur IP
+  datacenter) — mais iam.ma sert normalement le navigateur headless, donc
+  ces pages sont passées en méthode `js`.
+- Boutique Orange : prix rendus « ‎49,00 DH/mois » (décimales + marque
+  U+200E) ; les grilles pro.orange.ma et inwi sont rendues 2-3× par page
+  (desktop/mobile/éditorial) → dedup systématique dans les parsers.
+- SVG Orange résidentiel : les paliers sont détectés mais le prix est
+  vectorisé (pas de texte) → reste `a_completer`, pro.orange.ma fait foi.
+
 ## Backlog (dans l'ordre)
-1. **Bloqué ici, à faire sur une machine avec accès aux domaines `.ma`** :
-   `pip install -r requirements.txt` + `playwright install chromium`, puis
-   `python barometre.py check`, `test` et premier `run` réel.
-   (Les deux premières étapes — install et `test` — sont faites et validées.)
-2. `python barometre.py compare` après le premier run ; investiguer tout écart
-   (outillé, il ne reste qu'à le lancer sur de vraies données).
-3. Remplacer `parse_generic` par des parsers dédiés pour : boutique Orange
-   (forfaits + Dar Box), forfaits inwi, box IAM, Yoxo — en s'appuyant sur
-   les dumps `data/raw/` et en itérant avec `python barometre.py replay`.
-4. Vérifier l'extraction des SVG Orange ; sinon, garder pro.orange.ma comme
-   source principale et le noter en remarque. Le parser accepte un
-   téléchargeur injectable (`fetch=`) : le test le couvre déjà hors ligne.
+1. Parsers dédiés : **fait** pour boutique Orange (forfaits + Dar Box),
+   Yoxo, forfaits inwi — validés sur les dumps réels via `replay`.
+   Reste `parse_generic` sur les 2 pages box IAM (3 lignes propres).
+2. Vérifier au prochain run que IAM fibre/forfaits passent bien via
+   Playwright (aucun dump réel encore — le 403 HTTP est contourné mais
+   non confirmé sur ces 2 pages).
+3. Dashboard de suivi (demandé) : à brancher sur `data/barometre.csv`.
 5. Bonus : archiver les catalogues PDF mensuels d'IAM (liens « Catalogue des
    offres » sur iam.ma) dans `data/catalogues/`.
 6. Plus tard (ne pas commencer sans demande explicite) : dashboard —

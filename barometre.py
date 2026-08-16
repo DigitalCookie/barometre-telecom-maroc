@@ -216,17 +216,31 @@ def parse_iam_forfaits(text, url):
     return rows
 
 
+def dedup(rows, key=lambda r_: (r_["offre"], r_["prix_dh_mois"])):
+    """Les pages rendent souvent la même grille plusieurs fois (desktop +
+    mobile, carrousels) : on garde la première occurrence de chaque offre."""
+    vus, uniq = set(), []
+    for r_ in rows:
+        k = key(r_)
+        if k not in vus:
+            vus.add(k)
+            uniq.append(r_)
+    return uniq
+
+
 def parse_orange_pro_fibre(text, url):
-    """pro.orange.ma Business Box Fibre — « 1000 Méga · 949Dh/mois »."""
+    """pro.orange.ma Business Box Fibre — « 20 Méga 249 Dh /mois » (run réel
+    08/2026 : libellé éclaté sur plusieurs lignes, espace avant /mois, et
+    grille rendue deux fois — desktop + mobile)."""
     t = norm(text)
     rows = []
-    for mega, prix in re.findall(r"(\d+)\s*M[ée]ga\s*[·:\-\s]*(\d+)\s*Dh?s?/mois",
-                                 t, re.I):
+    for mega, prix in re.findall(
+            r"(\d+)\s*M[ée]ga\s*[·:\-\s]*(\d+)\s*Dh?s?\s*/\s*mois", t, re.I):
         rows.append(row("Orange", "Fibre", f"Fibre {mega} Mega",
                         f"{mega} Mb/s", "", prix,
                         "Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller)",
                         url))
-    return rows
+    return dedup(rows)
 
 
 def parse_orange_svg_fibre(html, url, fetch=None):
@@ -271,18 +285,122 @@ def parse_inwi_fibre(text, url):
     for prix in re.findall(r"1\s*Gi?ga?(?:bps)?\s*[:\-\sà]*(\d{3,4})\s*dh", t, re.I):
         rows.append(row("inwi", "Fibre", "Fibre optique 1G", "1 Gb/s", "",
                         prix, source=url))
-    return rows
+    # Run réel 08/2026 : la grille apparaît 3 fois dans la page (texte
+    # éditorial + deux rendus de cartes) — d'où le dedup.
+    return dedup(rows)
+
+
+def parse_orange_boutique_forfaits(text, url):
+    """boutique.orange.ma/offres-mobile — cartes « Forfait YO 3h + 3Go 49 Dh
+    … ‎49,00 DH/mois » (run réel 08/2026). Le titre porte le nom et le prix,
+    le corps de carte les Go/heures ; le prix « ,00 » confirme la carte."""
+    t = norm(text)
+    rows = []
+    # On ancre sur le prix mensuel (« ‎49,00 DH/mois » — jamais présent dans
+    # le menu de navigation, qui liste pourtant « Forfait Yo Max 5G 99 Dh »)
+    # puis on remonte au dernier titre de carte qui le précède. Ancrer sur le
+    # titre absorbait la première carte quand un titre de menu traînait avant.
+    titre_pat = re.compile(r"Forfait\s+(?:YO|Yo)[^‎]{0,60}?\d{2,3}\s*Dh\b", re.I)
+    for m in re.finditer(r"(\d{2,3})[.,]\d{2}\s*DH\s*/\s*mois", t):
+        prix = m.group(1)
+        fenetre = t[max(0, m.start() - 300):m.start()]
+        titres = list(titre_pat.finditer(fenetre))
+        if not titres:
+            continue
+        titre = norm(titres[-1].group(0)).strip()
+        if not re.search(rf"\b{prix}\s*Dh$", titre, re.I):
+            continue                # titre et prix mensuel discordants : suspect
+        corps = fenetre[titres[-1].end():]
+        data = " / ".join(dict.fromkeys(
+            re.findall(r"\d+\s*Go", corps, re.I)))[:60]
+        heures = " / ".join(dict.fromkeys(
+            re.findall(r"\d+\s*[Hh]\b(?:\s*d'appels)?", corps)))[:40]
+        rem = "illimite reseaux sociaux" if re.search(
+            r"R[ée]seaux Sociaux|WhatsApp illimit", corps, re.I) else ""
+        rows.append(row("Orange", "Forfait mobile", titre,
+                        data, heures, prix, rem, url))
+    return dedup(rows)
+
+
+def parse_orange_darbox(text, url, variante):
+    """boutique.orange.ma Dar Box — carte « Dar Box 5G 299Dh Internet illimité
+    50 Méga 3H d'appels … ‎299,00 DH/mois … Frais de mise en service 299 Dh »
+    (run réel 08/2026). `variante` : « 5G » ou « 4G+ »."""
+    t = norm(text)
+    rows = []
+    pat = re.compile(
+        rf"Dar Box {re.escape(variante)}\s*(\d{{2,3}})\s*(?:Dh)?\b"
+        r"(.{0,220}?)‎?(\d{2,3})[.,]\d{2}\s*DH\s*/\s*mois"
+        r"(?:.{0,80}?Frais de mise en service\s*(\d{2,3})\s*Dh)?", re.I)
+    for prix_titre, corps, prix, frais in pat.findall(t):
+        if prix_titre != prix:
+            continue
+        debit = " / ".join(re.findall(r"\d+\s*M[ée]ga", corps))[:30] \
+            or "Internet illimite"
+        heures = " / ".join(re.findall(r"\d+\s*H\b", corps))[:30]
+        rem = f"Frais de mise en service {frais} DH" if frais else ""
+        rows.append(row("Orange", "Box", f"Dar Box {variante} {prix} DH",
+                        debit, heures, prix, rem, url))
+    return dedup(rows)
+
+
+def parse_yoxo(text, url):
+    """yoxo.ma — carte « 20GO 1H d'appels* SMS illimité* 50 DHS /mois »
+    (run réel 08/2026)."""
+    t = norm(text)
+    rows = []
+    pat = re.compile(r"(\d{1,3})\s*GO\s+(\d{1,2})\s*H\s*d'appels.{0,80}?"
+                     r"(\d{2,3})\s*DHS?\s*/\s*mois", re.I)
+    for go, heures, prix in pat.findall(t):
+        rows.append(row("Orange", "Forfait mobile", f"Yoxo {prix} DH",
+                        f"{go} Go", f"{heures}h",
+                        prix, "100% digital sans engagement", url))
+    return dedup(rows)
+
+
+def parse_inwi_forfaits(text, url):
+    """inwi.ma forfaits mobile — carte « Forfait 18Go + 5H + WhatsApp Illimité
+    99 Dhs/mois … 18Go d'internet … 2h d'appels » (run réel 08/2026).
+    Le corps de carte fait foi pour les Go/heures ; le titre sert de libellé."""
+    t = norm(text)
+    rows = []
+    # « Forfait » avec F majuscule uniquement : en insensible à la casse, le
+    # bouton « JE CHOISIS MON FORFAIT » et l'entête « Les forfaits Max… »
+    # de la carte précédente contaminaient le titre (constat replay 08/2026).
+    pat = re.compile(
+        r"Forfait\s+([^\s].{2,60}?)\s+(\d{2,4})\s*[Dd]hs?\s*/\s*mois"
+        r"(.*?)(?=JE CHOISIS|Forfait\s+[^\s].{2,60}?\d{2,4}\s*[Dd]hs?\s*/|\Z)",
+        re.S)
+    for titre, prix, corps in pat.findall(t):
+        titre = re.sub(r"^(?:Nouveau|FLEXI)\s+(?=Forfait\s)|^Forfait\s+", "",
+                       norm(titre).strip())
+        data = " / ".join(dict.fromkeys(
+            re.findall(r"(\d+\s*Go)(?=\s*(?:d'internet|Roaming|en roaming))",
+                       corps, re.I)))[:60]
+        heures = " / ".join(dict.fromkeys(
+            re.findall(r"\d+\s*[Hh]\b(?=\s*d'appels)", corps)))[:40]
+        appels = heures
+        if re.search(r"[Aa]ppels illimit[ée]s vers (?:les num[ée]ros )?inwi", corps):
+            appels = (appels + " + illimite vers inwi").strip(" +")
+        rem = "WhatsApp/RS illimites" if re.search(
+            r"Whatsapp illimit|R[ée]seaux sociaux illimit", corps, re.I) else ""
+        rows.append(row("inwi", "Forfait mobile", f"Forfait {norm(titre).strip()}",
+                        data, appels, prix, rem, url))
+    return dedup(rows)
 
 
 def parse_generic(text, url, operateur, categorie, offre_prefixe):
     """Filet générique pour les pages JS dont la structure n'est pas encore
-    connue (Dar Box, forfaits inwi, box IAM, Yoxo) : repère chaque prix
-    mensuel et capture le contexte (Go / Méga / heures) autour.
+    connue (box IAM…) : repère chaque prix mensuel et capture le contexte
+    (Go / Méga / heures) autour.
     Les lignes sortent en fiabilite=officiel_js_generique : à relire au
     premier run, puis à promouvoir en parser dédié."""
     t = norm(text)
     rows = []
-    prix_pat = re.compile(r"(\d[\d ]{0,4})\s*(?:Dh|DH|dhs?)\s*(?:TTC\s*)?/\s*mois",
+    # (?<![\d.,]) : ne pas démarrer au milieu d'un nombre — « ‎49,00 DH/mois »
+    # capturait « 00 » (run réel 08/2026). Décimales optionnelles ensuite.
+    prix_pat = re.compile(r"(?<![\d.,])(\d[\d ]{0,4})(?:[.,]\d{1,2})?"
+                          r"\s*(?:Dh|DH|dhs?)\s*(?:TTC\s*)?/\s*mois",
                           re.I)
     matches = list(prix_pat.finditer(t))
     if not matches:
@@ -326,10 +444,13 @@ def parse_generic(text, url, operateur, categorie, offre_prefixe):
 
 PAGES = [
     # ------------------------------------------------------ Maroc Telecom
-    dict(op="iam", label="IAM fibre", method="http",
+    # Run réel 08/2026 : iam.ma répond 403 aux requêtes HTTP simples depuis
+    # les IP datacenter mais sert normalement le navigateur headless — les
+    # pages Liferay passent donc par Playwright (contenu identique).
+    dict(op="iam", label="IAM fibre", method="js",
          url="https://www.iam.ma/fibre-optique",
          parse=lambda txt, u: parse_iam_fibre(txt, u)),
-    dict(op="iam", label="IAM forfaits mobile", method="http",
+    dict(op="iam", label="IAM forfaits mobile", method="js",
          url="https://www.iam.ma/forfaits-mobile",
          parse=lambda txt, u: parse_iam_forfaits(txt, u)),
     dict(op="iam", label="IAM Box El Manzil 5G", method="js",
@@ -349,28 +470,23 @@ PAGES = [
          parse=lambda html, u: parse_orange_svg_fibre(html, u)),
     dict(op="orange", label="Orange forfaits (boutique)", method="js",
          url="https://boutique.orange.ma/offres-mobile",
-         parse=lambda txt, u: parse_generic(txt, u, "Orange", "Forfait mobile",
-                                            "Forfait")),
+         parse=lambda txt, u: parse_orange_boutique_forfaits(txt, u)),
     dict(op="orange", label="Orange Dar Box 5G", method="js",
          url="https://boutique.orange.ma/offres-dar-box/dar-box-5g",
-         parse=lambda txt, u: parse_generic(txt, u, "Orange", "Box",
-                                            "Dar Box 5G")),
+         parse=lambda txt, u: parse_orange_darbox(txt, u, "5G")),
     dict(op="orange", label="Orange Dar Box 4G+", method="js",
          url="https://boutique.orange.ma/dar-box",
-         parse=lambda txt, u: parse_generic(txt, u, "Orange", "Box",
-                                            "Dar Box 4G+")),
+         parse=lambda txt, u: parse_orange_darbox(txt, u, "4G+")),
     dict(op="orange", label="Yoxo (digital)", method="js",
          url="https://www.yoxo.ma/",
-         parse=lambda txt, u: parse_generic(txt, u, "Orange", "Forfait mobile",
-                                            "Yoxo")),
+         parse=lambda txt, u: parse_yoxo(txt, u)),
     # --------------------------------------------------------------- inwi
     dict(op="inwi", label="inwi fibre", method="http",
          url="https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique",
          parse=lambda txt, u: parse_inwi_fibre(txt, u)),
     dict(op="inwi", label="inwi forfaits mobile", method="js",
          url="https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile",
-         parse=lambda txt, u: parse_generic(txt, u, "inwi", "Forfait mobile",
-                                            "Forfait")),
+         parse=lambda txt, u: parse_inwi_forfaits(txt, u)),
 ]
 
 # --------------------------------------------------------------------------
@@ -742,16 +858,134 @@ SAMPLES = {
         Liberté Plus 4G+/5G 199 DH/mois 50 Go 90 min 1 Go Roaming* Acheter
         Liberté Plus 4G+/5G 479 DH/mois 100 Go 1200 min 4 Go Roaming* Acheter
     """,
+    # Format run réel 08/2026 : libellé multi-lignes, espace avant /mois,
+    # grille rendue deux fois (desktop + mobile) — le dedup doit jouer.
     "orange_pro_fibre": """
+        20
+         Méga
+        249
+        Dh
+        /mois
+         20
+        Mbps symétrique
+        Découvrir cette offre
+        1000
+         Méga
+        949
+        Dh
+        /mois
+        1000 Mbps
+        Découvrir cette offre
+        20
+         Méga
+        249
+        Dh
+        /mois
+        20 Mbps
+    """,
+    # Anciens formats compacts — la regex doit rester rétrocompatible.
+    "orange_pro_fibre_compact": """
         20 Méga · 249Dh/mois · 20 Mbps · illimités vers les numéros mobile
         Découvrir cette offre · 1000 Méga · 949Dh/mois · 1000 Mbps symétrique
         · 20H d'appels vers le mobile Découvrir cette offre
     """,
+    # Run réel 08/2026 : texte éditorial + cartes (la même grille 2×) —
+    # le dedup doit ramener chaque palier à une seule ligne.
     "inwi_fibre": """
         Forfait 20 Méga 249dh : l’offre la plus accessible du marché.
         Forfait 50 Méga 299dh : Parfait pour les foyers multi-utilisateurs.
         Forfait 200 Méga 449dh : Conçu pour les foyers ultra-connectés.
         Forfait 500 Méga 749dh : Streaming 4K, télétravail intensif.
+        Forfait 1 Giga 949dh :
+        Fibre optique 20Méga
+        249
+        Dhs/mois
+        Fibre optique 50Méga
+        299
+        Dhs/mois
+        Fibre optique 1Gbps
+        949
+        Dhs/mois
+    """,
+    # Extraits des dumps réels 08/2026 pour les parsers dédiés.
+    "orange_boutique": """
+        Forfait Yo Max 5G 99 Dh
+        Forfait Yo 49 Dh
+        Forfait YO 3h + 3Go 49 Dh
+        3H d'appels
+        3Go d'internet
+        appels illimités vers Orange**
+        ‎49,00
+        DH/mois
+        En savoir plus
+        Choisir ce forfait
+        Forfait YO 11Go+1H 49 Dh
+         11Go d'internet
+         1H d'appels
+        WhatsApp illimité*
+        ‎49,00
+        DH/mois
+        Choisir ce forfait
+    """,
+    "orange_darbox_5g": """
+        Dar Box 5G 299Dh
+        Internet illimité
+        50 Méga
+        3H d’appels vers le mobile national et fixe international (zone 1)*
+        ‎299,00
+        DH/mois
+        Tester mon éligibilité
+        Frais de mise en service 299 Dh
+        Box Wifi 5G 799 Dh 349 Dh
+        Dar Box 5G 349Dh
+        Internet illimité
+        100 Méga
+        4H d’appels
+        ‎349,00
+        DH/mois
+        Frais de mise en service 349 Dh
+    """,
+    "yoxo": """
+        SKHAWA DIAL SA7? KAYNA HNA!!
+         20GO
+        1H d'appels*
+        SMS illimité*
+        50
+        DHS
+        /mois
+        ACHETER
+         60GO
+        5H d'appels*
+        SMS illimité*
+        100
+        DHS
+        /mois
+    """,
+    "inwi_forfaits": """
+        Les forfaits Max Réseaux Sociaux 4G/5G
+        Forfait FLEXI Réseaux Sociaux
+        49
+        Dhs/mois
+        Réseaux sociaux illimités
+        2Go d'internet
+        1h d'appels vers le national
+        JE CHOISIS MON FORFAIT
+        Nouveau
+        Forfait 18Go + 5H + WhatsApp Illimité
+        99
+        Dhs/mois
+        18Go d'internet
+        5h d'appels vers le national
+        Whatsapp illimité
+        JE CHOISIS MON FORFAIT
+        Les forfaits Max Appels 4G/5G
+        Forfait Appels illimités + 60Go
+        249
+        Dhs/mois
+        Appels illimités vers les numéros inwi
+        60Go d'internet
+        2Go Roaming internet
+        JE CHOISIS MON FORFAIT
     """,
     "generic_darbox": """
         Dar Box 4G+ Le WiFi illimité sans installation 100 Go
@@ -798,18 +1032,55 @@ def test():
         ("165", "30 Go"), ("199", "50 Go"), ("479", "100 Go")}
     ok &= any("4 Go roaming" in x["remarques"] for x in r)
 
-    r = parse_orange_pro_fibre(SAMPLES["orange_pro_fibre"], "test")
-    print(f"[orange_pro_fibre] {len(r)} offres :",
-          [(x['debit_ou_data'], x['prix_dh_mois']) for x in r])
-    ok &= {(x["debit_ou_data"], x["prix_dh_mois"]) for x in r} == {
-        ("20 Mb/s", "249"), ("1000 Mb/s", "949")}
+    for nom in ("orange_pro_fibre", "orange_pro_fibre_compact"):
+        r = parse_orange_pro_fibre(SAMPLES[nom], "test")
+        print(f"[{nom}] {len(r)} offres :",
+              [(x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+        # 2 offres exactement : la grille dupliquée doit être dédoublonnée.
+        ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
+            ("1000 Mb/s", "949"), ("20 Mb/s", "249")]
 
     r = parse_inwi_fibre(SAMPLES["inwi_fibre"], "test")
     print(f"[inwi_fibre]       {len(r)} offres :",
           [(x['debit_ou_data'], x['prix_dh_mois']) for x in r])
-    ok &= {(x["debit_ou_data"], x["prix_dh_mois"]) for x in r} == {
-        ("20 Mb/s", "249"), ("50 Mb/s", "299"),
-        ("200 Mb/s", "449"), ("500 Mb/s", "749")}
+    # Grille triplée dans la page : chaque palier ne sort qu'une fois.
+    ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
+        ("1 Gb/s", "949"), ("20 Mb/s", "249"), ("200 Mb/s", "449"),
+        ("50 Mb/s", "299"), ("500 Mb/s", "749")]
+
+    r = parse_orange_boutique_forfaits(SAMPLES["orange_boutique"], "test")
+    print(f"[orange_boutique]  {len(r)} offres :",
+          [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+    # Les entrées de menu (« Forfait Yo Max 5G 99 Dh » sans prix mensuel)
+    # ne sortent pas ; le prix vient du « 49,00 DH/mois », jamais du « 00 ».
+    ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
+        ("11Go", "49"), ("3Go", "49")]
+    ok &= not any("Yo Max" in x["offre"] for x in r)  # le menu ne sort jamais
+
+    r = parse_orange_darbox(SAMPLES["orange_darbox_5g"], "test", "5G")
+    print(f"[orange_darbox]    {len(r)} offres :",
+          [(x['debit_ou_data'], x['prix_dh_mois'], x['remarques']) for x in r])
+    ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
+        ("100 Méga", "349"), ("50 Méga", "299")]
+    ok &= all("Frais de mise en service" in x["remarques"] for x in r)
+
+    r = parse_yoxo(SAMPLES["yoxo"], "test")
+    print(f"[yoxo]             {len(r)} offres :",
+          [(x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+    ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
+        ("20 Go", "50"), ("60 Go", "100")]
+
+    r = parse_inwi_forfaits(SAMPLES["inwi_forfaits"], "test")
+    print(f"[inwi_forfaits]    {len(r)} offres :",
+          [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+    ok &= sorted((x["offre"], x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
+        ("Forfait 18Go + 5H + WhatsApp Illimité", "18Go", "99"),
+        ("Forfait Appels illimités + 60Go", "60Go / 2Go", "249"),
+        ("Forfait FLEXI Réseaux Sociaux", "2Go", "49")]
+    # Le badge « Nouveau » et l'entête « Les forfaits Max… » ne polluent
+    # jamais les titres.
+    ok &= not any("Nouveau" in x["offre"] or "Les forfaits" in x["offre"]
+                  for x in r)
 
     r = parse_generic(SAMPLES["generic_darbox"], "test", "Orange", "Box", "Dar Box")
     print(f"[generic_darbox]   {len(r)} offres :",
