@@ -49,7 +49,16 @@ Chaque relevé passe par des garde-fous : valeur de `fiabilite` conforme au
 schéma, prix numérique et dans une fourchette plausible (20–3000 DH),
 détection des doublons, décompte des lignes restant à fiabiliser.
 
-## Planification mensuelle (cron)
+## Planification mensuelle
+
+Le workflow GitHub Actions `.github/workflows/barometre.yml` fait le relevé
+le **2 de chaque mois à 8h (heure Maroc)** depuis un runner GitHub, puis
+committe `data/` dans le dépôt. Il se lance aussi à la main : onglet
+**Actions → Baromètre télécoms Maroc → Run workflow** (option `no_js` pour un
+run rapide sans Playwright). Un run qui n'extrait rien fait échouer le job —
+c'est l'alerte. Le détail complet s'affiche dans le résumé du job.
+
+Alternative cron sur une machine perso :
 
 ```cron
 # le 2 de chaque mois à 8h (laisser passer les changements du 1er)
