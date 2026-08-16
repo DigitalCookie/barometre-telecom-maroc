@@ -344,24 +344,48 @@ def parse_orange_boutique_forfaits(text, url):
     rows = dedup(rows)
 
     # Les cartes Yo Max ne sont pas rendues sans clic d'onglet, mais les
-    # slugs d'URL encodent l'offre (« forfait-yo-max-99dh-25go-1h-d-appel »).
-    # On ne garde un slug que s'il n'a pas déjà été vu en carte (même prix
-    # + même volume data) pour ne pas doubler les offres Yo.
+    # slugs d'URL encodent chaque offre. On ne garde un slug que s'il n'a
+    # pas déjà été vu en carte (même prix + même data) pour ne pas doubler.
     vus = {(r_["prix_dh_mois"], m.group(0)) for r_ in rows
            for m in [re.search(r"\d+(?=\s*Go)", r_["debit_ou_data"], re.I)] if m}
-    slug_pat = re.compile(
-        r"forfait-(yo(?:-max)?(?:-5g)?)-(\d{2,3})dh-(\d{1,3})go(?:-(\d{1,2})h)?",
-        re.I)
-    for gamme, prix, go, heures in {m.groups() for m in slug_pat.finditer(text)}:
-        if (prix, go) in vus:
-            continue
-        nom = gamme.replace("-", " ").upper().replace("YO MAX", "Yo Max")
-        rows.append(row("Orange", "Forfait mobile",
-                        f"Forfait {nom} {prix} Dh", f"{go} Go",
-                        f"{heures}h" if heures else "", prix,
-                        "detail du slug boutique - carte non rendue sans clic",
-                        url))
+    for slug in set(re.findall(r"forfait-yo-max[\w-]*", text, re.I)):
+        offre = decoder_slug_yomax(slug)
+        if offre and (offre["prix_dh_mois"],
+                      offre["debit_ou_data"].split(" ")[0]) not in vus:
+            rows.append(offre | {"source": url})
     return dedup(rows)
+
+
+def decoder_slug_yomax(slug):
+    """Décode un slug boutique Yo Max, quel que soit l'ordre des jetons
+    (constats du run du 16/08/2026) :
+      forfait-yo-max-99dh-25go-1h-d-appel
+      forfait-yo-max-52go-10h-d-appels-199dh
+      forfait-yo-max-80go-2go-roaming-299dh
+      forfait-yo-max-illimite-national-120go-5go-roaming-399dh
+      forfait-yo-max-tout-illimite-10go-roaming-649dh-5-services"""
+    s = slug.lower()
+    prix_m = re.search(r"(\d{2,3})-?dhs?\b", s)
+    if not prix_m:
+        return None
+    prix = prix_m.group(1)
+    roam = re.search(r"(\d{1,2})go-roaming", s)
+    gos = [g for g in re.findall(r"(\d{1,3})go\b", s)
+           if not (roam and g == roam.group(1))]
+    if gos:
+        data = f"{gos[0]} Go"
+    elif "tout-illimite" in s:
+        data = "Tout illimite"
+    else:
+        data = ""
+    h = re.search(r"\b(\d{1,2})h(?:-d-appels?)?\b", s)
+    appels = ("Illimite national" if "illimite-national" in s
+              else "Tout illimite" if "tout-illimite" in s
+              else f"{h.group(1)}h" if h else "")
+    rem = f"+{roam.group(1)} Go roaming" if roam else ""
+    return row("Orange", "Forfait mobile", f"Forfait Yo Max {prix} Dh",
+               data, appels, prix,
+               (rem + " - detail du slug boutique").strip(" -"), "")
 
 
 def parse_orange_darbox(text, url, variante):
@@ -388,7 +412,8 @@ def parse_orange_darbox(text, url, variante):
 
 def parse_yoxo(text, url):
     """yoxo.ma — carte « 20GO 1H d'appels* SMS illimité* 50 DHS /mois »
-    (run réel 08/2026)."""
+    (run réel 08/2026). La page ne rend que les premiers paliers : les
+    autres arrivent par les slugs (« forfait-yoxo-200dhs »), prix seul."""
     t = norm(text)
     rows = []
     pat = re.compile(r"(\d{1,3})\s*GO\s+(\d{1,2})\s*H\s*d'appels.{0,80}?"
@@ -397,6 +422,13 @@ def parse_yoxo(text, url):
         rows.append(row("Orange", "Forfait mobile", f"Yoxo {prix} DH",
                         f"{go} Go", f"{heures}h",
                         prix, "100% digital sans engagement", url))
+    rows = dedup(rows)
+    deja = {r_["prix_dh_mois"] for r_ in rows}
+    for prix in set(re.findall(r"forfait-yoxo-(\d{2,3})dhs?", text, re.I)):
+        if prix not in deja:
+            rows.append(row("Orange", "Forfait mobile", f"Yoxo {prix} DH",
+                            "", "", prix,
+                            "prix du slug - detail data a completer", url))
     return dedup(rows)
 
 
@@ -523,7 +555,7 @@ PAGES = [
          url="https://boutique.orange.ma/dar-box",
          parse=lambda txt, u: parse_orange_darbox(txt, u, "4G+")),
     dict(op="orange", label="Yoxo (digital)", method="js",
-         url="https://www.yoxo.ma/",
+         url="https://www.yoxo.ma/", links=True,
          parse=lambda txt, u: parse_yoxo(txt, u)),
     # --------------------------------------------------------------- inwi
     dict(op="inwi", label="inwi fibre", method="http",
@@ -973,10 +1005,21 @@ SAMPLES = {
         DH/mois
         Choisir ce forfait
         LIENS
-        https://boutique.orange.ma/forfait-yo-max-99dh-25go-1h-d-appel
-        https://boutique.orange.ma/forfait-yo-max-199dh-52go-10h-d-appel
-        https://boutique.orange.ma/forfait-yo-49dh-3go-3h-d-appel
+        https://boutique.orange.ma/choisir/forfait-yo-max-99dh-25go-1h-d-appel
+        https://boutique.orange.ma/choisir/forfait-yo-max-52go-10h-d-appels-199dh
+        https://boutique.orange.ma/choisir/forfait-yo-max-80go-2go-roaming-299dh
+        https://boutique.orange.ma/choisir/forfait-yo-max-illimite-national-120go-5go-roaming-399dh
+        https://boutique.orange.ma/choisir/forfait-yo-max-illimite-national-160go-8go-roaming-499dh
+        https://boutique.orange.ma/choisir/forfait-yo-max-tout-illimite-10go-roaming-649dh-5-services
+        https://boutique.orange.ma/choisir/forfait-yo-11go-1h-49-dh
         https://boutique.orange.ma/accessoires
+    """,
+    "yoxo_liens": """
+        LIENS
+        https://www.yoxo.ma/forfait-yoxo-50dh
+        https://www.yoxo.ma/forfait-yoxo-100dh
+        https://www.yoxo.ma/forfait-yoxo-200dhs
+        https://www.yoxo.ma/forfait-yoxo-250dhs.html
     """,
     "orange_darbox_5g": """
         Dar Box 5G 299Dh
@@ -1104,12 +1147,26 @@ def test():
           [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
     # Les entrées de menu (« Forfait Yo Max 5G 99 Dh » sans prix mensuel)
     # ne sortent pas ; le prix vient du « 49,00 DH/mois », jamais du « 00 ».
-    # Les Yo Max arrivent par les slugs de la section LIENS, et le slug
-    # yo-49dh-3go est écarté : la carte correspondante est déjà extraite.
-    ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
-        ("11Go", "49"), ("25 Go", "99"), ("3Go", "49"), ("52 Go", "199")]
-    ok &= sorted(x["offre"] for x in r if "slug" in x["remarques"]) == [
-        "Forfait Yo Max 199 Dh", "Forfait Yo Max 99 Dh"]
+    # Les 6 Yo Max arrivent par les slugs, quel que soit l'ordre des jetons.
+    ok &= {(x["offre"], x["debit_ou_data"], x["appels_inclus"],
+            x["prix_dh_mois"]) for x in r if "slug" in x["remarques"]} == {
+        ("Forfait Yo Max 99 Dh", "25 Go", "1h", "99"),
+        ("Forfait Yo Max 199 Dh", "52 Go", "10h", "199"),
+        ("Forfait Yo Max 299 Dh", "80 Go", "", "299"),
+        ("Forfait Yo Max 399 Dh", "120 Go", "Illimite national", "399"),
+        ("Forfait Yo Max 499 Dh", "160 Go", "Illimite national", "499"),
+        ("Forfait Yo Max 649 Dh", "Tout illimite", "Tout illimite", "649")}
+    ok &= len(r) == 8            # 2 cartes Yo + 6 slugs Yo Max, zéro doublon
+    ok &= any("+2 Go roaming" in x["remarques"] for x in r)
+
+    r = parse_yoxo(SAMPLES["yoxo"] + SAMPLES["yoxo_liens"], "test")
+    print(f"[yoxo+slugs]       {len(r)} offres :",
+          [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+    # Les cartes donnent 50 et 100 (avec data) ; les slugs n'ajoutent que
+    # les paliers absents (200, 250), jamais un doublon des cartes.
+    ok &= {(x["offre"], x["debit_ou_data"]) for x in r} == {
+        ("Yoxo 50 DH", "20 Go"), ("Yoxo 100 DH", "60 Go"),
+        ("Yoxo 200 DH", ""), ("Yoxo 250 DH", "")}
 
     r = parse_orange_darbox(SAMPLES["orange_darbox_5g"], "test", "5G")
     print(f"[orange_darbox]    {len(r)} offres :",
