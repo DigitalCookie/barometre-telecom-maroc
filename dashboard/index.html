@@ -116,6 +116,52 @@
   .op-btn[aria-pressed="true"] { opacity: 1; filter: none; border-color: var(--c); }
   .op-btn:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--iam); outline-offset: 2px; }
 
+  /* --- Trouver la bonne offre ------------------------------------- */
+  .seg { display: inline-flex; background: var(--page); border: 1px solid var(--baseline); border-radius: 9px; padding: 3px; gap: 2px; }
+  .seg button {
+    font: inherit; font-size: 13.5px; cursor: pointer; color: var(--ink-2);
+    background: none; border: 0; border-radius: 6px; padding: 5px 13px;
+  }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+
+  .best-ops { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 14px 0 6px; }
+  .best-op {
+    position: relative; border: 1.5px solid var(--grid); border-radius: 10px;
+    padding: 12px 14px 10px; background: var(--page);
+  }
+  .best-op.winner { border-color: var(--delta-up); }
+  .best-op .crown {
+    position: absolute; top: -9px; left: 12px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em;
+    color: var(--delta-up); background: var(--surface);
+    border: 1px solid var(--delta-up); border-radius: 99px; padding: 1px 8px;
+  }
+  .best-op .bo-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .best-op .bo-prix { font-size: 22px; font-weight: 700; }
+  .best-op .bo-prix small { font-size: 12px; font-weight: 500; color: var(--muted); }
+  .best-op .bo-offre { font-size: 12.5px; color: var(--ink-2); line-height: 1.35; }
+  .best-op .bo-delta { font-size: 12px; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .best-op .bo-none { color: var(--muted); font-size: 13px; padding: 8px 0; }
+
+  .rank-list { list-style: none; margin: 8px 0 2px; padding: 0; }
+  .rank-list li { display: flex; align-items: center; gap: 11px; padding: 7px 4px; border-top: 1px solid var(--grid); }
+  .rank-list li:first-child { border-top: 0; }
+  .rank-list .rk {
+    flex: none; width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11.5px; font-weight: 700; color: var(--ink-2);
+    background: var(--page); border: 1px solid var(--grid);
+    font-variant-numeric: tabular-nums;
+  }
+  .rank-list li.first .rk { color: #fff; background: var(--delta-up); border-color: var(--delta-up); }
+  .rank-list .rl-main { flex: 1; min-width: 0; }
+  .rank-list .rl-offre { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rank-list .rl-spec { font-size: 12px; color: var(--muted); }
+  .rank-list .rl-right { text-align: right; flex: none; }
+  .rank-list .rl-prix { font-size: 14.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rank-list .rl-delta { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .rank-list li.first .rl-delta { color: var(--delta-up); font-weight: 600; }
+
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
   .card { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 16px 18px 12px; margin-bottom: 14px; }
@@ -210,6 +256,20 @@
     </label>
     <div class="ops" id="f-ops" role="group" aria-label="Opérateurs"></div>
   </div>
+
+  <section class="card" id="finder">
+    <h2>Trouver la bonne offre</h2>
+    <p class="hint">Choisir un besoin : meilleur prix par opérateur, puis classement complet du moins cher au plus cher.</p>
+    <div class="filters" style="margin-bottom:4px">
+      <div class="seg" id="fd-besoin" role="group" aria-label="Type d'offre"></div>
+      <label class="flt" id="fd-crit-wrap">
+        <span id="fd-crit-label">Débit minimum</span>
+        <select id="fd-crit"></select>
+      </label>
+    </div>
+    <div class="best-ops" id="fd-best"></div>
+    <ul class="rank-list" id="fd-rank"></ul>
+  </section>
 
   <div class="grid2">
     <section class="card">
@@ -325,7 +385,8 @@ const monthLabel = m => {
 
 let ALL = [];          // toutes les lignes du CSV
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
-              evo: "", query: "", sort: { col: "operateur", dir: 1 } };
+              evo: "", query: "", sort: { col: "operateur", dir: 1 },
+              besoin: "Fibre", crit: 0 };
 
 async function loadData() {
   let text = "";
@@ -378,6 +439,8 @@ function init() {
     return b;
   }));
 
+  initFinder();
+
   const search = document.getElementById("t-search");
   search.addEventListener("input", debounce(() => {
     state.query = search.value.trim().toLowerCase();
@@ -397,6 +460,143 @@ function init() {
 }
 
 function debounce(fn, ms) { let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+/* ---------- Trouver la bonne offre ---------- */
+
+const BESOINS = ["Fibre", "Forfait mobile", "Box"];
+
+function initFinder() {
+  const seg = document.getElementById("fd-besoin");
+  seg.replaceChildren(...BESOINS.map(b => {
+    const btn = document.createElement("button");
+    btn.textContent = b === "Forfait mobile" ? "Mobile" : b;
+    btn.setAttribute("aria-pressed", String(b === state.besoin));
+    btn.onclick = () => {
+      state.besoin = b; state.crit = 0;
+      seg.querySelectorAll("button").forEach((x, i) =>
+        x.setAttribute("aria-pressed", String(BESOINS[i] === b)));
+      fillCrit(); renderFinder();
+    };
+    return btn;
+  }));
+  fillCrit();
+  document.getElementById("fd-crit").onchange = e => {
+    state.crit = +e.target.value; renderFinder();
+  };
+}
+
+/* offres qualifiées : catégorie du besoin, opérateurs actifs, prix connu,
+   et mesure (Mb ou Go) au-dessus du critère */
+function finderRows() {
+  return rowsOfMonth(state.month)
+    .filter(r => r.categorie === state.besoin && r.prix && state.ops.has(r.operateur))
+    .map(r => {
+      const d = parseDebit(r.debit_ou_data);
+      const mesure = state.besoin === "Fibre" ? d.mb : d.go;
+      return { ...r, mesure };
+    })
+    .filter(r => state.crit === 0 || (r.mesure != null && r.mesure >= state.crit));
+}
+
+function fillCrit() {
+  const sel = document.getElementById("fd-crit");
+  const lab = document.getElementById("fd-crit-label");
+  const rows = rowsOfMonth(state.month)
+    .filter(r => r.categorie === state.besoin && r.prix);
+  let opts = [];
+  if (state.besoin === "Fibre") {
+    lab.textContent = "Débit minimum";
+    opts = [...new Set(rows.map(r => parseDebit(r.debit_ou_data).mb).filter(Boolean))]
+      .sort((a, b) => a - b).map(mb => [mb, "≥ " + tierLabel(mb)]);
+  } else {
+    lab.textContent = "Data minimum";
+    const gos = [...new Set(rows.map(r => parseDebit(r.debit_ou_data).go).filter(Boolean))];
+    opts = [5, 10, 20, 50, 100].filter(v => gos.some(g => g >= v))
+      .map(v => [v, "≥ " + v + " Go"]);
+  }
+  sel.replaceChildren(new Option("Peu importe", 0),
+                      ...opts.map(([v, l]) => new Option(l, v)));
+  sel.value = String(state.crit);
+}
+
+function specOf(r) {
+  return [r.debit_ou_data, r.appels_inclus].filter(Boolean).join(" · ") ||
+         (r.remarques || "").slice(0, 60);
+}
+
+function renderFinder() {
+  const rows = finderRows().sort((a, b) => a.prix - b.prix);
+  const bestBox = document.getElementById("fd-best");
+  const rankBox = document.getElementById("fd-rank");
+  bestBox.replaceChildren(); rankBox.replaceChildren();
+  if (!rows.length) {
+    const d = document.createElement("div");
+    d.className = "empty";
+    d.textContent = "Aucune offre ne correspond à ce critère ce mois-ci.";
+    bestBox.append(d);
+    return;
+  }
+  const best = rows[0];
+
+  /* le meilleur prix de chaque opérateur — la comparaison directe */
+  const ops = OPS.filter(o => state.ops.has(o.name));
+  bestBox.replaceChildren(...ops.map(op => {
+    const r = rows.find(x => x.operateur === op.name);
+    const d = document.createElement("div");
+    d.className = "best-op" + (r && r.prix === best.prix ? " winner" : "");
+    const head = document.createElement("div"); head.className = "bo-head";
+    head.append(brandBadge(op.name));
+    d.append(head);
+    if (!r) {
+      const n = document.createElement("div"); n.className = "bo-none";
+      n.textContent = "Pas d'offre sur ce critère.";
+      d.append(n);
+      return d;
+    }
+    if (r.prix === best.prix) {
+      const c = document.createElement("span"); c.className = "crown";
+      c.textContent = "MEILLEUR PRIX"; d.append(c);
+    }
+    const p = document.createElement("div"); p.className = "bo-prix";
+    p.append(document.createTextNode(Number(r.prix).toLocaleString("fr-FR") + " DH"));
+    const sm = document.createElement("small"); sm.textContent = " /mois"; p.append(sm);
+    const o = document.createElement("div"); o.className = "bo-offre";
+    o.textContent = r.offre + (specOf(r) ? " — " + specOf(r) : "");
+    d.append(p, o);
+    const delta = document.createElement("div"); delta.className = "bo-delta";
+    delta.textContent = r.prix === best.prix ? " "
+      : "+" + (r.prix - best.prix).toLocaleString("fr-FR") + " DH vs meilleur prix";
+    d.append(delta);
+    return d;
+  }));
+
+  /* classement complet, du moins cher au plus cher */
+  rows.slice(0, 8).forEach((r, i) => {
+    const li = document.createElement("li");
+    if (r.prix === best.prix) li.className = "first";
+    const rk = document.createElement("span"); rk.className = "rk"; rk.textContent = i + 1;
+    const main = document.createElement("div"); main.className = "rl-main";
+    const of = document.createElement("div"); of.className = "rl-offre";
+    of.append(brandBadge(r.operateur, true), document.createTextNode(" " + r.offre));
+    const sp = document.createElement("div"); sp.className = "rl-spec";
+    sp.textContent = specOf(r);
+    main.append(of, sp);
+    const right = document.createElement("div"); right.className = "rl-right";
+    const pr = document.createElement("div"); pr.className = "rl-prix"; pr.textContent = fmtDH(r.prix);
+    const dl = document.createElement("div"); dl.className = "rl-delta";
+    dl.textContent = r.prix === best.prix ? "meilleure offre"
+      : "+" + (r.prix - best.prix).toLocaleString("fr-FR") + " DH";
+    right.append(pr, dl);
+    li.append(rk, main, right);
+    rankBox.append(li);
+  });
+  if (rows.length > 8) {
+    const li = document.createElement("li");
+    const sp = document.createElement("span"); sp.className = "rl-spec";
+    sp.textContent = "… et " + (rows.length - 8) + " autre(s) — voir la table complète en bas de page.";
+    li.append(sp); rankBox.append(li);
+  }
+}
 
 /* ---------- KPIs ---------- */
 
@@ -864,6 +1064,7 @@ function renderTable() {
 
 function render() {
   renderKPIs();
+  renderFinder();
   renderFibre();
   renderMobile();
   renderEvo();
