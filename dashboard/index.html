@@ -11,9 +11,11 @@
     --grid: #e1e0d9;
     --baseline: #c3c2b7;
     --ring: rgba(11, 11, 11, 0.10);
-    --iam: #2a78d6;
-    --orange: #eb6834;
-    --inwi: #1baf7a;
+    /* Couleurs de marque des opérateurs, re-steppées pour passer la
+       validation daltonisme (CVD all-pairs) sur chaque surface. */
+    --iam: #0055a4;
+    --orange: #ff7900;
+    --inwi: #d6006d;
     --delta-up: #006300;
     --delta-down: #d03b3b;
   }
@@ -29,8 +31,8 @@
       --baseline: #383835;
       --ring: rgba(255, 255, 255, 0.10);
       --iam: #3987e5;
-      --orange: #d95926;
-      --inwi: #199e70;
+      --orange: #e0731d;
+      --inwi: #e04a92;
       --delta-up: #0ca30c;
       --delta-down: #e66767;
     }
@@ -46,8 +48,8 @@
     --baseline: #383835;
     --ring: rgba(255, 255, 255, 0.10);
     --iam: #3987e5;
-    --orange: #d95926;
-    --inwi: #199e70;
+    --orange: #e0731d;
+    --inwi: #e04a92;
     --delta-up: #0ca30c;
     --delta-down: #e66767;
   }
@@ -61,9 +63,25 @@
   }
   .wrap { max-width: 1160px; margin: 0 auto; padding: 28px 20px 60px; }
 
-  header.top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 20px; }
-  header.top h1 { font-size: 22px; font-weight: 650; margin: 0; letter-spacing: -0.01em; }
-  header.top .sub { color: var(--ink-2); font-size: 14px; }
+  header.top { margin-bottom: 20px; }
+  header.top .eyebrow {
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 3px;
+  }
+  header.top h1 { font-size: 26px; font-weight: 700; margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+  header.top .sub { color: var(--ink-2); font-size: 14px; margin-top: 4px; }
+
+  /* Badges de marque — typographiques (les wordmarks des trois opérateurs
+     sont en bas-de-casse), jamais l'artwork officiel. */
+  .brand {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 20px; padding: 0 7px; border-radius: 5px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em;
+    color: #fff; background: var(--bc); line-height: 1;
+    font-variant: none; text-transform: lowercase;
+  }
+  .brand.sq { border-radius: 3px; }
+  .brand.sm { height: 17px; font-size: 10.5px; padding: 0 6px; }
 
   .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
   .tile { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 14px 16px; }
@@ -74,6 +92,13 @@
   .tile .delta-down { color: var(--delta-down); font-weight: 600; }
 
   .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 18px; }
+  .filters.mainbar {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--page) 88%, transparent);
+    backdrop-filter: blur(6px);
+    padding: 10px 2px; margin: 0 -2px 18px;
+    border-bottom: 1px solid var(--grid);
+  }
   .filters label.flt { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
   .filters select {
     font: inherit; font-size: 14px; color: var(--ink);
@@ -82,14 +107,13 @@
   }
   .ops { display: flex; gap: 6px; }
   .op-btn {
-    font: inherit; font-size: 13.5px; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 7px;
-    background: var(--surface); color: var(--ink-2);
-    border: 1px solid var(--baseline); border-radius: 99px; padding: 5px 12px;
+    font: inherit; cursor: pointer;
+    display: inline-flex; align-items: center;
+    background: var(--surface);
+    border: 1.5px solid var(--baseline); border-radius: 99px; padding: 4px 6px;
+    opacity: 0.45; filter: grayscale(0.7);
   }
-  .op-btn .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); opacity: 0.35; }
-  .op-btn[aria-pressed="true"] { color: var(--ink); border-color: var(--c); }
-  .op-btn[aria-pressed="true"] .dot { opacity: 1; }
+  .op-btn[aria-pressed="true"] { opacity: 1; filter: none; border-color: var(--c); }
   .op-btn:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--iam); outline-offset: 2px; }
 
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -130,14 +154,36 @@
   .badge.prix { color: var(--ink-2); border: 1px solid var(--baseline); }
   .diff-list .chg { font-variant-numeric: tabular-nums; font-weight: 600; }
 
-  .tablewrap { overflow-x: auto; }
+  .table-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .table-tools input[type="search"] {
+    font: inherit; font-size: 14px; color: var(--ink);
+    background: var(--page); border: 1px solid var(--baseline); border-radius: 7px;
+    padding: 6px 11px; width: min(320px, 100%);
+  }
+  .table-tools input[type="search"]::placeholder { color: var(--muted); }
+  .table-tools .count { font-size: 12.5px; color: var(--muted); }
+
+  .tablewrap { overflow-x: auto; max-height: 560px; overflow-y: auto; border: 1px solid var(--grid); border-radius: 8px; }
   table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
-  table.data th, table.data td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
-  table.data th { color: var(--ink-2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
-  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
-  table.data td .opdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
+  table.data th, table.data td { text-align: left; padding: 7px 11px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  table.data th {
+    color: var(--ink-2); font-weight: 600; position: sticky; top: 0;
+    background: var(--surface); cursor: pointer; user-select: none;
+    box-shadow: 0 1px 0 var(--grid); z-index: 1;
+  }
+  table.data th:hover { color: var(--ink); }
+  table.data th .arrow { font-size: 10px; margin-left: 4px; color: var(--muted); }
+  table.data th[aria-sort] { color: var(--ink); }
+  table.data th[aria-sort] .arrow { color: var(--ink); }
+  table.data th.num, table.data td.num { text-align: right; }
+  table.data td.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+  table.data tbody tr:hover td { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+  table.data tbody tr:last-child td { border-bottom: 0; }
   table.data td.wrapcell { white-space: normal; min-width: 220px; }
-  .fiab { font-size: 11px; color: var(--muted); }
+  .fiab { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .fiab::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .fiab.ok { color: var(--delta-up); }
+  .fiab.ok::before { background: var(--delta-up); }
 
   footer { margin-top: 26px; font-size: 12.5px; color: var(--muted); }
   footer a { color: var(--ink-2); }
@@ -148,13 +194,14 @@
 
 <div class="wrap">
   <header class="top">
+    <div class="eyebrow">Relevé mensuel automatisé · sites officiels</div>
     <h1>Baromètre Télécoms Maroc</h1>
-    <span class="sub" id="subtitle">Chargement…</span>
+    <div class="sub" id="subtitle">Chargement…</div>
   </header>
 
   <div class="kpis" id="kpis"></div>
 
-  <div class="filters" id="filters">
+  <div class="filters mainbar" id="filters">
     <label class="flt">Mois
       <select id="f-month"></select>
     </label>
@@ -199,7 +246,11 @@
 
   <section class="card">
     <h2>Toutes les offres du mois</h2>
-    <p class="hint">Vue table — toutes les valeurs des graphiques y sont lisibles sans survol.</p>
+    <p class="hint">Vue table — toutes les valeurs des graphiques y sont lisibles sans survol. Cliquer un en-tête pour trier.</p>
+    <div class="table-tools">
+      <input type="search" id="t-search" placeholder="Filtrer : offre, data, remarque…" aria-label="Filtrer le tableau">
+      <span class="count" id="t-count"></span>
+    </div>
     <div class="tablewrap" id="tablewrap"></div>
   </section>
 
@@ -221,14 +272,24 @@ __EMBEDDED_CSV__
 /* ---------- données ---------- */
 
 const OPS = [
-  { name: "Maroc Telecom", cssVar: "--iam" },
-  { name: "Orange",        cssVar: "--orange" },
-  { name: "inwi",          cssVar: "--inwi" },
+  { name: "Maroc Telecom", cssVar: "--iam",    mark: "iam",    square: false },
+  { name: "Orange",        cssVar: "--orange", mark: "orange", square: true  },
+  { name: "inwi",          cssVar: "--inwi",   mark: "inwi",   square: false },
 ];
 const opColor = name => {
   const op = OPS.find(o => o.name === name);
   return op ? getComputedStyle(document.documentElement).getPropertyValue(op.cssVar).trim() : "#888";
 };
+/* badge typographique aux couleurs de la marque (wordmark bas-de-casse) */
+function brandBadge(name, small) {
+  const op = OPS.find(o => o.name === name);
+  const b = document.createElement("span");
+  b.className = "brand" + (op && op.square ? " sq" : "") + (small ? " sm" : "");
+  b.style.setProperty("--bc", op ? `var(${op.cssVar})` : "#888");
+  b.textContent = op ? op.mark : name;
+  b.title = name;
+  return b;
+}
 
 function parseCSV(text) {
   const lines = text.replace(/^﻿/, "").split(/\r?\n/).filter(l => l.trim());
@@ -263,7 +324,8 @@ const monthLabel = m => {
 };
 
 let ALL = [];          // toutes les lignes du CSV
-let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)), evo: "" };
+let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
+              evo: "", query: "", sort: { col: "operateur", dir: 1 } };
 
 async function loadData() {
   let text = "";
@@ -305,8 +367,8 @@ function init() {
     b.className = "op-btn";
     b.style.setProperty("--c", `var(${op.cssVar})`);
     b.setAttribute("aria-pressed", "true");
-    const dot = document.createElement("span"); dot.className = "dot";
-    b.append(dot, document.createTextNode(op.name));
+    b.setAttribute("aria-label", op.name);
+    b.append(brandBadge(op.name));
     b.onclick = () => {
       if (state.ops.has(op.name) && state.ops.size === 1) return;
       state.ops.has(op.name) ? state.ops.delete(op.name) : state.ops.add(op.name);
@@ -315,6 +377,12 @@ function init() {
     };
     return b;
   }));
+
+  const search = document.getElementById("t-search");
+  search.addEventListener("input", debounce(() => {
+    state.query = search.value.trim().toLowerCase();
+    renderTable();
+  }, 120));
 
   const selE = document.getElementById("f-evo");
   const tiers = fibreTiers(ALL);
@@ -332,18 +400,25 @@ function debounce(fn, ms) { let t; return () => { clearTimeout(t); t = setTimeou
 
 /* ---------- KPIs ---------- */
 
-function tile(label, value, note, noteClass) {
+function tile(label, value, note) {
   const d = document.createElement("div"); d.className = "tile";
   const l = document.createElement("div"); l.className = "label"; l.textContent = label;
   const v = document.createElement("div"); v.className = "value"; v.textContent = value;
   d.append(l, v);
   if (note) {
     const n = document.createElement("div"); n.className = "note";
-    if (noteClass) { const s = document.createElement("span"); s.className = noteClass; s.textContent = note; n.append(s); }
+    if (note instanceof Node) n.append(note);
     else n.textContent = note;
     d.append(n);
   }
   return d;
+}
+
+/* note de tuile « badge opérateur + détail » */
+function opNote(op, detail) {
+  const f = document.createDocumentFragment();
+  f.append(brandBadge(op, true), document.createTextNode(" " + detail));
+  return f;
 }
 
 function renderKPIs() {
@@ -359,8 +434,10 @@ function renderKPIs() {
   box.replaceChildren(
     tile("Offres relevées", String(rows.length),
          fiables + " en source officielle directe"),
-    minFib ? tile("Entrée fibre", fmtDH(minFib.prix), minFib.operateur + " · " + minFib.debit_ou_data) : tile("Entrée fibre", "—", ""),
-    minMob ? tile("Entrée forfait mobile", fmtDH(minMob.prix), minMob.operateur + " · " + minMob.debit_ou_data) : tile("Entrée forfait mobile", "—", ""),
+    minFib ? tile("Entrée fibre", fmtDH(minFib.prix), opNote(minFib.operateur, minFib.debit_ou_data))
+           : tile("Entrée fibre", "—", ""),
+    minMob ? tile("Entrée forfait mobile", fmtDH(minMob.prix), opNote(minMob.operateur, minMob.debit_ou_data))
+           : tile("Entrée forfait mobile", "—", ""),
     tile("Changements vs mois préc.", d ? String(d.changes.length) : "—",
          d ? monthLabel(d.prev) + " → " + monthLabel(d.curr) : "dès le 2e relevé"),
   );
@@ -699,34 +776,78 @@ function renderDiff() {
 
 /* ---------- table ---------- */
 
+const T_COLS = [
+  { key: "operateur",     label: "Opérateur" },
+  { key: "categorie",     label: "Catégorie" },
+  { key: "offre",         label: "Offre" },
+  { key: "debitTri",      label: "Débit / data", show: r => r.debit_ou_data },
+  { key: "appels_inclus", label: "Appels" },
+  { key: "prix",          label: "Prix", num: true },
+  { key: "fiabilite",     label: "Fiabilité" },
+];
+
+/* clé de tri numérique pour la colonne débit/data (Mb d'abord, puis Go) */
+function debitKey(r) {
+  const d = parseDebit(r.debit_ou_data);
+  return d.mb != null ? d.mb : d.go != null ? 100000 + d.go : -1;
+}
+
 function renderTable() {
   const wrap = document.getElementById("tablewrap");
-  const rows = filtered();
+  let rows = filtered().map(r => ({ ...r, debitTri: debitKey(r) }));
+  if (state.query)
+    rows = rows.filter(r =>
+      [r.operateur, r.categorie, r.offre, r.debit_ou_data, r.appels_inclus,
+       r.remarques, r.fiabilite, String(r.prix ?? "")]
+        .join(" ").toLowerCase().includes(state.query));
+
+  const { col, dir } = state.sort;
+  const va = r => col === "prix" ? (r.prix ?? Infinity)
+             : col === "debitTri" ? r.debitTri
+             : (r[col] || "").toLowerCase();
+  rows.sort((a, b) => {
+    const x = va(a), y = va(b);
+    const c = typeof x === "number" ? x - y : String(x).localeCompare(String(y), "fr");
+    return c ? c * dir : (a.prix ?? Infinity) - (b.prix ?? Infinity);
+  });
+
+  document.getElementById("t-count").textContent =
+    rows.length + " offre" + (rows.length > 1 ? "s" : "") +
+    (state.query ? " (filtrées)" : "");
+
   const table = document.createElement("table"); table.className = "data";
   const thead = document.createElement("thead");
   const trh = document.createElement("tr");
-  ["Opérateur", "Catégorie", "Offre", "Débit / data", "Appels", "Prix", "Fiabilité"].forEach(h => {
-    const th = document.createElement("th"); th.textContent = h; trh.append(th);
+  T_COLS.forEach(c => {
+    const th = document.createElement("th");
+    if (c.num) th.className = "num";
+    th.textContent = c.label;
+    const ar = document.createElement("span"); ar.className = "arrow";
+    if (col === c.key) {
+      ar.textContent = dir > 0 ? "▲" : "▼";
+      th.setAttribute("aria-sort", dir > 0 ? "ascending" : "descending");
+    }
+    th.append(ar);
+    th.onclick = () => {
+      state.sort = { col: c.key, dir: col === c.key ? -dir : 1 };
+      renderTable();
+    };
+    trh.append(th);
   });
   thead.append(trh); table.append(thead);
+
   const tbody = document.createElement("tbody");
-  rows.sort((a, b) => a.operateur.localeCompare(b.operateur)
-      || a.categorie.localeCompare(b.categorie) || (a.prix ?? 1e9) - (b.prix ?? 1e9))
-    .forEach(r => {
-      const tr = document.createElement("tr");
-      const tdOp = document.createElement("td");
-      const dot = document.createElement("span"); dot.className = "opdot";
-      dot.style.background = opColor(r.operateur);
-      tdOp.append(dot, document.createTextNode(r.operateur));
-      const tds = [
-        tdOp,
-        cell(r.categorie), cellWrap(r.offre), cell(r.debit_ou_data), cellWrap(r.appels_inclus),
-        cellNum(r.prix != null ? fmtDH(r.prix) : "—"),
-        cellFiab(r.fiabilite),
-      ];
-      tds.forEach(td => tr.append(td));
-      tbody.append(tr);
-    });
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    const tdOp = document.createElement("td");
+    tdOp.append(brandBadge(r.operateur, true));
+    tr.append(tdOp,
+      cell(r.categorie), cellWrap(r.offre), cell(r.debit_ou_data),
+      cellWrap(r.appels_inclus),
+      cellNum(r.prix != null ? fmtDH(r.prix) : "—"),
+      cellFiab(r.fiabilite));
+    tbody.append(tr);
+  });
   table.append(tbody);
   wrap.replaceChildren(table);
 
@@ -734,7 +855,9 @@ function renderTable() {
   function cellWrap(t) { const td = cell(t); td.className = "wrapcell"; return td; }
   function cellNum(t) { const td = cell(t); td.className = "num"; return td; }
   function cellFiab(t) { const td = document.createElement("td");
-    const s = document.createElement("span"); s.className = "fiab"; s.textContent = t; td.append(s); return td; }
+    const s = document.createElement("span");
+    s.className = "fiab" + (t === "officiel_site" ? " ok" : "");
+    s.textContent = t; td.append(s); return td; }
 }
 
 /* ---------- rendu global ---------- */

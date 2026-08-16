@@ -149,12 +149,15 @@ class Navigateur:
             self._browser = self._pw.chromium.launch(headless=True)
         return self._browser
 
-    def text(self, url: str, settle_ms: int = 5000, clicks=()) -> str:
+    def text(self, url: str, settle_ms: int = 5000, clicks=(),
+             links: bool = False) -> str:
         """Texte visible d'une page après exécution du JavaScript.
 
-        `clicks` : libellés d'onglets à cliquer après le chargement (ex. les
-        gammes de la boutique Orange) — le texte de chaque état est concaténé,
-        les parsers dédoublonnent. Best effort : un clic raté est ignoré."""
+        `clicks` : libellés d'onglets à cliquer après le chargement — le texte
+        de chaque état est concaténé, les parsers dédoublonnent. Best effort.
+        `links` : ajoute en fin de dump la liste des URL des liens de la page
+        (section LIENS) — utile quand les slugs encodent l'offre (boutique
+        Orange) et que le contenu correspondant n'est pas rendu sans clic."""
         page = self._ensure().new_page(user_agent=UA, locale="fr-FR")
         try:
             page.goto(url, wait_until="domcontentloaded", timeout=60000)
@@ -173,6 +176,13 @@ class Navigateur:
                     page.get_by_text(label, exact=False).first.click(timeout=2500)
                     page.wait_for_timeout(1200)
                     text += "\n" + page.inner_text("body")
+                except Exception:
+                    pass
+            if links:
+                try:
+                    hrefs = page.eval_on_selector_all(
+                        "a[href]", "els => els.map(e => e.href)")
+                    text += "\nLIENS\n" + "\n".join(dict.fromkeys(hrefs))
                 except Exception:
                     pass
             return text
@@ -331,6 +341,26 @@ def parse_orange_boutique_forfaits(text, url):
             r"R[ée]seaux Sociaux|WhatsApp illimit", corps, re.I) else ""
         rows.append(row("Orange", "Forfait mobile", titre,
                         data, heures, prix, rem, url))
+    rows = dedup(rows)
+
+    # Les cartes Yo Max ne sont pas rendues sans clic d'onglet, mais les
+    # slugs d'URL encodent l'offre (« forfait-yo-max-99dh-25go-1h-d-appel »).
+    # On ne garde un slug que s'il n'a pas déjà été vu en carte (même prix
+    # + même volume data) pour ne pas doubler les offres Yo.
+    vus = {(r_["prix_dh_mois"], m.group(0)) for r_ in rows
+           for m in [re.search(r"\d+(?=\s*Go)", r_["debit_ou_data"], re.I)] if m}
+    slug_pat = re.compile(
+        r"forfait-(yo(?:-max)?(?:-5g)?)-(\d{2,3})dh-(\d{1,3})go(?:-(\d{1,2})h)?",
+        re.I)
+    for gamme, prix, go, heures in {m.groups() for m in slug_pat.finditer(text)}:
+        if (prix, go) in vus:
+            continue
+        nom = gamme.replace("-", " ").upper().replace("YO MAX", "Yo Max")
+        rows.append(row("Orange", "Forfait mobile",
+                        f"Forfait {nom} {prix} Dh", f"{go} Go",
+                        f"{heures}h" if heures else "", prix,
+                        "detail du slug boutique - carte non rendue sans clic",
+                        url))
     return dedup(rows)
 
 
@@ -480,11 +510,11 @@ PAGES = [
     dict(op="orange", label="Orange fibre residentiel (SVG)", method="html_raw",
          url="https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange",
          parse=lambda html, u: parse_orange_svg_fibre(html, u)),
-    # Les cartes Yo Max sont derrière un onglet (seuls les Yo s'affichent au
-    # chargement — constat du run du 16/08/2026) : on clique les gammes.
+    # Les cartes Yo Max sont derrière un onglet non rendu au chargement et
+    # les clics sont sans effet (constat des runs du 16/08/2026) : on
+    # collecte les liens de la page, leurs slugs encodent chaque offre.
     dict(op="orange", label="Orange forfaits (boutique)", method="js",
-         url="https://boutique.orange.ma/offres-mobile",
-         clicks=("Forfaits Yo Max", "Tous les forfaits"),
+         url="https://boutique.orange.ma/offres-mobile", links=True,
          parse=lambda txt, u: parse_orange_boutique_forfaits(txt, u)),
     dict(op="orange", label="Orange Dar Box 5G", method="js",
          url="https://boutique.orange.ma/offres-dar-box/dar-box-5g",
@@ -534,7 +564,8 @@ def run(only=None, no_js=False):
                 elif page["method"] == "html_raw":
                     content = fetch_html(page["url"])
                 else:  # js
-                    content = nav.text(page["url"], clicks=page.get("clicks", ()))
+                    content = nav.text(page["url"], clicks=page.get("clicks", ()),
+                                       links=page.get("links", False))
                 (raw_month_dir / f"{slugify(page['label'])}.txt").write_text(
                     content, encoding="utf-8")
                 rows = page["parse"](content, page["url"])
@@ -941,6 +972,11 @@ SAMPLES = {
         ‎49,00
         DH/mois
         Choisir ce forfait
+        LIENS
+        https://boutique.orange.ma/forfait-yo-max-99dh-25go-1h-d-appel
+        https://boutique.orange.ma/forfait-yo-max-199dh-52go-10h-d-appel
+        https://boutique.orange.ma/forfait-yo-49dh-3go-3h-d-appel
+        https://boutique.orange.ma/accessoires
     """,
     "orange_darbox_5g": """
         Dar Box 5G 299Dh
@@ -1068,9 +1104,12 @@ def test():
           [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
     # Les entrées de menu (« Forfait Yo Max 5G 99 Dh » sans prix mensuel)
     # ne sortent pas ; le prix vient du « 49,00 DH/mois », jamais du « 00 ».
+    # Les Yo Max arrivent par les slugs de la section LIENS, et le slug
+    # yo-49dh-3go est écarté : la carte correspondante est déjà extraite.
     ok &= sorted((x["debit_ou_data"], x["prix_dh_mois"]) for x in r) == [
-        ("11Go", "49"), ("3Go", "49")]
-    ok &= not any("Yo Max" in x["offre"] for x in r)  # le menu ne sort jamais
+        ("11Go", "49"), ("25 Go", "99"), ("3Go", "49"), ("52 Go", "199")]
+    ok &= sorted(x["offre"] for x in r if "slug" in x["remarques"]) == [
+        "Forfait Yo Max 199 Dh", "Forfait Yo Max 99 Dh"]
 
     r = parse_orange_darbox(SAMPLES["orange_darbox_5g"], "test", "5G")
     print(f"[orange_darbox]    {len(r)} offres :",
