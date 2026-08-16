@@ -1,51 +1,63 @@
 ﻿date_releve;operateur;categorie;offre;debit_ou_data;appels_inclus;prix_dh_mois;remarques;source;fiabilite
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 500M;500 Mb/s;Illimités vers les fixes nationaux 50 H vers mobiles dont 10 H vers l’international Zone 1;800;;https://www.iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 100M;100 Mb/s;Illimités vers les fixes nationaux 10 H vers mobile dont 2 H vers l’international Zone 1;400;;https://www.iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 200M;200 Mb/s;Illimités vers les fixes nationaux 20 H vers mobile dont 4 H vers l’international Zone 1;500;;https://www.iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 1G;1 Gb/s;Illimité vers les fixes et mobiles nationaux 20 H vers l’international Zone 1;1000;;https://www.iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 165 (30 Go);30 Go;180 min;165;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 165 (14 Go);14 Go;840 min;165;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 199 (50 Go);50 Go;90 min;199;+1 Go roaming Z1;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 220 (12 Go);12 Go;1320 min;220;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 220 (30 Go);30 Go;720 min;220;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 249 (25 Go);25 Go;1200 min;249;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 259 (65 Go);65 Go;180 min;259;+2 Go roaming Z1;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 329 (80 Go);80 Go;240 min;329;+3 Go roaming Z1;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 349 (55 Go);55 Go;900 min;349;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 349 (30 Go);30 Go;1800 min;349;;https://www.iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 479 (100 Go);100 Go;1200 min;479;+4 Go roaming Z1;https://www.iam.ma/forfaits-mobile;officiel_site
 2026-08-16;Maroc Telecom;Box;El Manzil 5G 400 DH;100 Mb/s;;400;extraction generique - verifier et raffiner le parser;https://www.iam.ma/box-el-manzil-5g;officiel_js_generique
 2026-08-16;Maroc Telecom;Box;Box 4G+ 199 DH;60 Go;60 min;199;extraction generique - verifier et raffiner le parser;https://www.iam.ma/box-4g;officiel_js_generique
 2026-08-16;Maroc Telecom;Box;Box 4G+ 350 DH;90 Go;120 min;350;extraction generique - verifier et raffiner le parser;https://www.iam.ma/box-4g;officiel_js_generique
-2026-08-16;Orange;Fibre;Fibre 20 Mega (residentiel);20 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/20go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 50 Mega (residentiel);50 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/50go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 100 Mega (residentiel);100 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/100go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 200 Mega (residentiel);200 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/200go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 500 Mega (residentiel);500 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/500go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 1000 Mega (residentiel);1000 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/1000go.svg;a_completer
-2026-08-16;Orange;Forfait mobile;Forfait 00 DH;3Go / 2Go;3h / 3H / 1H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/offres-mobile;officiel_js_generique
-2026-08-16;Orange;Forfait mobile;Forfait 00 DH;1Go;1H / 5h / 5H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/offres-mobile;officiel_js_generique
-2026-08-16;Orange;Forfait mobile;Forfait 00 DH;1Go / 11Go;1H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/offres-mobile;officiel_js_generique
-2026-08-16;Orange;Forfait mobile;Forfait 00 DH;11Go;1H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/offres-mobile;officiel_js_generique
-2026-08-16;Orange;Box;Dar Box 5G 00 DH;50 Méga;3H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_js_generique
-2026-08-16;Orange;Box;Dar Box 5G 00 DH;100 Méga;4H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_js_generique
-2026-08-16;Orange;Box;Dar Box 4G+ 00 DH;;2H;00;extraction generique - verifier et raffiner le parser;https://boutique.orange.ma/dar-box;officiel_js_generique
-2026-08-16;Orange;Forfait mobile;Yoxo 50 DH;;1H;50;extraction generique - verifier et raffiner le parser;https://www.yoxo.ma/;officiel_js_generique
-2026-08-16;Orange;Forfait mobile;Yoxo 100 DH;;5H;100;extraction generique - verifier et raffiner le parser;https://www.yoxo.ma/;officiel_js_generique
-2026-08-16;inwi;Fibre;Fibre optique 20 Mega;20 Mb/s;;249;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 50 Mega;50 Mb/s;;299;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 100 Mega;100 Mb/s;;349;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 200 Mega;200 Mb/s;;449;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 500 Mega;500 Mb/s;;749;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 20 Mega;20 Mb/s;;249;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 50 Mega;50 Mb/s;;299;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 100 Mega;100 Mb/s;;349;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 200 Mega;200 Mb/s;;449;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Fibre;Fibre optique 500 Mega;500 Mb/s;;749;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
+2026-08-16;Orange;Fibre;Fibre 20 Mega;20 Mb/s;;249;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
+2026-08-16;Orange;Fibre;Fibre 50 Mega;50 Mb/s;;299;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
+2026-08-16;Orange;Fibre;Fibre 100 Mega;100 Mb/s;;349;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
+2026-08-16;Orange;Fibre;Fibre 200 Mega;200 Mb/s;;449;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
+2026-08-16;Orange;Fibre;Fibre 500 Mega;500 Mb/s;;749;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
+2026-08-16;Orange;Fibre;Fibre 1000 Mega;1000 Mb/s;;949;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
+2026-08-16;Orange;Fibre;Fibre 20 Mega (residentiel);20 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/20go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 50 Mega (residentiel);50 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/50go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 100 Mega (residentiel);100 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/100go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 200 Mega (residentiel);200 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/200go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 500 Mega (residentiel);500 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/500go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 1000 Mega (residentiel);1000 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/1000go.svg;a_completer
+2026-08-16;Orange;Forfait mobile;Forfait YO 3h + 3Go 49 Dh;3Go;3H d'appels;49;;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait YO 2Go + 1H 49 Dh;2Go;1H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait YO 5h + 1Go 49 Dh;1Go;5H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait YO 11Go+1H 49 Dh;11Go;1H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Box;Dar Box 5G 299 DH;50 Méga;3H;299;Frais de mise en service 299 DH;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_site
+2026-08-16;Orange;Box;Dar Box 5G 349 DH;100 Méga;4H;349;Frais de mise en service 349 DH;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_site
+2026-08-16;Orange;Box;Dar Box 4G+ 199 DH;Internet illimite;2H;199;Frais de mise en service 199 DH;https://boutique.orange.ma/dar-box;officiel_site
+2026-08-16;Orange;Box;Dar Box 4G+ 249 DH;Internet illimite;2H;249;Frais de mise en service 249 DH;https://boutique.orange.ma/dar-box;officiel_site
+2026-08-16;Orange;Forfait mobile;Yoxo 50 DH;20 Go;1h;50;100% digital sans engagement;https://www.yoxo.ma/;officiel_site
+2026-08-16;Orange;Forfait mobile;Yoxo 100 DH;60 Go;5h;100;100% digital sans engagement;https://www.yoxo.ma/;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 20 Mega;20 Mb/s;;249;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 50 Mega;50 Mb/s;;299;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 100 Mega;100 Mb/s;;349;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 200 Mega;200 Mb/s;;449;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 500 Mega;500 Mb/s;;749;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 1G;1 Gb/s;;949;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
-2026-08-16;inwi;Forfait mobile;Forfait 49 DH;;;49;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 99 DH;15Go;;99;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 49 DH;11Go;1H / 1h;49;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 99 DH;18Go;5H / 5h;99;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 99 DH;30Go;1H / 1h;99;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 119 DH;35Go;2h;119;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 149 DH;40Go;4h;149;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 1199 DH;55Go / 1Go;5H / 5h;1199;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 49 DH;1Go / 2Go;4h;49;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 99 DH;12Go;12h;99;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 149 DH;18Go;18h;149;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 199 DH;35Go;;199;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 249 DH;60Go / 2Go;;249;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 349 DH;75 Go / 75Go / 2Go;;349;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 549 DH;125 Go / 125Go / 3Go;;549;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
-2026-08-16;inwi;Forfait mobile;Forfait 649 DH;150 Go / 150Go / 6Go;;649;extraction generique - verifier et raffiner le parser;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_js_generique
+2026-08-16;inwi;Forfait mobile;Forfait FLEXI Réseaux Sociaux;2Go;1h + illimite vers inwi;49;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait illimité Réseaux Sociaux + 15Go;15Go;2h + illimite vers inwi;99;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait FLEXI 11GO+1H;11Go;1h;49;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 18Go + 5H + WhatsApp Illimité;18Go;5h;99;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 30Go + 1H + WhatsApp Illimité;30Go;1h;99;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 35Go + 2h+ Whatsapp illimité;35Go;2h;119;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 40Go + 4h + Whatsapp illimité;40Go;4h;149;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 5H + 55Go + WhatsApp illimité + 1Go en roaming Z1;55Go / 1Go;5h;199;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait FLEXI 4h+2GO;2Go;4h + illimite vers inwi;49;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 12h + 12Go + illimité vers inwi;12Go;12h + illimite vers inwi;99;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait 18h + 18Go + Appels illimités vers inwi + WA;18Go;18h + illimite vers inwi;149;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait Appels illimités + 35Go;35Go;;199;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait Appels illimités + 60Go;60Go / 2Go;;249;WhatsApp/RS illimites;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait appels illimités +75 Go;75Go / 2Go;;349;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait appels illimités +125 Go;125Go / 3Go;;549;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-08-16;inwi;Forfait mobile;Forfait appels illimités +150 Go;150Go / 6Go;;649;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
