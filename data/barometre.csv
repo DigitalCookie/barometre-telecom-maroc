@@ -23,23 +23,30 @@
 2026-08-16;Orange;Fibre;Fibre 200 Mega;200 Mb/s;;449;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
 2026-08-16;Orange;Fibre;Fibre 500 Mega;500 Mb/s;;749;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
 2026-08-16;Orange;Fibre;Fibre 1000 Mega;1000 Mb/s;;949;Grille pro.orange.ma (identique au residentiel au 08/2026 - a surveiller);https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre;officiel_site
-2026-08-16;Orange;Fibre;Fibre 20 Mega (residentiel);20 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/20go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 50 Mega (residentiel);50 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/50go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 100 Mega (residentiel);100 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/100go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 200 Mega (residentiel);200 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/200go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 500 Mega (residentiel);500 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/500go.svg;a_completer
-2026-08-16;Orange;Fibre;Fibre 1000 Mega (residentiel);1000 Mb/s;;;prix non trouve dans le SVG - a inspecter;https://orange-maroc.net/FibreOrange/fibre-cards/1000go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 20 Mega (residentiel);20 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/20go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 50 Mega (residentiel);50 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/50go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 100 Mega (residentiel);100 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/100go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 200 Mega (residentiel);200 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/200go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 500 Mega (residentiel);500 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/500go.svg;a_completer
+2026-08-16;Orange;Fibre;Fibre 1000 Mega (residentiel);1000 Mb/s;;;SVG non recupere (HTTPError);https://orange-maroc.net/FibreOrange/fibre-cards/1000go.svg;a_completer
 2026-08-16;Orange;Forfait mobile;Forfait YO 3h + 3Go 49 Dh;3Go;3H d'appels;49;;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-08-16;Orange;Forfait mobile;Forfait YO 2Go + 1H 49 Dh;2Go;1H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-08-16;Orange;Forfait mobile;Forfait YO 5h + 1Go 49 Dh;1Go;5H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-08-16;Orange;Forfait mobile;Forfait YO 11Go+1H 49 Dh;11Go;1H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
-2026-08-16;Orange;Forfait mobile;Forfait Yo Max 99 Dh;25 Go;1h;99;detail du slug boutique - carte non rendue sans clic;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait Yo Max 399 Dh;120 Go;Illimite national;399;+5 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait Yo Max 299 Dh;80 Go;;299;+2 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait Yo Max 499 Dh;160 Go;Illimite national;499;+8 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait Yo Max 649 Dh;Tout illimite;Tout illimite;649;+10 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait Yo Max 99 Dh;25 Go;1h;99;detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Forfait Yo Max 199 Dh;52 Go;10h;199;detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-08-16;Orange;Box;Dar Box 5G 299 DH;50 Méga;3H;299;Frais de mise en service 299 DH;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_site
 2026-08-16;Orange;Box;Dar Box 5G 349 DH;100 Méga;4H;349;Frais de mise en service 349 DH;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_site
 2026-08-16;Orange;Box;Dar Box 4G+ 199 DH;Internet illimite;2H;199;Frais de mise en service 199 DH;https://boutique.orange.ma/dar-box;officiel_site
 2026-08-16;Orange;Box;Dar Box 4G+ 249 DH;Internet illimite;2H;249;Frais de mise en service 249 DH;https://boutique.orange.ma/dar-box;officiel_site
 2026-08-16;Orange;Forfait mobile;Yoxo 50 DH;20 Go;1h;50;100% digital sans engagement;https://www.yoxo.ma/;officiel_site
 2026-08-16;Orange;Forfait mobile;Yoxo 100 DH;60 Go;5h;100;100% digital sans engagement;https://www.yoxo.ma/;officiel_site
+2026-08-16;Orange;Forfait mobile;Yoxo 200 DH;;;200;prix du slug - detail data a completer;https://www.yoxo.ma/;officiel_site
+2026-08-16;Orange;Forfait mobile;Yoxo 250 DH;;;250;prix du slug - detail data a completer;https://www.yoxo.ma/;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 20 Mega;20 Mb/s;;249;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 50 Mega;50 Mb/s;;299;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
 2026-08-16;inwi;Fibre;Fibre optique 100 Mega;100 Mb/s;;349;;https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique;officiel_site
