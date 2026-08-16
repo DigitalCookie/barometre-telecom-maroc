@@ -1,0 +1,752 @@
+<title>Baromètre Télécoms Maroc</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --ring: rgba(11, 11, 11, 0.10);
+    --iam: #2a78d6;
+    --orange: #eb6834;
+    --inwi: #1baf7a;
+    --delta-up: #006300;
+    --delta-down: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --ring: rgba(255, 255, 255, 0.10);
+      --iam: #3987e5;
+      --orange: #d95926;
+      --inwi: #199e70;
+      --delta-up: #0ca30c;
+      --delta-down: #e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --ring: rgba(255, 255, 255, 0.10);
+    --iam: #3987e5;
+    --orange: #d95926;
+    --inwi: #199e70;
+    --delta-up: #0ca30c;
+    --delta-down: #e66767;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  header.top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 20px; }
+  header.top h1 { font-size: 22px; font-weight: 650; margin: 0; letter-spacing: -0.01em; }
+  header.top .sub { color: var(--ink-2); font-size: 14px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .tile { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 14px 16px; }
+  .tile .label { font-size: 12.5px; color: var(--ink-2); }
+  .tile .value { font-size: 26px; font-weight: 650; margin-top: 2px; }
+  .tile .note { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .tile .delta-up { color: var(--delta-up); font-weight: 600; }
+  .tile .delta-down { color: var(--delta-down); font-weight: 600; }
+
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 18px; }
+  .filters label.flt { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+  .filters select {
+    font: inherit; font-size: 14px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--baseline); border-radius: 7px;
+    padding: 5px 8px;
+  }
+  .ops { display: flex; gap: 6px; }
+  .op-btn {
+    font: inherit; font-size: 13.5px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--surface); color: var(--ink-2);
+    border: 1px solid var(--baseline); border-radius: 99px; padding: 5px 12px;
+  }
+  .op-btn .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); opacity: 0.35; }
+  .op-btn[aria-pressed="true"] { color: var(--ink); border-color: var(--c); }
+  .op-btn[aria-pressed="true"] .dot { opacity: 1; }
+  .op-btn:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--iam); outline-offset: 2px; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 16px 18px 12px; margin-bottom: 14px; }
+  .card h2 { font-size: 15px; font-weight: 650; margin: 0 0 2px; }
+  .card .hint { font-size: 12.5px; color: var(--muted); margin: 0 0 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--ink-2); margin: 6px 0 2px; }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .swatch { width: 11px; height: 11px; border-radius: 3px; }
+  .legend .stroke { width: 14px; height: 2.5px; border-radius: 2px; }
+  .empty { color: var(--muted); font-size: 13.5px; padding: 26px 4px; text-align: center; }
+
+  svg text { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+  svg .vlabel { font-variant-numeric: tabular-nums; fill: var(--ink-2); font-size: 11.5px; }
+  svg .axis { stroke: var(--baseline); stroke-width: 1; }
+  svg .gridline { stroke: var(--grid); stroke-width: 1; }
+
+  #tooltip {
+    position: fixed; z-index: 10; pointer-events: none; display: none;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--ring); border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+    padding: 8px 11px; font-size: 12.5px; max-width: 280px;
+  }
+  #tooltip .t-title { color: var(--ink-2); margin-bottom: 3px; }
+  #tooltip .t-row { display: flex; align-items: center; gap: 7px; }
+  #tooltip .t-key { width: 12px; height: 2.5px; border-radius: 2px; flex: none; }
+  #tooltip .t-val { font-weight: 650; font-variant-numeric: tabular-nums; }
+  #tooltip .t-lbl { color: var(--ink-2); }
+
+  .diff-list { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
+  .diff-list li { display: flex; gap: 9px; align-items: baseline; padding: 5px 0; border-top: 1px solid var(--grid); }
+  .diff-list li:first-child { border-top: 0; }
+  .badge { flex: none; font-size: 11px; font-weight: 650; letter-spacing: 0.04em; border-radius: 5px; padding: 1.5px 7px; }
+  .badge.nouveau { color: var(--delta-up); border: 1px solid currentColor; }
+  .badge.retire { color: var(--delta-down); border: 1px solid currentColor; }
+  .badge.prix { color: var(--ink-2); border: 1px solid var(--baseline); }
+  .diff-list .chg { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .tablewrap { overflow-x: auto; }
+  table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
+  table.data th, table.data td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  table.data th { color: var(--ink-2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  table.data td .opdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
+  table.data td.wrapcell { white-space: normal; min-width: 220px; }
+  .fiab { font-size: 11px; color: var(--muted); }
+
+  footer { margin-top: 26px; font-size: 12.5px; color: var(--muted); }
+  footer a { color: var(--ink-2); }
+  @media (prefers-reduced-motion: no-preference) {
+    .op-btn, .tile { transition: border-color 0.15s ease; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Baromètre Télécoms Maroc</h1>
+    <span class="sub" id="subtitle">Chargement…</span>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="filters" id="filters">
+    <label class="flt">Mois
+      <select id="f-month"></select>
+    </label>
+    <label class="flt">Catégorie
+      <select id="f-cat"></select>
+    </label>
+    <div class="ops" id="f-ops" role="group" aria-label="Opérateurs"></div>
+  </div>
+
+  <div class="grid2">
+    <section class="card">
+      <h2>Fibre — prix par débit</h2>
+      <p class="hint">DH/mois pour le mois sélectionné, par palier de débit.</p>
+      <div class="legend" id="leg-fibre"></div>
+      <div id="chart-fibre"></div>
+    </section>
+    <section class="card">
+      <h2>Forfaits mobiles — prix vs data</h2>
+      <p class="hint">Chaque point est un forfait du mois sélectionné. Survoler pour le détail.</p>
+      <div class="legend" id="leg-mobile"></div>
+      <div id="chart-mobile"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Évolution des prix</h2>
+    <p class="hint" id="evo-hint">Prix DH/mois au fil des relevés, par opérateur.</p>
+    <div class="filters" style="margin-bottom:8px">
+      <label class="flt">Offre suivie
+        <select id="f-evo"></select>
+      </label>
+    </div>
+    <div class="legend" id="leg-evo"></div>
+    <div id="chart-evo"></div>
+  </section>
+
+  <section class="card">
+    <h2>Changements du mois</h2>
+    <p class="hint" id="diff-hint"></p>
+    <ul class="diff-list" id="diff-list"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Toutes les offres du mois</h2>
+    <p class="hint">Vue table — toutes les valeurs des graphiques y sont lisibles sans survol.</p>
+    <div class="tablewrap" id="tablewrap"></div>
+  </section>
+
+  <footer>
+    Source : sites officiels des opérateurs (relevé automatisé mensuel).
+    Les lignes <span class="fiab">a_completer</span> ou <span class="fiab">officiel_js_generique</span> restent à fiabiliser.
+  </footer>
+</div>
+
+<div id="tooltip" role="status"></div>
+
+<script type="text/csv" id="embedded-csv">
+__EMBEDDED_CSV__
+</script>
+
+<script>
+"use strict";
+
+/* ---------- données ---------- */
+
+const OPS = [
+  { name: "Maroc Telecom", cssVar: "--iam" },
+  { name: "Orange",        cssVar: "--orange" },
+  { name: "inwi",          cssVar: "--inwi" },
+];
+const opColor = name => {
+  const op = OPS.find(o => o.name === name);
+  return op ? getComputedStyle(document.documentElement).getPropertyValue(op.cssVar).trim() : "#888";
+};
+
+function parseCSV(text) {
+  const lines = text.replace(/^﻿/, "").split(/\r?\n/).filter(l => l.trim());
+  if (!lines.length) return [];
+  const head = lines[0].split(";");
+  return lines.slice(1).map(l => {
+    const cells = l.split(";");
+    const r = {};
+    head.forEach((h, i) => { r[h.trim()] = (cells[i] || "").trim(); });
+    return r;
+  }).filter(r => r.operateur);
+}
+
+/* « 100 Mb/s » / « 100 Méga » -> {mb:100} ; « 25 Go » -> {go:25} */
+function parseDebit(txt) {
+  const m = (txt || "").match(/(\d+(?:[.,]\d+)?)\s*(Gb\/s|Gbps|Giga|Mb\/s|Mbps|M[ée]ga|Go|Mo)/i);
+  if (!m) return {};
+  const v = parseFloat(m[1].replace(",", "."));
+  const u = m[2].toLowerCase();
+  if (u.startsWith("gb") || u.startsWith("gi")) return { mb: v * 1000 };
+  if (u.startsWith("mb") || u.startsWith("mé") || u.startsWith("me")) return { mb: v };
+  if (u === "go") return { go: v };
+  return {};
+}
+
+const fmtDH = v => Number(v).toLocaleString("fr-FR") + " DH";
+const monthLabel = m => {
+  const [y, mo] = m.split("-");
+  const noms = ["janv.", "févr.", "mars", "avr.", "mai", "juin",
+                "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+  return noms[+mo - 1] + " " + y;
+};
+
+let ALL = [];          // toutes les lignes du CSV
+let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)), evo: "" };
+
+async function loadData() {
+  let text = "";
+  try {
+    const resp = await fetch("data/barometre.csv", { cache: "no-store" });
+    if (resp.ok) text = await resp.text();
+  } catch (e) { /* hors ligne / CSP : repli sur les données embarquées */ }
+  if (!text.trim()) text = document.getElementById("embedded-csv").textContent;
+  ALL = parseCSV(text).map(r => ({ ...r, month: r.date_releve.slice(0, 7),
+                                   prix: /^\d+$/.test(r.prix_dh_mois) ? +r.prix_dh_mois : null }));
+  init();
+}
+
+/* ---------- filtres ---------- */
+
+const months = () => [...new Set(ALL.map(r => r.month))].sort();
+const rowsOfMonth = m => ALL.filter(r => r.month === m);
+const filtered = () => rowsOfMonth(state.month)
+  .filter(r => state.ops.has(r.operateur))
+  .filter(r => state.cat === "Toutes" || r.categorie === state.cat);
+
+function init() {
+  const ms = months();
+  state.month = ms[ms.length - 1];
+
+  const selM = document.getElementById("f-month");
+  selM.replaceChildren(...ms.map(m => new Option(monthLabel(m), m)));
+  selM.value = state.month;
+  selM.onchange = () => { state.month = selM.value; render(); };
+
+  const cats = ["Toutes", ...new Set(ALL.map(r => r.categorie))];
+  const selC = document.getElementById("f-cat");
+  selC.replaceChildren(...cats.map(c => new Option(c, c)));
+  selC.onchange = () => { state.cat = selC.value; render(); };
+
+  const opsBox = document.getElementById("f-ops");
+  opsBox.replaceChildren(...OPS.map(op => {
+    const b = document.createElement("button");
+    b.className = "op-btn";
+    b.style.setProperty("--c", `var(${op.cssVar})`);
+    b.setAttribute("aria-pressed", "true");
+    const dot = document.createElement("span"); dot.className = "dot";
+    b.append(dot, document.createTextNode(op.name));
+    b.onclick = () => {
+      if (state.ops.has(op.name) && state.ops.size === 1) return;
+      state.ops.has(op.name) ? state.ops.delete(op.name) : state.ops.add(op.name);
+      b.setAttribute("aria-pressed", String(state.ops.has(op.name)));
+      render();
+    };
+    return b;
+  }));
+
+  const selE = document.getElementById("f-evo");
+  const tiers = fibreTiers(ALL);
+  const evoOpts = tiers.map(t => ({ v: "fibre:" + t, l: "Fibre " + tierLabel(t) }));
+  selE.replaceChildren(...evoOpts.map(o => new Option(o.l, o.v)));
+  state.evo = evoOpts.length ? evoOpts[Math.min(2, evoOpts.length - 1)].v : "";
+  if (state.evo) selE.value = state.evo;
+  selE.onchange = () => { state.evo = selE.value; render(); };
+
+  window.addEventListener("resize", debounce(render, 150));
+  render();
+}
+
+function debounce(fn, ms) { let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+/* ---------- KPIs ---------- */
+
+function tile(label, value, note, noteClass) {
+  const d = document.createElement("div"); d.className = "tile";
+  const l = document.createElement("div"); l.className = "label"; l.textContent = label;
+  const v = document.createElement("div"); v.className = "value"; v.textContent = value;
+  d.append(l, v);
+  if (note) {
+    const n = document.createElement("div"); n.className = "note";
+    if (noteClass) { const s = document.createElement("span"); s.className = noteClass; s.textContent = note; n.append(s); }
+    else n.textContent = note;
+    d.append(n);
+  }
+  return d;
+}
+
+function renderKPIs() {
+  const box = document.getElementById("kpis");
+  const rows = rowsOfMonth(state.month);
+  const fib = rows.filter(r => r.categorie === "Fibre" && r.prix);
+  const mob = rows.filter(r => r.categorie === "Forfait mobile" && r.prix);
+  const minFib = fib.length ? fib.reduce((a, b) => a.prix <= b.prix ? a : b) : null;
+  const minMob = mob.length ? mob.reduce((a, b) => a.prix <= b.prix ? a : b) : null;
+  const d = diffs();
+  const fiables = rows.filter(r => r.fiabilite === "officiel_site").length;
+
+  box.replaceChildren(
+    tile("Offres relevées", String(rows.length),
+         fiables + " en source officielle directe"),
+    minFib ? tile("Entrée fibre", fmtDH(minFib.prix), minFib.operateur + " · " + minFib.debit_ou_data) : tile("Entrée fibre", "—", ""),
+    minMob ? tile("Entrée forfait mobile", fmtDH(minMob.prix), minMob.operateur + " · " + minMob.debit_ou_data) : tile("Entrée forfait mobile", "—", ""),
+    tile("Changements vs mois préc.", d ? String(d.changes.length) : "—",
+         d ? monthLabel(d.prev) + " → " + monthLabel(d.curr) : "dès le 2e relevé"),
+  );
+
+  document.getElementById("subtitle").textContent =
+    "IAM · Orange · inwi — relevé du " + monthLabel(state.month) +
+    " · " + months().length + " mois en base";
+}
+
+/* ---------- tooltip ---------- */
+
+const tip = document.getElementById("tooltip");
+function showTip(x, y, title, rows) {
+  tip.replaceChildren();
+  if (title) { const t = document.createElement("div"); t.className = "t-title"; t.textContent = title; tip.append(t); }
+  rows.forEach(([color, val, lbl]) => {
+    const r = document.createElement("div"); r.className = "t-row";
+    if (color) { const k = document.createElement("span"); k.className = "t-key"; k.style.background = color; r.append(k); }
+    const v = document.createElement("span"); v.className = "t-val"; v.textContent = val; r.append(v);
+    if (lbl) { const l = document.createElement("span"); l.className = "t-lbl"; l.textContent = lbl; r.append(l); }
+    tip.append(r);
+  });
+  tip.style.display = "block";
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(x + pad, innerWidth - w - 8) + "px";
+  tip.style.top = (y - h - pad < 8 ? y + pad : y - h - pad) + "px";
+}
+const hideTip = () => { tip.style.display = "none"; };
+
+/* ---------- svg utils ---------- */
+
+const NS = "http://www.w3.org/2000/svg";
+function el(name, attrs, parent) {
+  const e = document.createElementNS(NS, name);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.append(e);
+  return e;
+}
+function niceMax(v) {
+  const p = Math.pow(10, Math.floor(Math.log10(v)));
+  for (const m of [1, 1.5, 2, 2.5, 3, 4, 5, 7.5, 10]) if (m * p >= v) return m * p;
+  return 10 * p;
+}
+function legendInto(id, entries, mark) {
+  const box = document.getElementById(id);
+  box.replaceChildren(...entries.map(([name, color]) => {
+    const k = document.createElement("span"); k.className = "key";
+    const s = document.createElement("span");
+    s.className = mark === "line" ? "stroke" : "swatch";
+    s.style.background = color;
+    k.append(s, document.createTextNode(name));
+    return k;
+  }));
+}
+const surface = () => getComputedStyle(document.documentElement).getPropertyValue("--surface").trim();
+
+/* ---------- fibre : barres groupées ---------- */
+
+const fibreTiers = rows => [...new Set(rows.filter(r => r.categorie === "Fibre")
+    .map(r => parseDebit(r.debit_ou_data).mb).filter(Boolean))].sort((a, b) => a - b);
+const tierLabel = mb => mb >= 1000 ? (mb / 1000) + " Gb/s" : mb + " Mb/s";
+
+/* meilleure ligne (prix connu) par opérateur × palier */
+function fibreMatrix(rows) {
+  const m = new Map();
+  rows.filter(r => r.categorie === "Fibre" && r.prix).forEach(r => {
+    const mb = parseDebit(r.debit_ou_data).mb;
+    if (!mb) return;
+    const k = r.operateur + "|" + mb;
+    if (!m.has(k) || r.prix < m.get(k).prix) m.set(k, r);
+  });
+  return m;
+}
+
+function renderFibre() {
+  const host = document.getElementById("chart-fibre");
+  host.replaceChildren();
+  const rows = filtered().filter(r => r.categorie === "Fibre");
+  const tiers = fibreTiers(rows);
+  const ops = OPS.filter(o => state.ops.has(o.name));
+  const matrix = fibreMatrix(rows);
+  legendInto("leg-fibre", ops.map(o => [o.name, opColor(o.name)]), "rect");
+  if (!tiers.length || !matrix.size) {
+    host.insertAdjacentHTML("beforeend", '<div class="empty">Aucune offre fibre dans la sélection.</div>');
+    return;
+  }
+
+  const W = Math.max(320, host.clientWidth || 520), H = 260;
+  const M = { t: 18, r: 8, b: 26, l: 46 };
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const maxP = niceMax(Math.max(...[...matrix.values()].map(r => r.prix)));
+  const y = v => M.t + ih - (v / maxP) * ih;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+                          "aria-label": "Prix fibre par débit et par opérateur" }, host);
+
+  for (let i = 1; i <= 4; i++) {
+    const v = maxP * i / 4;
+    el("line", { x1: M.l, x2: W - M.r, y1: y(v), y2: y(v), class: "gridline" }, svg);
+    el("text", { x: M.l - 7, y: y(v) + 4, "text-anchor": "end" }, svg)
+      .textContent = v.toLocaleString("fr-FR");
+  }
+  el("line", { x1: M.l, x2: W - M.r, y1: y(0), y2: y(0), class: "axis" }, svg);
+
+  const band = iw / tiers.length;
+  const barW = Math.min(24, (band * 0.7 - 2 * (ops.length - 1)) / ops.length);
+  const groupW = ops.length * barW + (ops.length - 1) * 2;
+
+  tiers.forEach((mb, ti) => {
+    const cx = M.l + band * ti + band / 2;
+    el("text", { x: cx, y: H - 8, "text-anchor": "middle" }, svg).textContent = tierLabel(mb);
+    ops.forEach((op, oi) => {
+      const r = matrix.get(op.name + "|" + mb);
+      if (!r) return;
+      const x = cx - groupW / 2 + oi * (barW + 2);
+      const barH = Math.max(2, y(0) - y(r.prix));
+      const bar = el("path", {
+        d: roundedTopBar(x, y(r.prix), barW, barH, Math.min(4, barW / 2)),
+        fill: opColor(op.name)
+      }, svg);
+      const hit = el("rect", { x: x - 3, y: M.t, width: barW + 6, height: ih + M.b,
+                               fill: "transparent" }, svg);
+      const move = ev => {
+        bar.setAttribute("opacity", "0.82");
+        showTip(ev.clientX, ev.clientY, r.offre,
+          [[opColor(op.name), fmtDH(r.prix), op.name],
+           [null, r.debit_ou_data, r.appels_inclus || ""]]);
+      };
+      hit.addEventListener("pointermove", move);
+      hit.addEventListener("pointerleave", () => { bar.removeAttribute("opacity"); hideTip(); });
+    });
+  });
+}
+
+function roundedTopBar(x, y0, w, h, r) {
+  r = Math.min(r, h);
+  return `M${x},${y0 + h} V${y0 + r} Q${x},${y0} ${x + r},${y0} H${x + w - r} Q${x + w},${y0} ${x + w},${y0 + r} V${y0 + h} Z`;
+}
+
+/* ---------- forfaits : nuage prix / data ---------- */
+
+function renderMobile() {
+  const host = document.getElementById("chart-mobile");
+  host.replaceChildren();
+  const rows = filtered().filter(r => r.categorie === "Forfait mobile" && r.prix)
+    .map(r => ({ ...r, go: parseDebit(r.debit_ou_data).go }))
+    .filter(r => r.go);
+  const ops = OPS.filter(o => state.ops.has(o.name));
+  legendInto("leg-mobile", ops.map(o => [o.name, opColor(o.name)]), "rect");
+  if (!rows.length) {
+    host.insertAdjacentHTML("beforeend", '<div class="empty">Aucun forfait avec volume data dans la sélection.</div>');
+    return;
+  }
+
+  const W = Math.max(320, host.clientWidth || 520), H = 260;
+  const M = { t: 14, r: 14, b: 34, l: 46 };
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const maxGo = niceMax(Math.max(...rows.map(r => r.go)));
+  const maxP = niceMax(Math.max(...rows.map(r => r.prix)));
+  const x = v => M.l + (v / maxGo) * iw;
+  const y = v => M.t + ih - (v / maxP) * ih;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+                          "aria-label": "Prix des forfaits mobiles selon le volume de data" }, host);
+
+  for (let i = 1; i <= 4; i++) {
+    const v = maxP * i / 4;
+    el("line", { x1: M.l, x2: W - M.r, y1: y(v), y2: y(v), class: "gridline" }, svg);
+    el("text", { x: M.l - 7, y: y(v) + 4, "text-anchor": "end" }, svg)
+      .textContent = v.toLocaleString("fr-FR");
+  }
+  for (let i = 0; i <= 4; i++) {
+    const v = maxGo * i / 4;
+    el("text", { x: x(v), y: H - 12,
+                 "text-anchor": i === 4 ? "end" : i === 0 ? "start" : "middle" }, svg)
+      .textContent = v + " Go";
+  }
+  el("line", { x1: M.l, x2: W - M.r, y1: y(0), y2: y(0), class: "axis" }, svg);
+
+  rows.forEach(r => {
+    el("circle", { cx: x(r.go), cy: y(r.prix), r: 7,
+                   fill: opColor(r.operateur), stroke: surface(), "stroke-width": 2 }, svg);
+  });
+  /* couche de survol : le point le plus proche gagne (cibles 24px implicites) */
+  const pts = rows.map(r => ({ r, px: x(r.go), py: y(r.prix) }));
+  const overlay = el("rect", { x: 0, y: 0, width: W, height: H, fill: "transparent" }, svg);
+  overlay.addEventListener("pointermove", ev => {
+    const b = svg.getBoundingClientRect();
+    const mx = (ev.clientX - b.left) * W / b.width, my = (ev.clientY - b.top) * H / b.height;
+    let best = null, bd = Infinity;
+    pts.forEach(p => { const d = (p.px - mx) ** 2 + (p.py - my) ** 2; if (d < bd) { bd = d; best = p; } });
+    if (best && bd < 40 ** 2) {
+      showTip(ev.clientX, ev.clientY, best.r.offre,
+        [[opColor(best.r.operateur), fmtDH(best.r.prix), best.r.operateur],
+         [null, best.r.debit_ou_data, best.r.appels_inclus || ""]]);
+    } else hideTip();
+  });
+  overlay.addEventListener("pointerleave", hideTip);
+}
+
+/* ---------- évolution : lignes par mois ---------- */
+
+function renderEvo() {
+  const host = document.getElementById("chart-evo");
+  host.replaceChildren();
+  const ms = months();
+  const [kind, tierStr] = state.evo.split(":");
+  const mb = +tierStr;
+  const ops = OPS.filter(o => state.ops.has(o.name));
+  legendInto("leg-evo", ops.map(o => [o.name, opColor(o.name)]), "line");
+
+  /* série par opérateur : prix du palier suivi à chaque mois */
+  const series = ops.map(op => ({
+    op: op.name, color: opColor(op.name),
+    pts: ms.map((m, i) => {
+      const mm = fibreMatrix(rowsOfMonth(m).filter(r => r.operateur === op.name));
+      const r = mm.get(op.name + "|" + mb);
+      return r ? { i, m, prix: r.prix, offre: r.offre } : null;
+    }).filter(Boolean),
+  })).filter(s => s.pts.length);
+
+  document.getElementById("evo-hint").textContent = ms.length < 2
+    ? "Un seul relevé en base — la courbe se dessinera dès le relevé du mois prochain."
+    : "Prix DH/mois au fil des relevés, par opérateur.";
+  if (!series.length) {
+    host.insertAdjacentHTML("beforeend", '<div class="empty">Pas de données pour cette offre.</div>');
+    return;
+  }
+
+  const W = Math.max(320, host.clientWidth || 900), H = 240;
+  const M = { t: 16, r: 90, b: 28, l: 46 };
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const maxP = niceMax(Math.max(...series.flatMap(s => s.pts.map(p => p.prix))));
+  const x = i => ms.length === 1 ? M.l + iw / 2 : M.l + (i / (ms.length - 1)) * iw;
+  const y = v => M.t + ih - (v / maxP) * ih;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+                          "aria-label": "Évolution du prix de l'offre suivie" }, host);
+
+  for (let i = 1; i <= 4; i++) {
+    const v = maxP * i / 4;
+    el("line", { x1: M.l, x2: W - M.r, y1: y(v), y2: y(v), class: "gridline" }, svg);
+    el("text", { x: M.l - 7, y: y(v) + 4, "text-anchor": "end" }, svg)
+      .textContent = v.toLocaleString("fr-FR");
+  }
+  ms.forEach((m, i) => {
+    el("text", { x: x(i), y: H - 8, "text-anchor": "middle" }, svg).textContent = monthLabel(m);
+  });
+  el("line", { x1: M.l, x2: W - M.r, y1: y(0), y2: y(0), class: "axis" }, svg);
+
+  series.forEach(s => {
+    if (s.pts.length > 1)
+      el("path", { d: "M" + s.pts.map(p => `${x(p.i)},${y(p.prix)}`).join(" L"),
+                   fill: "none", stroke: s.color, "stroke-width": 2,
+                   "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    s.pts.forEach(p => el("circle", { cx: x(p.i), cy: y(p.prix), r: 4.5,
+                                      fill: s.color, stroke: surface(), "stroke-width": 2 }, svg));
+  });
+  /* étiquettes de fin : anti-collision (tri par y, écart mini 14px) puis
+     ligne de rappel vers le point quand l'étiquette a été déplacée */
+  const ends = series.map(s => {
+    const last = s.pts[s.pts.length - 1];
+    return { s, last, ly: y(last.prix) };
+  }).sort((a, b) => a.ly - b.ly);
+  for (let i = 1; i < ends.length; i++)
+    if (ends[i].ly - ends[i - 1].ly < 14) ends[i].ly = ends[i - 1].ly + 14;
+  ends.forEach(e => {
+    const px = x(e.last.i), py = y(e.last.prix);
+    if (Math.abs(e.ly - py) > 3)
+      el("line", { x1: px + 6, y1: py, x2: px + 9, y2: e.ly - 3.5,
+                   stroke: e.s.color, "stroke-width": 1 }, svg);
+    el("text", { x: px + 11, y: e.ly + 4, class: "vlabel" }, svg)
+      .textContent = e.last.prix + " · " + e.s.op.replace("Maroc Telecom", "IAM");
+  });
+
+  /* crosshair : trouve le mois, lit toutes les séries */
+  const cross = el("line", { y1: M.t, y2: M.t + ih, class: "axis", opacity: 0 }, svg);
+  const overlay = el("rect", { x: 0, y: 0, width: W, height: H, fill: "transparent" }, svg);
+  overlay.addEventListener("pointermove", ev => {
+    const b = svg.getBoundingClientRect();
+    const mx = (ev.clientX - b.left) * W / b.width;
+    let mi = 0, bd = Infinity;
+    ms.forEach((m, i) => { const d = Math.abs(x(i) - mx); if (d < bd) { bd = d; mi = i; } });
+    cross.setAttribute("x1", x(mi)); cross.setAttribute("x2", x(mi));
+    cross.setAttribute("opacity", 1);
+    const rowsTip = series.map(s => {
+      const p = s.pts.find(p => p.i === mi);
+      return p ? [s.color, fmtDH(p.prix), s.op] : [s.color, "—", s.op];
+    });
+    showTip(ev.clientX, ev.clientY, monthLabel(ms[mi]), rowsTip);
+  });
+  overlay.addEventListener("pointerleave", () => { cross.setAttribute("opacity", 0); hideTip(); });
+}
+
+/* ---------- diff ---------- */
+
+function diffs() {
+  const ms = months();
+  const mi = ms.indexOf(state.month);
+  if (mi < 1) return null;
+  const prev = ms[mi - 1], curr = state.month;
+  const key = r => [r.operateur, r.categorie, r.offre].join(" / ");
+  const idx = m => new Map(rowsOfMonth(m).filter(r => r.prix).map(r => [key(r), r]));
+  const a = idx(prev), b = idx(curr);
+  const changes = [];
+  b.forEach((r, k) => {
+    if (!a.has(k)) changes.push({ type: "nouveau", k, r });
+    else if (a.get(k).prix !== r.prix) changes.push({ type: "prix", k, r, avant: a.get(k).prix });
+  });
+  a.forEach((r, k) => { if (!b.has(k)) changes.push({ type: "retire", k, r }); });
+  return { prev, curr, changes };
+}
+
+function renderDiff() {
+  const list = document.getElementById("diff-list");
+  const hint = document.getElementById("diff-hint");
+  list.replaceChildren();
+  const d = diffs();
+  if (!d) { hint.textContent = "La comparaison mensuelle apparaîtra dès le deuxième relevé."; return; }
+  hint.textContent = monthLabel(d.prev) + " → " + monthLabel(d.curr);
+  if (!d.changes.length) {
+    const li = document.createElement("li"); li.textContent = "Aucun changement de grille."; list.append(li);
+    return;
+  }
+  d.changes.forEach(c => {
+    const li = document.createElement("li");
+    const b = document.createElement("span");
+    b.className = "badge " + c.type;
+    b.textContent = { nouveau: "NOUVEAU", prix: "PRIX", retire: "RETIRÉ" }[c.type];
+    const txt = document.createElement("span"); txt.textContent = c.k;
+    li.append(b, txt);
+    const chg = document.createElement("span"); chg.className = "chg";
+    if (c.type === "prix") chg.textContent = fmtDH(c.avant) + " → " + fmtDH(c.r.prix);
+    else chg.textContent = fmtDH(c.r.prix);
+    li.append(chg);
+    list.append(li);
+  });
+}
+
+/* ---------- table ---------- */
+
+function renderTable() {
+  const wrap = document.getElementById("tablewrap");
+  const rows = filtered();
+  const table = document.createElement("table"); table.className = "data";
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  ["Opérateur", "Catégorie", "Offre", "Débit / data", "Appels", "Prix", "Fiabilité"].forEach(h => {
+    const th = document.createElement("th"); th.textContent = h; trh.append(th);
+  });
+  thead.append(trh); table.append(thead);
+  const tbody = document.createElement("tbody");
+  rows.sort((a, b) => a.operateur.localeCompare(b.operateur)
+      || a.categorie.localeCompare(b.categorie) || (a.prix ?? 1e9) - (b.prix ?? 1e9))
+    .forEach(r => {
+      const tr = document.createElement("tr");
+      const tdOp = document.createElement("td");
+      const dot = document.createElement("span"); dot.className = "opdot";
+      dot.style.background = opColor(r.operateur);
+      tdOp.append(dot, document.createTextNode(r.operateur));
+      const tds = [
+        tdOp,
+        cell(r.categorie), cellWrap(r.offre), cell(r.debit_ou_data), cellWrap(r.appels_inclus),
+        cellNum(r.prix != null ? fmtDH(r.prix) : "—"),
+        cellFiab(r.fiabilite),
+      ];
+      tds.forEach(td => tr.append(td));
+      tbody.append(tr);
+    });
+  table.append(tbody);
+  wrap.replaceChildren(table);
+
+  function cell(t) { const td = document.createElement("td"); td.textContent = t || ""; return td; }
+  function cellWrap(t) { const td = cell(t); td.className = "wrapcell"; return td; }
+  function cellNum(t) { const td = cell(t); td.className = "num"; return td; }
+  function cellFiab(t) { const td = document.createElement("td");
+    const s = document.createElement("span"); s.className = "fiab"; s.textContent = t; td.append(s); return td; }
+}
+
+/* ---------- rendu global ---------- */
+
+function render() {
+  renderKPIs();
+  renderFibre();
+  renderMobile();
+  renderEvo();
+  renderDiff();
+  renderTable();
+}
+
+loadData();
+</script>

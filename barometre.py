@@ -149,8 +149,12 @@ class Navigateur:
             self._browser = self._pw.chromium.launch(headless=True)
         return self._browser
 
-    def text(self, url: str, settle_ms: int = 5000) -> str:
-        """Texte visible d'une page après exécution du JavaScript."""
+    def text(self, url: str, settle_ms: int = 5000, clicks=()) -> str:
+        """Texte visible d'une page après exécution du JavaScript.
+
+        `clicks` : libellés d'onglets à cliquer après le chargement (ex. les
+        gammes de la boutique Orange) — le texte de chaque état est concaténé,
+        les parsers dédoublonnent. Best effort : un clic raté est ignoré."""
         page = self._ensure().new_page(user_agent=UA, locale="fr-FR")
         try:
             page.goto(url, wait_until="domcontentloaded", timeout=60000)
@@ -163,7 +167,15 @@ class Navigateur:
                 except Exception:
                     pass
             page.wait_for_timeout(settle_ms)
-            return page.inner_text("body")
+            text = page.inner_text("body")
+            for label in clicks:
+                try:
+                    page.get_by_text(label, exact=False).first.click(timeout=2500)
+                    page.wait_for_timeout(1200)
+                    text += "\n" + page.inner_text("body")
+                except Exception:
+                    pass
+            return text
         finally:
             page.close()
 
@@ -468,8 +480,11 @@ PAGES = [
     dict(op="orange", label="Orange fibre residentiel (SVG)", method="html_raw",
          url="https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange",
          parse=lambda html, u: parse_orange_svg_fibre(html, u)),
+    # Les cartes Yo Max sont derrière un onglet (seuls les Yo s'affichent au
+    # chargement — constat du run du 16/08/2026) : on clique les gammes.
     dict(op="orange", label="Orange forfaits (boutique)", method="js",
          url="https://boutique.orange.ma/offres-mobile",
+         clicks=("Forfaits Yo Max", "Tous les forfaits"),
          parse=lambda txt, u: parse_orange_boutique_forfaits(txt, u)),
     dict(op="orange", label="Orange Dar Box 5G", method="js",
          url="https://boutique.orange.ma/offres-dar-box/dar-box-5g",
@@ -519,7 +534,7 @@ def run(only=None, no_js=False):
                 elif page["method"] == "html_raw":
                     content = fetch_html(page["url"])
                 else:  # js
-                    content = nav.text(page["url"])
+                    content = nav.text(page["url"], clicks=page.get("clicks", ()))
                 (raw_month_dir / f"{slugify(page['label'])}.txt").write_text(
                     content, encoding="utf-8")
                 rows = page["parse"](content, page["url"])
