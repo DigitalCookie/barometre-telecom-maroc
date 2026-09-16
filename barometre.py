@@ -21,13 +21,18 @@ Usage :
   python barometre.py run --only iam inwi # filtrer par opérateur
   python barometre.py run --no-js         # sauter les pages Playwright
   python barometre.py replay              # re-parser les dumps data/raw (hors ligne)
+  python barometre.py backfill --from 2023-01 --write
+                                          # historique via web.archive.org
   python barometre.py test                # valider les parsers sur échantillons
   python barometre.py diff                # comparer les 2 derniers relevés
   python barometre.py compare             # confronter le relevé au releve de reference
+  python barometre.py feed                # régénérer flux RSS + résumés
 
 Sorties :
   data/barometre.csv            base cumulée (une ligne par offre et par mois)
   data/releve_YYYY-MM.csv       snapshot du mois
+  data/changements.xml          flux RSS des changements de grille
+  data/resumes.json             résumé éditorial par mois (dashboard + SEO)
   data/raw/YYYY-MM/*.txt        texte brut de chaque page (audit / débogage)
 """
 
@@ -66,8 +71,13 @@ FIELDNAMES = [
 ]
 
 # Valeurs autorisées pour la colonne fiabilite (cf. CLAUDE.md).
+# officiel_archive : relevé rétrospectif reconstruit depuis une capture
+# web.archive.org d'une page officielle (commande `backfill`).
 FIABILITES = {"officiel_site", "officiel_svg", "officiel_catalogue",
-              "officiel_js_generique", "a_completer"}
+              "officiel_js_generique", "officiel_archive", "a_completer"}
+
+# Adresse publique du dashboard (flux RSS, liens du résumé).
+SITE_URL = "https://digitalcookie.github.io/barometre-telecom-maroc/"
 
 # Fourchette plausible d'un prix mensuel en DH : hors bornes = extraction
 # suspecte (un numéro de téléphone, un débit, un prix d'équipement…).
@@ -238,6 +248,26 @@ def parse_iam_forfaits(text, url):
     return rows
 
 
+def parse_iam_box(text, url, produit):
+    """iam.ma box — « El Manzil 5G 400 DH/mois 100 Mb/s* » et
+    « Box 4G+ 199 DH/mois 60 min 60 Go Acheter » (dumps réels 09/2026).
+    Les pass internet en bas de page (« 20 DH 2 Go ») n'ont pas de
+    « /mois » : l'ancre du prix mensuel les écarte d'office."""
+    t = norm(text)
+    rows = []
+    pat = re.compile(
+        rf"{re.escape(produit)}\s+(\d{{2,4}})\s*DH/mois\s*(.{{0,100}}?)"
+        r"(?:Acheter|Frais|\Z)", re.I | re.S)
+    for prix, corps in pat.findall(t):
+        debit = " / ".join(dict.fromkeys(
+            re.findall(r"\d+\s*(?:Go|Mb/s|M[ée]ga)", corps)))[:40]
+        minutes = " / ".join(dict.fromkeys(
+            re.findall(r"\d+\s*min\b", corps)))[:30]
+        rows.append(row("Maroc Telecom", "Box", f"{produit} {prix} DH",
+                        debit, minutes, prix, source=url))
+    return dedup(rows)
+
+
 def dedup(rows, key=lambda r_: (r_["offre"], r_["prix_dh_mois"])):
     """Les pages rendent souvent la même grille plusieurs fois (desktop +
     mobile, carrousels) : on garde la première occurrence de chaque offre."""
@@ -291,9 +321,15 @@ def parse_orange_svg_fibre(html, url, fetch=None):
                     break
         except Exception as exc:  # SVG inaccessible : on garde le palier
             note = f"SVG non recupere ({exc.__class__.__name__})"
+        if not prix:
+            # Prix dessiné en tracés vectoriels (pas de texte dans le SVG) :
+            # une ligne sans prix polluait le baromètre pour rien — la grille
+            # pro.orange.ma sert déjà de source résidentielle. On journalise.
+            print(f"    (svg) palier {mega} Mega ignoré : {note}")
+            continue
         rows.append(row("Orange", "Fibre", f"Fibre {mega} Mega (residentiel)",
                         f"{mega} Mb/s", "", prix, note, svg_url,
-                        "officiel_svg" if prix else "a_completer"))
+                        "officiel_svg"))
     return rows
 
 
@@ -529,12 +565,10 @@ PAGES = [
          parse=lambda txt, u: parse_iam_forfaits(txt, u)),
     dict(op="iam", label="IAM Box El Manzil 5G", method="js",
          url="https://www.iam.ma/box-el-manzil-5g",
-         parse=lambda txt, u: parse_generic(txt, u, "Maroc Telecom", "Box",
-                                            "El Manzil 5G")),
+         parse=lambda txt, u: parse_iam_box(txt, u, "El Manzil 5G")),
     dict(op="iam", label="IAM Box 4G+", method="js",
          url="https://www.iam.ma/box-4g",
-         parse=lambda txt, u: parse_generic(txt, u, "Maroc Telecom", "Box",
-                                            "Box 4G+")),
+         parse=lambda txt, u: parse_iam_box(txt, u, "Box 4G+")),
     # ------------------------------------------------------------- Orange
     dict(op="orange", label="Orange fibre (grille pro, HTML)", method="http",
          url="https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre",
@@ -624,6 +658,8 @@ def run(only=None, no_js=False):
     signaler_anomalies(all_rows)
     diff()
     comparer_reference(all_rows)
+    ecrire_feed()
+    ecrire_resumes()
     return 0
 
 
@@ -723,6 +759,19 @@ def replay(month=None, only=None, write=False):
 
     signaler_anomalies(all_rows)
     if write:
+        # Les parsers stampent la date du jour : pour un mois passé, cela
+        # enverrait les lignes dans le mauvais mois du master. On reprend la
+        # date du relevé existant (ou le 1er du mois du dump à défaut).
+        snap = DATA_DIR / f"releve_{month}.csv"
+        date_ref = today() if month == today()[:7] else f"{month}-01"
+        if snap.exists():
+            with open(snap, newline="", encoding="utf-8-sig") as fh:
+                dates = [r_["date_releve"] for r_ in
+                         csv.DictReader(fh, delimiter=";") if r_.get("date_releve")]
+            if dates:
+                date_ref = max(set(dates), key=dates.count)
+        for r_ in all_rows:
+            r_["date_releve"] = date_ref
         ecrire_releve(all_rows, month)
         comparer_reference(all_rows)
     else:
@@ -887,14 +936,9 @@ def read_master():
 # --------------------------------------------------------------------------
 
 
-def diff():
-    rows = read_master()
-    months = sorted({r_["date_releve"][:7] for r_ in rows})
-    if len(months) < 2:
-        print("\n(diff) Un seul relevé en base — comparaison possible dès le mois prochain.")
-        return
-    prev, curr = months[-2], months[-1]
-
+def diff_changes(rows, prev, curr):
+    """Changements structurés entre deux mois du master : liste de dicts
+    {type: nouveau|prix|retire, cle: (op, cat, offre), prix, avant?}."""
     def index(month):
         return {(r_["operateur"], r_["categorie"], r_["offre"]): r_
                 for r_ in rows if r_["date_releve"][:7] == month
@@ -904,15 +948,272 @@ def diff():
     changes = []
     for key in sorted(b):
         if key not in a:
-            changes.append(f"  + NOUVEAU  {' / '.join(key)} : {b[key]['prix_dh_mois']} DH")
+            changes.append(dict(type="nouveau", cle=key,
+                                prix=b[key]["prix_dh_mois"]))
         elif a[key]["prix_dh_mois"] != b[key]["prix_dh_mois"]:
-            changes.append(f"  ~ PRIX     {' / '.join(key)} : "
-                           f"{a[key]['prix_dh_mois']} -> {b[key]['prix_dh_mois']} DH")
+            changes.append(dict(type="prix", cle=key,
+                                avant=a[key]["prix_dh_mois"],
+                                prix=b[key]["prix_dh_mois"]))
     for key in sorted(set(a) - set(b)):
-        changes.append(f"  - RETIRE   {' / '.join(key)} (était {a[key]['prix_dh_mois']} DH)")
+        changes.append(dict(type="retire", cle=key,
+                            prix=a[key]["prix_dh_mois"]))
+    return changes
+
+
+def diff():
+    rows = read_master()
+    months = sorted({r_["date_releve"][:7] for r_ in rows})
+    if len(months) < 2:
+        print("\n(diff) Un seul relevé en base — comparaison possible dès le mois prochain.")
+        return
+    prev, curr = months[-2], months[-1]
+    changes = diff_changes(rows, prev, curr)
+
+    def ligne(c):
+        libelle = " / ".join(c["cle"])
+        if c["type"] == "nouveau":
+            return f"  + NOUVEAU  {libelle} : {c['prix']} DH"
+        if c["type"] == "prix":
+            return f"  ~ PRIX     {libelle} : {c['avant']} -> {c['prix']} DH"
+        return f"  - RETIRE   {libelle} (était {c['prix']} DH)"
 
     print(f"\n=== Baromètre {prev} -> {curr} ===")
-    print("\n".join(changes) if changes else "  Aucun changement de grille.")
+    print("\n".join(ligne(c) for c in changes) if changes
+          else "  Aucun changement de grille.")
+
+# --------------------------------------------------------------------------
+# Publication : flux RSS des changements + résumé éditorial mensuel
+# --------------------------------------------------------------------------
+
+FEED_XML = DATA_DIR / "changements.xml"
+RESUMES_JSON = DATA_DIR / "resumes.json"
+MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+           "août", "septembre", "octobre", "novembre", "décembre"]
+
+
+def mois_label(month):
+    y, m = month.split("-")
+    return f"{MOIS_FR[int(m) - 1]} {y}"
+
+
+def _libelle_change(c):
+    """Phrase française d'un changement structuré."""
+    op, _cat, offre = c["cle"]
+    if c["type"] == "nouveau":
+        return f"{op} lance « {offre} » à {c['prix']} DH/mois"
+    if c["type"] == "prix":
+        sens = "baisse" if int(c["prix"]) < int(c["avant"]) else "passe"
+        return f"« {offre} » ({op}) {sens} de {c['avant']} à {c['prix']} DH/mois"
+    return f"{op} retire « {offre} » (était {c['prix']} DH/mois)"
+
+
+def ecrire_feed():
+    """Flux RSS des changements de grille, un item par mois comparé.
+    Publié sur GitHub Pages : {SITE_URL}data/changements.xml"""
+    import email.utils
+    from html import escape
+
+    rows = read_master()
+    months = sorted({r_["date_releve"][:7] for r_ in rows})
+    items = []
+    for i in range(len(months) - 1, 0, -1):          # récent d'abord
+        prev, curr = months[i - 1], months[i]
+        changes = diff_changes(rows, prev, curr)
+        date_releve = max(r_["date_releve"] for r_ in rows
+                          if r_["date_releve"][:7] == curr)
+        pub = email.utils.format_datetime(dt.datetime.fromisoformat(
+            date_releve + "T08:00:00+00:00"))
+        titre = (f"Baromètre {mois_label(curr)} : "
+                 + (f"{len(changes)} changement(s) de grille" if changes
+                    else "grilles stables"))
+        corps = ("<ul>" + "".join(f"<li>{escape(_libelle_change(c))}</li>"
+                                  for c in changes) + "</ul>"
+                 if changes else
+                 "<p>Aucun changement de grille chez IAM, Orange et inwi.</p>")
+        items.append(
+            f"<item><title>{escape(titre)}</title>"
+            f"<link>{SITE_URL}?mois={curr}</link>"
+            f"<guid isPermaLink=\"false\">barometre-{curr}</guid>"
+            f"<pubDate>{pub}</pubDate>"
+            f"<description>{escape(corps)}</description></item>")
+        if len(items) >= 24:
+            break
+
+    xml = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+           "<rss version=\"2.0\"><channel>"
+           "<title>Baromètre Télécoms Maroc — changements de grille</title>"
+           f"<link>{SITE_URL}</link>"
+           "<description>Nouveautés, retraits et changements de prix "
+           "détectés chaque mois chez Maroc Telecom, Orange et inwi "
+           "(sites officiels).</description>"
+           "<language>fr</language>"
+           + "".join(items) + "</channel></rss>\n")
+    FEED_XML.write_text(xml, encoding="utf-8")
+    print(f"Flux RSS écrit -> {FEED_XML.name} ({len(items)} item(s))")
+
+
+def texte_resume(rows, month, months):
+    """Paragraphe éditorial d'un mois : volumétrie, prix d'entrée fibre et
+    mobile, changements vs mois précédent. Texte 100 % dérivé des données."""
+    sel = [r_ for r_ in rows if r_["date_releve"][:7] == month]
+    phrases = [f"En {mois_label(month)}, le baromètre a relevé "
+               f"{len(sel)} offres sur les sites officiels de "
+               "Maroc Telecom, Orange et inwi."]
+
+    def entree(cat, unite):
+        avec_prix = [r_ for r_ in sel if r_["categorie"] == cat
+                     and r_["prix_dh_mois"].isdigit()]
+        if not avec_prix:
+            return None
+        mini = min(int(r_["prix_dh_mois"]) for r_ in avec_prix)
+        ops = sorted({r_["operateur"] for r_ in avec_prix
+                      if int(r_["prix_dh_mois"]) == mini})
+        return f"{mini} DH/mois ({', '.join(ops)}{unite})"
+
+    fibre = entree("Fibre", "")
+    mobile = entree("Forfait mobile", "")
+    if fibre:
+        phrases.append(f"L'entrée fibre est à {fibre}.")
+    if mobile:
+        phrases.append(f"Le premier forfait mobile démarre à {mobile}.")
+
+    idx = months.index(month)
+    if idx > 0:
+        prev = months[idx - 1]
+        changes = diff_changes(rows, prev, month)
+        if not changes:
+            phrases.append(f"Aucun changement de grille par rapport à "
+                           f"{mois_label(prev)}.")
+        else:
+            exemples = "; ".join(_libelle_change(c) for c in changes[:3])
+            suite = f" — et {len(changes) - 3} autre(s)" if len(changes) > 3 else ""
+            phrases.append(f"Par rapport à {mois_label(prev)} : "
+                           f"{exemples}{suite}.")
+    return " ".join(phrases)
+
+
+def ecrire_resumes():
+    """data/resumes.json : un paragraphe par mois, affiché par le dashboard
+    (section « L'analyse du mois ») et baké dans la page pour le SEO."""
+    import json
+    rows = read_master()
+    months = sorted({r_["date_releve"][:7] for r_ in rows})
+    resumes = {m: texte_resume(rows, m, months) for m in months}
+    RESUMES_JSON.write_text(
+        json.dumps({"genere_le": today(), "resumes": resumes},
+                   ensure_ascii=False, indent=1),
+        encoding="utf-8")
+    print(f"Résumés écrits -> {RESUMES_JSON.name} ({len(resumes)} mois)")
+
+# --------------------------------------------------------------------------
+# Backfill : reconstruire l'historique depuis les captures web.archive.org
+# --------------------------------------------------------------------------
+
+WAYBACK_CDX = "https://web.archive.org/cdx/search/cdx"
+# Pages dont le HTML archivé est rendu serveur : parsables sans navigateur.
+# (boutique Orange, yoxo, forfaits inwi : rendu client — les captures
+# n'exécutent pas le JS applicatif de façon fiable, on ne backfill pas.)
+BACKFILL_LABELS = {
+    "IAM fibre", "IAM forfaits mobile", "IAM Box El Manzil 5G", "IAM Box 4G+",
+    "Orange fibre (grille pro, HTML)", "inwi fibre",
+}
+
+
+def _wayback_get(url, params=None, essais=6):
+    """GET patient vers web.archive.org : l'API CDX rend des 503 en rafale
+    dès la deuxième requête rapprochée (rate-limit ~1 req/30 s constaté
+    09/2026). Backoff long et progressif — un backfill est un one-off."""
+    for essai in range(1, essais + 1):
+        try:
+            r = requests.get(url, params=params, headers=HTTP_HEADERS,
+                             timeout=90)
+            if r.status_code in (429, 503):
+                raise requests.HTTPError(f"HTTP {r.status_code}")
+            r.raise_for_status()
+            return r
+        except Exception:
+            if essai == essais:
+                raise
+            attente = 20 * essai
+            print(f"(attente {attente}s)", end=" ", flush=True)
+            time.sleep(attente)
+
+
+def wayback_mois(url, m_from, m_to):
+    """Premier snapshot HTTP 200 de chaque mois (API CDX, collapse mensuel).
+    Rend {"YYYYMM": "timestamp complet"}."""
+    params = {"url": url, "output": "json", "from": m_from.replace("-", ""),
+              "to": m_to.replace("-", "") + "31", "filter": "statuscode:200",
+              "collapse": "timestamp:6", "fl": "timestamp", "limit": "200"}
+    data = _wayback_get(WAYBACK_CDX, params).json()
+    return {ts[0][:6]: ts[0] for ts in data[1:]} if data else {}
+
+
+def backfill(m_from, m_to=None, only=None, write=False, delai=1.5):
+    """Relevés rétrospectifs : pour chaque mois absent du master, re-parser
+    les captures web.archive.org des pages rendues serveur. Les lignes
+    sortent en fiabilite=officiel_archive avec la capture exacte en source."""
+    m_to = m_to or today()[:7]
+    mois_existants = {r_["date_releve"][:7] for r_ in read_master()}
+    pages = [p for p in PAGES if p["label"] in BACKFILL_LABELS
+             and (not only or p["op"] in only)]
+
+    print(f"Backfill {m_from} -> {m_to} sur {len(pages)} page(s) archivée(s) :\n")
+    par_mois = {}
+    for page in pages:
+        print(f"  CDX {page['label']} …", end=" ", flush=True)
+        try:
+            snaps = wayback_mois(page["url"], m_from, m_to)
+            print(f"{len(snaps)} mois capturés")
+        except Exception as exc:
+            print(f"ECHEC ({exc.__class__.__name__}: {exc})")
+            continue
+        time.sleep(delai)
+        for ym, ts in sorted(snaps.items()):
+            month = f"{ym[:4]}-{ym[4:6]}"
+            if month in mois_existants:
+                continue
+            url_arch = f"https://web.archive.org/web/{ts}id_/{page['url']}"
+            try:
+                rs = page["parse"](html_to_text(_wayback_get(url_arch).text),
+                                   page["url"])
+            except Exception as exc:
+                print(f"    {month}  {page['label']}: ECHEC "
+                      f"({exc.__class__.__name__})")
+                time.sleep(delai)
+                continue
+            date_iso = f"{ts[:4]}-{ts[4:6]}-{ts[6:8]}"
+            for r_ in rs:
+                r_["date_releve"] = date_iso
+                if r_["fiabilite"] == "officiel_site":
+                    r_["fiabilite"] = "officiel_archive"
+                r_["remarques"] = ((r_["remarques"] + " - ") if r_["remarques"]
+                                   else "") + "retrospectif web.archive.org"
+                r_["source"] = url_arch
+            etat = f"{len(rs)} offre(s)" if rs else "0 offre (format ancien ?)"
+            print(f"    {month}  {page['label']}: {etat}")
+            if rs:
+                par_mois.setdefault(month, []).extend(rs)
+            time.sleep(delai)
+
+    if not par_mois:
+        print("\nAucun mois reconstitué (tout est déjà en base, ou aucune "
+              "capture parsable).")
+        return 1
+
+    for month in sorted(par_mois):
+        rs = par_mois[month]
+        print(f"\n=== {month} : {len(rs)} offre(s) reconstituées ===")
+        apercu(rs, 12)
+        signaler_anomalies(rs)
+        if write:
+            ecrire_releve(rs, month)
+    if write:
+        ecrire_feed()
+        ecrire_resumes()
+    else:
+        print("\nRien n'est écrit — ajouter --write pour enregistrer ces mois.")
+    return 0
 
 # --------------------------------------------------------------------------
 # Mode test : parsers validés sur les extraits réels capturés le 16/08/2026
@@ -1086,12 +1387,48 @@ SAMPLES = {
         199 Dh/mois pendant 3 mois Engagement 12 mois Je choisis
         Dar Box 5G 300 Go 299 DH /mois Je choisis
     """,
+    # Extraits des dumps réels 09/2026 (data/raw/2026-09/iam-box-*.txt).
+    "iam_box_5g": """
+        Wifi
+        Box El Manzil
+        El Manzil 5G
+        El Manzil 5G
+        400 DH/mois
+        100 Mb/s*
+        Frais de mise à disposition de la Box 5G:
+        Frais de mise en service:
+        Acheter
+        El Manzil 5G
+        Qu’est-ce que l’offre Box 5G El Manzil ?
+    """,
+    "iam_box_4g": """
+        Box 4G+ internet
+        Forfaits internet
+        Box 4G+
+        199 DH/mois
+        60 min
+        60 Go
+        Acheter
+        Box 4G+
+        350 DH/mois
+        120 min
+        90 Go
+        Acheter
+        Vous pouvez souscrire à l'un des pass internet mobile suivants en appelant le 600.
+        20 DH
+        2 Go
+    """,
     # Page résidentielle Orange : les cartes tarifaires sont des <img> SVG.
     # Ordre volontairement mélangé pour vérifier le tri numérique des paliers.
     "orange_svg_page": """
         <img src="https://cdn-exemple.orange.ma/FibreOrange/fibre-cards/100go.svg">
         <img src="https://cdn-exemple.orange.ma/FibreOrange/fibre-cards/1000go.svg">
         <img src="https://cdn-exemple.orange.ma/FibreOrange/fibre-cards/20go.svg">
+    """,
+    # Palier dont le SVG ne contient AUCUN prix en texte (tracés vectoriels) :
+    # depuis 09/2026, la ligne est ignorée au lieu de sortir vide.
+    "orange_svg_page_sans_prix": """
+        <img src="https://cdn-exemple.orange.ma/FibreOrange/fibre-cards/50go.svg">
     """,
 }
 
@@ -1100,6 +1437,7 @@ SVG_SAMPLES = {
     "20": '<svg><text>20 Méga</text><text>249</text><text>Dh/mois</text></svg>',
     "100": '<svg><text>100 Méga</text><text>349</text><text>Dh/mois</text></svg>',
     "1000": '<svg><text>1000 Méga</text><text>949</text><text>Dh/mois</text></svg>',
+    "50": '<svg><path d="M0 0 L10 10"/></svg>',   # prix en tracés, pas en texte
 }
 
 
@@ -1201,6 +1539,22 @@ def test():
     ok &= {(x["prix_dh_mois"], x["debit_ou_data"]) for x in r} == {
         ("199", "100 Go"), ("299", "300 Go")}
 
+    r = parse_iam_box(SAMPLES["iam_box_5g"], "test", "El Manzil 5G")
+    print(f"[iam_box_5g]       {len(r)} offres :",
+          [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+    # Le titre répété et la FAQ ne génèrent pas de lignes fantômes.
+    ok &= [(x["offre"], x["debit_ou_data"], x["prix_dh_mois"]) for x in r] == [
+        ("El Manzil 5G 400 DH", "100 Mb/s", "400")]
+
+    r = parse_iam_box(SAMPLES["iam_box_4g"], "test", "Box 4G+")
+    print(f"[iam_box_4g]       {len(r)} offres :",
+          [(x['debit_ou_data'], x['appels_inclus'], x['prix_dh_mois']) for x in r])
+    # Les pass internet (« 20 DH 2 Go », sans /mois) restent dehors.
+    ok &= sorted((x["debit_ou_data"], x["appels_inclus"], x["prix_dh_mois"])
+                 for x in r) == [("60 Go", "60 min", "199"),
+                                 ("90 Go", "120 min", "350")]
+    ok &= all(x["fiabilite"] == "officiel_site" for x in r)
+
     r = parse_orange_svg_fibre(SAMPLES["orange_svg_page"], "test",
                                fetch=fake_fetch_svg)
     print(f"[orange_svg]       {len(r)} paliers :",
@@ -1210,6 +1564,33 @@ def test():
         ("20 Mb/s", "249"), ("100 Mb/s", "349"), ("1000 Mb/s", "949")]
     ok &= all("cdn-exemple.orange.ma" in x["source"] for x in r)
     ok &= all(x["fiabilite"] == "officiel_svg" for x in r)
+
+    r = parse_orange_svg_fibre(SAMPLES["orange_svg_page_sans_prix"], "test",
+                               fetch=fake_fetch_svg)
+    print(f"[orange_svg_vide]  {len(r)} palier(s) (attendu : 0, ligne ignorée)")
+    ok &= r == []
+
+    # diff_changes + résumé éditorial : dérivés structurés du master.
+    faux = [
+        dict(zip(FIELDNAMES, v)) for v in [
+            ("2026-08-02", "inwi", "Fibre", "Fibre 20", "20 Mb/s", "", "249",
+             "", "", "officiel_site"),
+            ("2026-08-02", "inwi", "Forfait mobile", "Forfait A", "10 Go", "",
+             "49", "", "", "officiel_site"),
+            ("2026-09-02", "inwi", "Fibre", "Fibre 20", "20 Mb/s", "", "199",
+             "", "", "officiel_site"),
+            ("2026-09-02", "inwi", "Forfait mobile", "Forfait B", "20 Go", "",
+             "69", "", "", "officiel_site"),
+        ]]
+    ch = diff_changes(faux, "2026-08", "2026-09")
+    print(f"[diff_changes]     {[(c['type'], c['cle'][2]) for c in ch]}")
+    ok &= sorted(c["type"] for c in ch) == ["nouveau", "prix", "retire"]
+    ok &= any(c["type"] == "prix" and c["avant"] == "249" and c["prix"] == "199"
+              for c in ch)
+    resume = texte_resume(faux, "2026-09", ["2026-08", "2026-09"])
+    print(f"[texte_resume]     {resume[:110]}…")
+    ok &= "septembre 2026" in resume and "199 DH/mois" in resume
+    ok &= "baisse de 249 à 199" in resume
 
     print("[norm_debit]       ", {k: norm_debit(k) for k in
                                   ("100 Mb/s", "1 Gb/s", "200 Méga", "25 Go")})
@@ -1251,9 +1632,19 @@ def main():
     p_replay.add_argument("--write", action="store_true",
                           help="enregistrer le relevé au lieu d'un simple aperçu")
 
+    p_bf = sub.add_parser(
+        "backfill", help="reconstruire l'historique via web.archive.org")
+    p_bf.add_argument("--from", dest="m_from", required=True,
+                      help="premier mois (YYYY-MM)")
+    p_bf.add_argument("--to", dest="m_to", help="dernier mois, défaut : courant")
+    p_bf.add_argument("--only", nargs="+", choices=ops)
+    p_bf.add_argument("--write", action="store_true",
+                      help="enregistrer les mois reconstitués")
+
     sub.add_parser("test", help="valider les parsers sur les échantillons")
     sub.add_parser("diff", help="comparer les deux derniers relevés")
     sub.add_parser("compare", help="confronter le dernier relevé à la référence")
+    sub.add_parser("feed", help="régénérer changements.xml + resumes.json")
     args = ap.parse_args()
 
     if args.cmd == "run":
@@ -1262,12 +1653,18 @@ def main():
         sys.exit(check(only=args.only))
     if args.cmd == "replay":
         sys.exit(replay(month=args.month, only=args.only, write=args.write))
+    if args.cmd == "backfill":
+        sys.exit(backfill(args.m_from, args.m_to, only=args.only,
+                          write=args.write))
     if args.cmd == "test":
         sys.exit(test())
     if args.cmd == "diff":
         diff()
     if args.cmd == "compare":
         comparer_reference()
+    if args.cmd == "feed":
+        ecrire_feed()
+        ecrire_resumes()
 
 
 if __name__ == "__main__":

@@ -30,7 +30,27 @@ jobs:
         run: |
           mkdir -p _site/data
           cp dashboard/index.html _site/index.html
+          cp dashboard/og.png _site/og.png
           cp data/*.csv _site/data/
+          cp data/changements.xml data/resumes.json _site/data/ 2>/dev/null || true
+
+      - name: Baker le résumé du mois dans la page (SEO)
+        # Le résumé du dernier mois remplace le placeholder RESUME_SEO :
+        # le texte est présent dans le HTML servi, pas seulement injecté en JS.
+        run: |
+          python3 - <<'EOF'
+          import json, html, pathlib
+          site = pathlib.Path("_site/index.html")
+          res = pathlib.Path("data/resumes.json")
+          if res.exists():
+              resumes = json.loads(res.read_text(encoding="utf-8"))["resumes"]
+              if resumes:
+                  dernier = resumes[max(resumes)]
+                  site.write_text(site.read_text(encoding="utf-8").replace(
+                      "<!--RESUME_SEO-->", html.escape(dernier)),
+                      encoding="utf-8")
+                  print("Résumé baké :", dernier[:80], "…")
+          EOF
 
       - uses: actions/configure-pages@v5
         with:

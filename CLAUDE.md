@@ -4,7 +4,9 @@
 Relevé mensuel automatisé des offres **fibre, forfaits mobiles et box** de
 Maroc Telecom (IAM), Orange Maroc et inwi, extraites de leurs **sites
 officiels**, façon baromètre Ariase (ariase.com/barometre-prix).
-À terme : un dashboard branché sur `data/barometre.csv`.
+Dashboard en production : https://digitalcookie.github.io/barometre-telecom-maroc/
+(page unique `dashboard/index.html`, FR/AR, vues partageables par URL,
+flux RSS, résumé éditorial mensuel, prix à l'unité DH/Go et DH/Mbps).
 
 ## Règle d'or du projet
 **Seuls les sites officiels des opérateurs font foi comme source de prix.**
@@ -36,8 +38,13 @@ comme valeur écrite dans le baromètre.
 ## Commandes
 `check` (préflight réseau) · `test` (parsers, hors ligne) · `run` (relevé) ·
 `replay` (re-parse les dumps `data/raw/` sans réseau — boucle de mise au
-point des parsers, `--write` pour enregistrer) · `diff` (2 derniers mois) ·
-`compare` (relevé vs référence).
+point des parsers, `--write` pour enregistrer, dates du relevé existant
+préservées) · `backfill --from YYYY-MM [--write]` (historique reconstruit
+depuis web.archive.org, pages rendues serveur uniquement, sortie
+`officiel_archive` — API CDX très rate-limitée, backoff automatique) ·
+`diff` (2 derniers mois) · `compare` (relevé vs référence) · `feed`
+(régénère `data/changements.xml` + `data/resumes.json` — aussi fait par
+`run` et `backfill --write`).
 
 ## Cartographie des sources (constats vérifiés)
 | Page | Méthode | État du parser |
@@ -47,10 +54,10 @@ point des parsers, `--write` pour enregistrer) · `diff` (2 derniers mois) ·
 | pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre | HTTP | dédié, testé — grille identique au résidentiel B2C aujourd'hui, **à surveiller si divergence** |
 | orange.ma résidentiel fibre | cartes SVG `fibre-cards/20go.svg`…`1000go.svg` | contrôle croisé ; **vérifier que le prix est bien en texte dans le SVG** |
 | inwi.ma fibre | HTTP | dédié, testé |
-| boutique.orange.ma (forfaits Yo Max, Dar Box 5G/4G+) | Playwright (Next.js client) | `parse_generic` — à promouvoir en parser dédié |
-| iam.ma/box-el-manzil-5g, /box-4g | Playwright | `parse_generic` — à promouvoir |
-| inwi.ma forfaits mobile | Playwright | `parse_generic` — à promouvoir |
-| yoxo.ma | Playwright | `parse_generic` — à promouvoir |
+| boutique.orange.ma (forfaits Yo Max, Dar Box 5G/4G+) | Playwright (Next.js client) | dédié (cartes + slugs), testé |
+| iam.ma/box-el-manzil-5g, /box-4g | Playwright | dédié (`parse_iam_box`), testé |
+| inwi.ma forfaits mobile | Playwright | dédié, testé |
+| yoxo.ma | Playwright | dédié (cartes + slugs), testé |
 
 Astuce boutique Orange : les slugs d'URL encodent l'offre
 (`forfait-yo-max-99dh-25go-1h-d-appel`) — extractibles sans exécuter le JS.
@@ -60,7 +67,8 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
 - Schéma : date_releve;operateur;categorie;offre;debit_ou_data;
   appels_inclus;prix_dh_mois;remarques;source;fiabilite
 - `fiabilite` ∈ officiel_site | officiel_svg | officiel_catalogue |
-  officiel_js_generique | a_completer. Objectif : tout en `officiel_site`.
+  officiel_js_generique | officiel_archive | a_completer. Objectif : tout
+  en `officiel_site` (ou `officiel_archive` pour l'historique backfillé).
 - Chaque run sauvegarde le texte brut de chaque page dans
   `data/raw/YYYY-MM/` (piste d'audit — ne pas supprimer).
 - Relancer `run` le même mois remplace le relevé du mois (pas de doublon).
@@ -76,17 +84,23 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   U+200E) ; les grilles pro.orange.ma et inwi sont rendues 2-3× par page
   (desktop/mobile/éditorial) → dedup systématique dans les parsers.
 - SVG Orange résidentiel : les paliers sont détectés mais le prix est
-  vectorisé (pas de texte) → reste `a_completer`, pro.orange.ma fait foi.
+  vectorisé (pas de texte) → depuis 09/2026 ces paliers sont **ignorés**
+  (plus de lignes vides), pro.orange.ma fait foi.
+
+## Dashboard (dashboard/index.html)
+- Page unique sans framework ; déployée par `.github/workflows/pages.yml`
+  (copie CSV + changements.xml + resumes.json + og.png, bake le résumé du
+  dernier mois dans le placeholder `RESUME_SEO` du HTML servi).
+- i18n FR/AR : dictionnaire `I18N` dans le JS, bascule `lang-btn`
+  (localStorage `bt-lang`, `dir=rtl`). Les VALEURS de données restent en
+  français ; seuls les libellés d'affichage sont traduits (`catLabel`).
+- État des filtres dans l'URL (`?mois&cat&ops&besoin&crit&q&lang`) —
+  `readURL()` à l'init, `updateURL()` (replaceState) à chaque rendu.
+- Thème clair/sombre : `bt-theme` en localStorage, re-render au toggle
+  (les couleurs SVG sont lues via getComputedStyle au rendu).
 
 ## Backlog (dans l'ordre)
-1. Parsers dédiés : **fait** pour boutique Orange (forfaits + Dar Box),
-   Yoxo, forfaits inwi — validés sur les dumps réels via `replay`.
-   Reste `parse_generic` sur les 2 pages box IAM (3 lignes propres).
-2. Vérifier au prochain run que IAM fibre/forfaits passent bien via
-   Playwright (aucun dump réel encore — le 403 HTTP est contourné mais
-   non confirmé sur ces 2 pages).
-3. Dashboard de suivi (demandé) : à brancher sur `data/barometre.csv`.
-5. Bonus : archiver les catalogues PDF mensuels d'IAM (liens « Catalogue des
+1. Backfill : élargir la couverture historique (anciens formats de pages
+   IAM rendent 0 offre — écrire des variantes de parsers si besoin).
+2. Bonus : archiver les catalogues PDF mensuels d'IAM (liens « Catalogue des
    offres » sur iam.ma) dans `data/catalogues/`.
-6. Plus tard (ne pas commencer sans demande explicite) : dashboard —
-   d'abord Excel/TCD, ensuite éventuellement Flask + Chart.js.
