@@ -1373,7 +1373,11 @@ function renderEvo() {
     el("text", { x: M.l - 7, y: y(v) + 4, "text-anchor": "end" }, svg)
       .textContent = v.toLocaleString("fr-FR");
   }
+  /* avec l'historique, 8+ étiquettes se chevauchent sur mobile :
+     on n'en garde qu'une tous les `step` mois (+ la dernière) */
+  const step = Math.max(1, Math.ceil(ms.length / Math.max(3, Math.floor(iw / 70))));
   ms.forEach((m, i) => {
+    if (i % step && i !== ms.length - 1) return;
     el("text", { x: x(i), y: H - 8, "text-anchor": "middle" }, svg).textContent = monthLabel(m);
   });
   el("line", { x1: M.l, x2: W - M.r, y1: y(0), y2: y(0), class: "axis" }, svg);
@@ -1431,13 +1435,24 @@ function diffs() {
   const prev = ms[mi - 1], curr = state.month;
   const key = r => [r.operateur, r.categorie, r.offre].join(" / ");
   const idx = m => new Map(rowsOfMonth(m).filter(r => r.prix).map(r => [key(r), r]));
+  /* couverture partielle des mois d'archives : nouveau/retiré n'ont de sens
+     que si le périmètre (opérateur, catégorie) est observé les DEUX mois */
+  const scope = m => new Set(rowsOfMonth(m).filter(r => r.prix)
+    .map(r => r.operateur + "|" + r.categorie));
   const a = idx(prev), b = idx(curr);
+  const sa = scope(prev), sb = scope(curr);
   const changes = [];
   b.forEach((r, k) => {
-    if (!a.has(k)) changes.push({ type: "nouveau", k, r });
-    else if (a.get(k).prix !== r.prix) changes.push({ type: "prix", k, r, avant: a.get(k).prix });
+    if (!a.has(k)) {
+      if (sa.has(r.operateur + "|" + r.categorie))
+        changes.push({ type: "nouveau", k, r });
+    } else if (a.get(k).prix !== r.prix)
+      changes.push({ type: "prix", k, r, avant: a.get(k).prix });
   });
-  a.forEach((r, k) => { if (!b.has(k)) changes.push({ type: "retire", k, r }); });
+  a.forEach((r, k) => {
+    if (!b.has(k) && sb.has(r.operateur + "|" + r.categorie))
+      changes.push({ type: "retire", k, r });
+  });
   return { prev, curr, changes };
 }
 

@@ -938,25 +938,35 @@ def read_master():
 
 def diff_changes(rows, prev, curr):
     """Changements structurés entre deux mois du master : liste de dicts
-    {type: nouveau|prix|retire, cle: (op, cat, offre), prix, avant?}."""
+    {type: nouveau|prix|retire, cle: (op, cat, offre), prix, avant?}.
+
+    Les mois backfillés depuis les archives ont une couverture PARTIELLE
+    (toutes les pages ne sont pas capturées chaque mois) : un « nouveau »
+    ou un « retiré » n'a de sens que si le périmètre (opérateur, catégorie)
+    était observé dans les DEUX mois — sinon c'est un trou de couverture,
+    pas un mouvement de grille."""
     def index(month):
         return {(r_["operateur"], r_["categorie"], r_["offre"]): r_
                 for r_ in rows if r_["date_releve"][:7] == month
                 and r_["prix_dh_mois"]}
 
     a, b = index(prev), index(curr)
+    scope_a = {(op, cat) for op, cat, _ in a}
+    scope_b = {(op, cat) for op, cat, _ in b}
     changes = []
     for key in sorted(b):
         if key not in a:
-            changes.append(dict(type="nouveau", cle=key,
-                                prix=b[key]["prix_dh_mois"]))
+            if (key[0], key[1]) in scope_a:
+                changes.append(dict(type="nouveau", cle=key,
+                                    prix=b[key]["prix_dh_mois"]))
         elif a[key]["prix_dh_mois"] != b[key]["prix_dh_mois"]:
             changes.append(dict(type="prix", cle=key,
                                 avant=a[key]["prix_dh_mois"],
                                 prix=b[key]["prix_dh_mois"]))
     for key in sorted(set(a) - set(b)):
-        changes.append(dict(type="retire", cle=key,
-                            prix=a[key]["prix_dh_mois"]))
+        if (key[0], key[1]) in scope_b:
+            changes.append(dict(type="retire", cle=key,
+                                prix=a[key]["prix_dh_mois"]))
     return changes
 
 
@@ -1056,9 +1066,18 @@ def texte_resume(rows, month, months):
     """Paragraphe éditorial d'un mois : volumétrie, prix d'entrée fibre et
     mobile, changements vs mois précédent. Texte 100 % dérivé des données."""
     sel = [r_ for r_ in rows if r_["date_releve"][:7] == month]
-    phrases = [f"En {mois_label(month)}, le baromètre a relevé "
-               f"{len(sel)} offres sur les sites officiels de "
-               "Maroc Telecom, Orange et inwi."]
+    ordre = ["Maroc Telecom", "Orange", "inwi"]
+    ops = [o for o in ordre if any(r_["operateur"] == o for r_ in sel)]
+    liste_ops = (" et ".join([", ".join(ops[:-1]), ops[-1]])
+                 if len(ops) > 1 else ops[0] if ops else "")
+    if sel and all(r_["fiabilite"] == "officiel_archive" for r_ in sel):
+        phrases = [f"En {mois_label(month)}, relevé rétrospectif reconstruit "
+                   f"depuis les archives web des sites officiels "
+                   f"({liste_ops}) : {len(sel)} offres — couverture partielle."]
+    else:
+        phrases = [f"En {mois_label(month)}, le baromètre a relevé "
+                   f"{len(sel)} offres sur les sites officiels de "
+                   f"{liste_ops}."]
 
     def entree(cat, unite):
         avec_prix = [r_ for r_ in sel if r_["categorie"] == cat
@@ -1587,6 +1606,19 @@ def test():
     ok &= sorted(c["type"] for c in ch) == ["nouveau", "prix", "retire"]
     ok &= any(c["type"] == "prix" and c["avant"] == "249" and c["prix"] == "199"
               for c in ch)
+
+    # Couverture partielle (mois d'archives) : IAM observé un seul des deux
+    # mois -> ses offres ne sortent NI en retiré NI en nouveau, seul le
+    # périmètre commun (inwi/Fibre) est comparé.
+    partiel = faux + [dict(zip(FIELDNAMES, (
+        "2026-08-02", "Maroc Telecom", "Fibre", "Fibre Optique 100M",
+        "100 Mb/s", "", "400", "", "", "officiel_archive")))]
+    ch = diff_changes(partiel, "2026-08", "2026-09")
+    print(f"[diff_scope]       {[(c['type'], c['cle'][0]) for c in ch]}")
+    # IAM (couvert seulement en 08) ne sort pas en retiré ; le périmètre
+    # commun inwi garde ses 3 mouvements (prix, nouveau, retiré).
+    ok &= not any(c["cle"][0] == "Maroc Telecom" for c in ch)
+    ok &= sorted(c["type"] for c in ch) == ["nouveau", "prix", "retire"]
     resume = texte_resume(faux, "2026-09", ["2026-08", "2026-09"])
     print(f"[texte_resume]     {resume[:110]}…")
     ok &= "septembre 2026" in resume and "199 DH/mois" in resume
