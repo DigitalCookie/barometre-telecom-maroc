@@ -300,6 +300,34 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   .rank-list .rl-delta { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .rank-list li.first .rl-delta { color: var(--delta-up); font-weight: 700; }
 
+  /* ---- le vrai prix du Go : barres horizontales -------------------- */
+  .val-list { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+  .val-row { display: flex; align-items: center; gap: 10px; }
+  .val-info { flex: 0 0 34%; min-width: 0; }
+  .val-name { font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .val-sub { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .val-bar { flex: 1; height: 16px; background: var(--page); border-radius: 99px; overflow: hidden; }
+  .val-bar i {
+    display: block; height: 100%; border-radius: 99px;
+    min-width: 6px;
+  }
+  .val-num {
+    flex: 0 0 96px; text-align: end;
+    font-family: var(--head); font-size: 13.5px; font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .val-row.best .val-num { color: var(--delta-up); }
+  .val-badge {
+    font-size: 9.5px; font-weight: 800; letter-spacing: 0.05em;
+    color: #fff; background: var(--delta-up); border-radius: 99px;
+    padding: 1.5px 7px; margin-inline-start: 6px; vertical-align: 2px;
+  }
+  .val-more { font-size: 12px; color: var(--muted); margin: 10px 0 2px; }
+  @media (max-width: 640px) {
+    .val-info { flex-basis: 44%; }
+    .val-num { flex-basis: 76px; font-size: 12.5px; }
+  }
+
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
   .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--ink-2); margin: 6px 0 2px; }
@@ -490,6 +518,15 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     </section>
   </div>
 
+  <section class="card" id="valeur">
+    <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.5 5a3 3 0 0 0 5 0L5 7zM19 7l-2.5 5a3 3 0 0 0 5 0L19 7z"/></svg></span>
+      <span data-i18n="val_titre">Le vrai prix du Go</span></h2>
+    <p class="hint" data-i18n="val_hint">Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord.</p>
+    <div class="seg" id="val-dim" role="group" aria-label="Dimension"></div>
+    <div class="val-list" id="val-list"></div>
+    <p class="val-more" id="val-more" hidden></p>
+  </section>
+
   <section class="card">
     <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.5-5.5 4 4L21 7"/><path d="M15 7h6v6"/></svg></span>
       <span data-i18n="evo_titre">Évolution des prix</span></h2>
@@ -638,6 +675,12 @@ const I18N = {
     footer_src: "Source : sites officiels des opérateurs — relevé automatisé le 2 de chaque mois, prix catalogue TTC.",
     dh_go: "DH/Go", dh_mbps: "DH/Mbps",
     dh: "DH", go_unit: "Go", mega: "Mb/s", giga: "Gb/s",
+    val_titre: "Le vrai prix du Go",
+    val_hint: "Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord.",
+    val_mobile: "Forfaits — DH/Go", val_fibre: "Fibre — DH/Mbps",
+    val_best: "MEILLEUR RAPPORT",
+    val_more: n => `… et ${n} autre(s) offre(s) — colonne « Prix / unité » de la table pour le classement complet.`,
+    val_vide: "Aucune offre avec volume mesurable dans la sélection.",
   },
   ar: {
     h1: "أسعار الألياف البصرية والهاتف والإنترنت المنزلي في المغرب، تُرصد كل شهر",
@@ -694,6 +737,12 @@ const I18N = {
     footer_src: "المصدر : المواقع الرسمية للمشغلين — رصد آلي في اليوم الثاني من كل شهر، أسعار الكتالوج شاملة للضرائب.",
     dh_go: "درهم/جيغا", dh_mbps: "درهم/ميغا",
     dh: "درهم", go_unit: "جيغا", mega: "ميغا", giga: "جيغا",
+    val_titre: "السعر الحقيقي للجيغا",
+    val_hint: "القيمة مقابل الثمن : السعر مقسوماً على الجيغا (الباقات) أو الميغا (الفيبر) — أفضل الصفقات أولاً.",
+    val_mobile: "الباقات — درهم/جيغا", val_fibre: "الفيبر — درهم/ميغا",
+    val_best: "أفضل قيمة",
+    val_more: n => `… و${n} عرض آخر — عمود « سعر الوحدة » في الجدول للترتيب الكامل.`,
+    val_vide: "لا عروض بحجم قابل للقياس ضمن الاختيار.",
   },
 };
 
@@ -787,7 +836,7 @@ let ALL = [];          // toutes les lignes du CSV
 let RESUMES = {};      // resumes.json : paragraphe éditorial par mois
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
-              besoin: "Fibre", crit: 0 };
+              besoin: "Fibre", crit: 0, val: "mobile" };
 
 /* ---------- état ↔ URL (vues partageables) ---------- */
 
@@ -885,6 +934,7 @@ function init() {
   }));
 
   initFinder();
+  initValeur();
 
   const search = document.getElementById("t-search");
   search.value = state.query;
@@ -926,6 +976,10 @@ function refreshControls() {
     b.lastChild.textContent = T(SEG_KEYS[BESOINS[i]]);
   });
   fillCrit();
+
+  document.querySelectorAll("#val-dim button").forEach(b => {
+    b.textContent = T(b.dataset.dim === "mobile" ? "val_mobile" : "val_fibre");
+  });
 
   const selE = document.getElementById("f-evo");
   const tiers = fibreTiers(ALL);
@@ -1329,6 +1383,75 @@ function renderMobile() {
   overlay.addEventListener("pointerleave", hideTip);
 }
 
+/* ---------- le vrai prix du Go : barres horizontales ---------- */
+
+const VAL_DIMS = ["mobile", "fibre"];
+const VAL_MAX_ROWS = 12;
+
+function initValeur() {
+  const seg = document.getElementById("val-dim");
+  seg.replaceChildren(...VAL_DIMS.map(dim => {
+    const b = document.createElement("button");
+    b.dataset.dim = dim;
+    b.setAttribute("aria-pressed", String(dim === state.val));
+    b.onclick = () => {
+      state.val = dim;
+      seg.querySelectorAll("button").forEach(x =>
+        x.setAttribute("aria-pressed", String(x.dataset.dim === dim)));
+      renderValeur();
+    };
+    return b;
+  }));
+}
+
+function renderValeur() {
+  const list = document.getElementById("val-list");
+  const more = document.getElementById("val-more");
+  const cat = state.val === "mobile" ? "Forfait mobile" : "Fibre";
+  const rows = rowsOfMonth(state.month)
+    .filter(r => r.categorie === cat && r.prix && state.ops.has(r.operateur))
+    .map(r => ({ r, u: unitPrice(r) }))
+    .filter(x => x.u)
+    .sort((a, b) => a.u.v - b.u.v);
+  list.replaceChildren();
+  more.hidden = true;
+  if (!rows.length) {
+    const e = document.createElement("div"); e.className = "empty";
+    e.textContent = T("val_vide"); list.append(e);
+    return;
+  }
+  const shown = rows.slice(0, VAL_MAX_ROWS);
+  const maxV = shown[shown.length - 1].u.v;
+  const bestV = shown[0].u.v;
+  shown.forEach(({ r, u }, i) => {
+    const row_ = document.createElement("div");
+    row_.className = "val-row" + (u.v === bestV ? " best" : "");
+    const info = document.createElement("div"); info.className = "val-info";
+    const name = document.createElement("div"); name.className = "val-name";
+    name.append(brandBadge(r.operateur, true), document.createTextNode(" " + r.offre));
+    if (i === 0) {
+      const bd = document.createElement("span"); bd.className = "val-badge";
+      bd.textContent = T("val_best"); name.append(bd);
+    }
+    const sub = document.createElement("div"); sub.className = "val-sub";
+    sub.textContent = [r.debit_ou_data, fmtDH(r.prix)].filter(Boolean).join(" · ");
+    info.append(name, sub);
+    const bar = document.createElement("div"); bar.className = "val-bar";
+    const fill = document.createElement("i");
+    fill.style.width = Math.max(5, u.v / maxV * 100) + "%";
+    fill.style.background = opColor(r.operateur);
+    bar.append(fill);
+    const num = document.createElement("b"); num.className = "val-num";
+    num.textContent = fmtUnit(u);
+    row_.append(info, bar, num);
+    list.append(row_);
+  });
+  if (rows.length > shown.length) {
+    more.hidden = false;
+    more.textContent = T("val_more")(rows.length - shown.length);
+  }
+}
+
 /* ---------- évolution : lignes par mois ---------- */
 
 function renderEvo() {
@@ -1591,6 +1714,7 @@ function render() {
   renderFinder();
   renderFibre();
   renderMobile();
+  renderValeur();
   renderEvo();
   renderDiff();
   renderTable();
