@@ -193,7 +193,10 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   .tile .delta-down { color: var(--delta-down); font-weight: 700; }
 
   /* ---- barre de filtres collante ----------------------------------- */
-  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 18px; }
+  /* gap intra-paire (libellé↔menu) volontairement plus serré que le gap
+     inter-paires : sans ce contraste, un libellé semble rattaché au menu
+     du filtre précédent. */
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px; margin-bottom: 18px; }
   .filters.mainbar {
     position: sticky; top: 8px; z-index: 5;
     background: var(--surface);
@@ -201,7 +204,7 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     box-shadow: var(--shadow);
     padding: 9px 16px; margin: 0 0 20px;
   }
-  .filters label.flt { font-size: 13px; font-weight: 600; color: var(--ink-2); display: flex; align-items: center; gap: 7px; }
+  .filters label.flt { font-size: 13px; font-weight: 600; color: var(--ink-2); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
   .filters select {
     font: inherit; font-size: 14px; font-weight: 600; color: var(--ink);
     background: var(--page); border: 1px solid var(--baseline); border-radius: 99px;
