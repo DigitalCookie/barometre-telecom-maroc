@@ -615,7 +615,7 @@ def pages_selectionnees(only=None, no_js=False):
         yield page
 
 
-def run(only=None, no_js=False):
+def run(only=None, no_js=False, force=False):
     month = today()[:7]
     raw_month_dir = RAW_DIR / month
     raw_month_dir.mkdir(parents=True, exist_ok=True)
@@ -650,6 +650,18 @@ def run(only=None, no_js=False):
               "python barometre.py check")
         return 1
 
+    alertes = garde_fou(all_rows, month)
+    if alertes:
+        print("\n=== GARDE-FOU DE PUBLICATION ===")
+        for a_ in alertes:
+            print(f"  ! {a_}")
+        if not force:
+            print("\nDivergence massive vs le dernier relevé : rien n'est "
+                  "écrit.\nSi ces changements sont réels (refonte tarifaire "
+                  "générale), relancer :\n  python barometre.py run --force "
+                  "(ou l'option force du workflow).")
+            return 2
+        print("  (--force : publication malgré les alertes)")
     ecrire_releve(all_rows, month)
     if failures:
         print("\nPoints d'attention :")
@@ -661,6 +673,53 @@ def run(only=None, no_js=False):
     ecrire_feed()
     ecrire_resumes()
     return 0
+
+
+# Seuils du garde-fou de publication : au-delà, on suspecte un parser qui
+# déraille (refonte de site) plutôt qu'un vrai mouvement de marché.
+GARDE_FOU_PRIX = 0.40      # > 40 % des prix communs modifiés
+GARDE_FOU_DISPARUS = 0.30  # > 30 % des offres disparues (périmètre couvert)
+GARDE_FOU_VOLUME = 0.50    # relevé < 50 % du volume de référence
+
+
+def garde_fou(rows, month, master=None):
+    """Anti-garbage : un parser qui déraille après une refonte produit des
+    données PLAUSIBLES (les pages à 0 offre échouent déjà, pas les mauvaises
+    extractions). On compare au dernier mois complet non-archive : divergence
+    massive => publication bloquée (run --force pour outrepasser).
+    Rend la liste des alertes (vide = publication autorisée)."""
+    master = read_master() if master is None else master
+    ref = None
+    for m in sorted({r_["date_releve"][:7] for r_ in master
+                     if r_["date_releve"][:7] != month}, reverse=True):
+        sel = [r_ for r_ in master if r_["date_releve"][:7] == m]
+        if sum(r_["fiabilite"] != "officiel_archive" for r_ in sel) >= len(sel) / 2:
+            ref = m
+            break
+    if not ref:
+        return []
+    prev = [r_ for r_ in master if r_["date_releve"][:7] == ref]
+
+    def cle(r_):
+        return (r_["operateur"], r_["categorie"], r_["offre"])
+    a = {cle(r_): r_ for r_ in prev if r_["prix_dh_mois"]}
+    b = {cle(r_): r_ for r_ in rows if r_["prix_dh_mois"]}
+    alertes = []
+    commun = set(a) & set(b)
+    if commun:
+        chg = sum(a[k]["prix_dh_mois"] != b[k]["prix_dh_mois"] for k in commun)
+        if chg / len(commun) > GARDE_FOU_PRIX:
+            alertes.append(f"{chg}/{len(commun)} prix communs modifiés "
+                           f"(seuil {GARDE_FOU_PRIX:.0%}) vs {ref}")
+    scope_b = {(op, cat) for op, cat, _ in b}
+    disparus = [k for k in a if k not in b and (k[0], k[1]) in scope_b]
+    if a and len(disparus) / len(a) > GARDE_FOU_DISPARUS:
+        alertes.append(f"{len(disparus)}/{len(a)} offres disparues "
+                       f"(seuil {GARDE_FOU_DISPARUS:.0%}) vs {ref}")
+    if b and len(b) < GARDE_FOU_VOLUME * len(a):
+        alertes.append(f"volume du relevé effondré : {len(b)} offres "
+                       f"vs {len(a)} en {ref} (seuil {GARDE_FOU_VOLUME:.0%})")
+    return alertes
 
 
 def ecrire_releve(rows, month):
@@ -936,15 +995,28 @@ def read_master():
 # --------------------------------------------------------------------------
 
 
+def _mesure(r_):
+    """Volume comparable d'une offre : (25, "Go") / (100, "Mb") / None."""
+    m = re.match(r"(\d+)(Go|Mb|Mo)", norm_debit(r_["debit_ou_data"]))
+    return (int(m.group(1)), m.group(2)) if m else None
+
+
 def diff_changes(rows, prev, curr):
     """Changements structurés entre deux mois du master : liste de dicts
-    {type: nouveau|prix|retire, cle: (op, cat, offre), prix, avant?}.
+    {type: nouveau|prix|retire|contenu|renomme, cle: (op, cat, offre), …}.
 
     Les mois backfillés depuis les archives ont une couverture PARTIELLE
     (toutes les pages ne sont pas capturées chaque mois) : un « nouveau »
     ou un « retiré » n'a de sens que si le périmètre (opérateur, catégorie)
     était observé dans les DEUX mois — sinon c'est un trou de couverture,
-    pas un mouvement de grille."""
+    pas un mouvement de grille.
+
+    « contenu » = shrinkflation (ou l'inverse) : prix identique mais volume
+    de data/débit modifié. Détecté sur les offres au même nom, ET par
+    appariement nouveau×retiré au même (opérateur, catégorie, prix) —
+    l'opérateur qui rebaptise « Forfait 30Go » en « Forfait 25Go » au même
+    prix passait pour un retrait + une nouveauté. Un appariement à volume
+    identique est un simple renommage (« renomme »)."""
     def index(month):
         return {(r_["operateur"], r_["categorie"], r_["offre"]): r_
                 for r_ in rows if r_["date_releve"][:7] == month
@@ -953,20 +1025,51 @@ def diff_changes(rows, prev, curr):
     a, b = index(prev), index(curr)
     scope_a = {(op, cat) for op, cat, _ in a}
     scope_b = {(op, cat) for op, cat, _ in b}
-    changes = []
+    changes, nouveaux, retires = [], [], []
     for key in sorted(b):
         if key not in a:
             if (key[0], key[1]) in scope_a:
-                changes.append(dict(type="nouveau", cle=key,
-                                    prix=b[key]["prix_dh_mois"]))
+                nouveaux.append(key)
         elif a[key]["prix_dh_mois"] != b[key]["prix_dh_mois"]:
             changes.append(dict(type="prix", cle=key,
                                 avant=a[key]["prix_dh_mois"],
                                 prix=b[key]["prix_dh_mois"]))
+        else:
+            ma, mb_ = _mesure(a[key]), _mesure(b[key])
+            if ma and mb_ and ma != mb_:
+                changes.append(dict(type="contenu", cle=key,
+                                    prix=b[key]["prix_dh_mois"],
+                                    avant_mesure=ma, mesure=mb_))
     for key in sorted(set(a) - set(b)):
         if (key[0], key[1]) in scope_b:
-            changes.append(dict(type="retire", cle=key,
-                                prix=a[key]["prix_dh_mois"]))
+            retires.append(key)
+
+    # appariement nouveau×retiré : même opérateur, catégorie et prix
+    apparies = set()
+    for kn in list(nouveaux):
+        cands = [kr for kr in retires if kr not in apparies
+                 and (kr[0], kr[1]) == (kn[0], kn[1])
+                 and a[kr]["prix_dh_mois"] == b[kn]["prix_dh_mois"]]
+        if not cands:
+            continue
+        kr = cands[0]
+        ma, mb_ = _mesure(a[kr]), _mesure(b[kn])
+        if ma and mb_ and ma != mb_:
+            changes.append(dict(type="contenu", cle=kn, avant_offre=kr[2],
+                                prix=b[kn]["prix_dh_mois"],
+                                avant_mesure=ma, mesure=mb_))
+        elif ma and mb_ and ma == mb_:
+            changes.append(dict(type="renomme", cle=kn, avant_offre=kr[2],
+                                prix=b[kn]["prix_dh_mois"]))
+        else:
+            continue        # volumes incomparables : rester nouveau + retiré
+        nouveaux.remove(kn)
+        apparies.add(kr)
+
+    changes.extend(dict(type="nouveau", cle=k, prix=b[k]["prix_dh_mois"])
+                   for k in nouveaux)
+    changes.extend(dict(type="retire", cle=k, prix=a[k]["prix_dh_mois"])
+                   for k in retires if k not in apparies)
     return changes
 
 
@@ -985,6 +1088,11 @@ def diff():
             return f"  + NOUVEAU  {libelle} : {c['prix']} DH"
         if c["type"] == "prix":
             return f"  ~ PRIX     {libelle} : {c['avant']} -> {c['prix']} DH"
+        if c["type"] == "contenu":
+            return (f"  ! CONTENU  {libelle} : {_fmt_mesure(c['avant_mesure'])} "
+                    f"-> {_fmt_mesure(c['mesure'])} au même prix ({c['prix']} DH)")
+        if c["type"] == "renomme":
+            return f"  = RENOMME  {c['avant_offre']} -> {libelle} ({c['prix']} DH)"
         return f"  - RETIRE   {libelle} (était {c['prix']} DH)"
 
     print(f"\n=== Baromètre {prev} -> {curr} ===")
@@ -1006,6 +1114,10 @@ def mois_label(month):
     return f"{MOIS_FR[int(m) - 1]} {y}"
 
 
+def _fmt_mesure(m):
+    return f"{m[0]} {'Go' if m[1] == 'Go' else 'Mb/s' if m[1] == 'Mb' else 'Mo'}"
+
+
 def _libelle_change(c):
     """Phrase française d'un changement structuré."""
     op, _cat, offre = c["cle"]
@@ -1014,6 +1126,14 @@ def _libelle_change(c):
     if c["type"] == "prix":
         sens = "baisse" if int(c["prix"]) < int(c["avant"]) else "passe"
         return f"« {offre} » ({op}) {sens} de {c['avant']} à {c['prix']} DH/mois"
+    if c["type"] == "contenu":
+        av, ap = c["avant_mesure"], c["mesure"]
+        sens = "réduit" if ap[0] < av[0] else "augmente"
+        return (f"{op} {sens} le contenu de « {offre} » à prix constant "
+                f"({c['prix']} DH/mois) : {_fmt_mesure(av)} -> {_fmt_mesure(ap)}")
+    if c["type"] == "renomme":
+        return (f"{op} renomme « {c['avant_offre']} » en « {offre} » "
+                f"({c['prix']} DH/mois, contenu identique)")
     return f"{op} retire « {offre} » (était {c['prix']} DH/mois)"
 
 
@@ -1216,9 +1336,11 @@ def backfill(m_from, m_to=None, only=None, write=False, delai=1.5):
             time.sleep(delai)
 
     if not par_mois:
+        # Résultat normal du cron de rattrapage mensuel : rien de neuf
+        # dans les archives n'est un succès, pas une erreur.
         print("\nAucun mois reconstitué (tout est déjà en base, ou aucune "
               "capture parsable).")
-        return 1
+        return 0
 
     for month in sorted(par_mois):
         rs = par_mois[month]
@@ -1619,6 +1741,52 @@ def test():
     # commun inwi garde ses 3 mouvements (prix, nouveau, retiré).
     ok &= not any(c["cle"][0] == "Maroc Telecom" for c in ch)
     ok &= sorted(c["type"] for c in ch) == ["nouveau", "prix", "retire"]
+
+    # Shrinkflation : même nom + même prix mais data réduite -> « contenu » ;
+    # nouveau×retiré au même prix avec data différente -> « contenu » apparié ;
+    # à data identique -> simple « renomme ».
+    def _l(d, op, cat, offre, data, prix):
+        return dict(zip(FIELDNAMES, (d, op, cat, offre, data, "", prix,
+                                     "", "", "officiel_site")))
+    shrink = [
+        _l("2026-08-02", "inwi", "Forfait mobile", "Forfait 99", "30 Go", "99"),
+        _l("2026-09-02", "inwi", "Forfait mobile", "Forfait 99", "25 Go", "99"),
+        _l("2026-08-02", "Orange", "Forfait mobile", "Yo 30Go", "30 Go", "149"),
+        _l("2026-09-02", "Orange", "Forfait mobile", "Yo 20Go", "20 Go", "149"),
+        _l("2026-08-02", "Maroc Telecom", "Forfait mobile", "Liberte X", "50 Go", "199"),
+        _l("2026-09-02", "Maroc Telecom", "Forfait mobile", "Liberte Y", "50 Go", "199"),
+    ]
+    ch = diff_changes(shrink, "2026-08", "2026-09")
+    print(f"[diff_contenu]     {[(c['type'], c['cle'][2]) for c in ch]}")
+    ok &= sorted(c["type"] for c in ch) == ["contenu", "contenu", "renomme"]
+    ok &= any(c["type"] == "contenu" and c["cle"][2] == "Forfait 99"
+              and c["avant_mesure"] == (30, "Go") and c["mesure"] == (25, "Go")
+              for c in ch)
+    ok &= any(c["type"] == "contenu" and c.get("avant_offre") == "Yo 30Go"
+              for c in ch)
+    ok &= any(c["type"] == "renomme" and c["avant_offre"] == "Liberte X"
+              and c["cle"][2] == "Liberte Y" for c in ch)
+    lib = _libelle_change([c for c in ch if c["type"] == "contenu"
+                           and c["cle"][2] == "Forfait 99"][0])
+    print(f"[libelle_contenu]  {lib}")
+    ok &= "réduit" in lib and "30 Go -> 25 Go" in lib
+
+    # Garde-fou : relevé normal (1 changement) passe ; relevé « massacré »
+    # (tous les prix changés / volume effondré) est bloqué.
+    ref_master = [_l("2026-08-02", "inwi", "Fibre", f"Offre {i}", "20 Go",
+                     str(100 + i)) for i in range(10)]
+    normal = [_l("2026-09-02", "inwi", "Fibre", f"Offre {i}", "20 Go",
+                 str(100 + i)) for i in range(10)]
+    normal[0]["prix_dh_mois"] = "999"
+    massacre = [_l("2026-09-02", "inwi", "Fibre", f"Offre {i}", "20 Go",
+                   str(500 + i)) for i in range(10)]
+    effondre = normal[:3]
+    print(f"[garde_fou]        normal={garde_fou(normal, '2026-09', ref_master)} "
+          f"massacre={len(garde_fou(massacre, '2026-09', ref_master))} alerte(s) "
+          f"effondre={len(garde_fou(effondre, '2026-09', ref_master))} alerte(s)")
+    ok &= garde_fou(normal, "2026-09", ref_master) == []
+    ok &= len(garde_fou(massacre, "2026-09", ref_master)) >= 1
+    ok &= len(garde_fou(effondre, "2026-09", ref_master)) >= 1
     resume = texte_resume(faux, "2026-09", ["2026-08", "2026-09"])
     print(f"[texte_resume]     {resume[:110]}…")
     ok &= "septembre 2026" in resume and "199 DH/mois" in resume
@@ -1653,6 +1821,8 @@ def main():
                        help="limiter à certains opérateurs")
     p_run.add_argument("--no-js", action="store_true",
                        help="sauter les pages nécessitant Playwright")
+    p_run.add_argument("--force", action="store_true",
+                       help="publier malgré les alertes du garde-fou")
 
     p_check = sub.add_parser("check", help="tester la joignabilité des sources")
     p_check.add_argument("--only", nargs="+", choices=ops)
@@ -1680,7 +1850,7 @@ def main():
     args = ap.parse_args()
 
     if args.cmd == "run":
-        sys.exit(run(only=args.only, no_js=args.no_js))
+        sys.exit(run(only=args.only, no_js=args.no_js, force=args.force))
     if args.cmd == "check":
         sys.exit(check(only=args.only))
     if args.cmd == "replay":

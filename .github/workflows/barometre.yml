@@ -11,6 +11,10 @@ on:
         description: "Sauter les pages Playwright (run rapide, HTML uniquement)"
         type: boolean
         default: false
+      force:
+        description: "Publier malgré les alertes du garde-fou (refonte tarifaire réelle)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -48,7 +52,7 @@ jobs:
 
       - name: Relevé du mois
         run: |
-          python barometre.py run ${{ inputs.no_js && '--no-js' || '' }} | tee run-output.txt
+          python barometre.py run ${{ inputs.no_js && '--no-js' || '' }} ${{ inputs.force && '--force' || '' }} | tee run-output.txt
 
       - name: Commit des données
         run: |

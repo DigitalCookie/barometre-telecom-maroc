@@ -32,7 +32,7 @@ jobs:
           cp dashboard/index.html _site/index.html
           cp dashboard/og.png _site/og.png
           cp data/*.csv _site/data/
-          cp data/changements.xml data/resumes.json _site/data/ 2>/dev/null || true
+          cp data/changements.xml data/resumes.json data/annotations.json _site/data/ 2>/dev/null || true
 
       - name: Baker le résumé du mois dans la page (SEO)
         # Le résumé du dernier mois remplace le placeholder RESUME_SEO :

@@ -105,10 +105,52 @@ Alternative cron sur une machine perso :
 4. Une page qui rend **0 offre** est signalée en fin de run : après un `check`
    vert, c'est le signal qu'un opérateur a changé la structure de son site.
 
+## Garde-fou de publication
+
+Un parser qui déraille après une refonte de site produit des données
+*plausibles* : avant d'écrire un relevé, `run` le compare au dernier mois
+complet. Plus de 40 % des prix communs modifiés, plus de 30 % des offres
+disparues ou un volume divisé par deux → **publication bloquée** (le job
+échoue avec un rapport). Si les changements sont réels, relancer avec
+`--force` (ou l'option `force` du workflow).
+
+Le diff détecte aussi la **shrinkflation** : même prix mais data/débit
+modifié (y compris quand l'opérateur renomme l'offre au passage — les
+paires nouveau×retiré au même prix sont appariées et comparées).
+
 ## Dashboard
 
 `dashboard/index.html` (page unique, zéro dépendance runtime) est déployé sur
 GitHub Pages par `.github/workflows/pages.yml` à chaque commit touchant
-`dashboard/` ou `data/`. Le déploiement copie les CSV, le flux RSS et les
-résumés dans `_site/data/`, et bake le résumé du dernier mois dans le HTML
-servi (placeholder `RESUME_SEO`).
+`dashboard/` ou `data/`. Le déploiement copie les CSV, le flux RSS, les
+résumés et les annotations dans `_site/data/`, et bake le résumé du dernier
+mois dans le HTML servi (placeholder `RESUME_SEO`).
+
+L'**Indice Baromètre** (base 100) suit un panier d'entrée du marché —
+fibre ≥ 100 Mb/s + forfait ≥ 20 Go + box, chacun au prix le moins cher —
+calculé uniquement sur les mois à couverture complète. Les événements
+marquants s'annotent dans `data/annotations.json`
+(`{date, texte, texte_ar}`) : ligne pointillée sur le graphique
+d'évolution + liste sous le graphique.
+
+Trois workflows : `barometre.yml` (relevé le 2 du mois),
+`backfill.yml` (rattrapage des archives le 15 du mois, heures creuses),
+`pages.yml` (déploiement).
+
+## À faire plus tard (backlog priorisé)
+
+1. **Pack SEO** : JSON-LD (`Dataset` + FAQ), sitemap.xml, hreflang AR,
+   pages statiques par mois (`/2026-09.html`) bakées au déploiement.
+2. **`data/barometre.json`** : le CSV en JSON — mini-API pour réutilisation.
+3. **Coût réel 1ère année** : extraire les frais de mise en service des
+   remarques (déjà scrapés pour les Dar Box) → `prix×12 + frais`.
+4. **Badge « état des sources »** : le run écrit un `health.json`
+   (N/12 pages OK, date) affiché dans la méthodologie.
+5. **Prix en % du SMIG** : KPI pouvoir d'achat (SMIG en constante datée).
+6. **Prépayé & pass** (recharges, pass jour/semaine) : le vrai trou de
+   couverture — la majorité du marché marocain est en prépayé. Gros
+   chantier de scraping (mêmes sites, nouvelles pages).
+7. **Comparaison internationale** (prix du Go Maroc vs FR/ES/TN) : source
+   tierce (cable.co.uk, ITU) clairement isolée en annexe — déroge à la
+   règle « sites officiels uniquement », à assumer éditorialement.
+8. **Profils d'usage dans le finder** (petit conso / streamer / famille).

@@ -99,8 +99,30 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
 - Thème clair/sombre : `bt-theme` en localStorage, re-render au toggle
   (les couleurs SVG sont lues via getComputedStyle au rendu).
 
-## Backlog (dans l'ordre)
-1. Backfill : élargir la couverture historique (anciens formats de pages
-   IAM rendent 0 offre — écrire des variantes de parsers si besoin).
-2. Bonus : archiver les catalogues PDF mensuels d'IAM (liens « Catalogue des
-   offres » sur iam.ma) dans `data/catalogues/`.
+## Garde-fou & diff
+- `garde_fou(rows, month)` avant toute écriture dans `run` : compare au
+  dernier mois complet non-archive ; seuils 40 % prix / 30 % disparus /
+  50 % volume → publication bloquée (`--force` ou input `force` du
+  workflow pour outrepasser une vraie refonte tarifaire).
+- `diff_changes` détecte aussi `contenu` (shrinkflation : même prix,
+  volume modifié — y compris via appariement nouveau×retiré au même
+  prix) et `renomme` (même prix, même volume, autre nom).
+- Indice Baromètre (dashboard, JS) : panier fibre ≥100 Mb/s + forfait
+  ≥20 Go + box, base 100 au premier mois à couverture complète ; les
+  mois d'archives partiels sont exclus du calcul.
+- Annotations : `data/annotations.json` `[{date, texte, texte_ar}]` —
+  pointillés sur le graphique d'évolution + liste dessous.
+- `backfill.yml` : cron le 15 du mois (rattrapage archives, sans
+  Playwright) ; « rien à reconstruire » = exit 0.
+
+## Backlog (dans l'ordre — détail dans README « À faire plus tard »)
+1. Pack SEO (JSON-LD Dataset, sitemap, hreflang, pages mensuelles).
+2. data/barometre.json (mini-API).
+3. Coût 1ère année (frais de mise en service).
+4. health.json « état des sources ».
+5. % du SMIG.
+6. Prépayé & pass (gros chantier — le vrai trou de couverture).
+7. Comparaison internationale (source tierce en annexe).
+8. Profils d'usage dans le finder.
+9. Bonus : archiver les catalogues PDF mensuels d'IAM dans
+   `data/catalogues/`.

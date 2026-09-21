@@ -1,0 +1,42 @@
+date_releve;operateur;categorie;offre;debit_ou_data;appels_inclus;prix_dh_mois;remarques;source;fiabilite
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 100M;100 Mb/s;Illimite fixes nationaux + 10h mobiles (dont 2h intl Z1);400;Frais installation 200 DH + equipement 200 DH;iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 200M;200 Mb/s;Illimite fixes nationaux + 20h mobiles (dont 4h intl Z1);500;Frais installation 200 DH + equipement 200 DH;iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 500M;500 Mb/s;Illimite fixes nationaux + 50h mobiles (dont 10h intl Z1);800;;iam.ma/fibre-optique;officiel_site
+2026-08-16;Maroc Telecom;Fibre;Fibre Optique 1G;1 Gb/s;Illimite fixes et mobiles nationaux + 20h intl Z1;1000;;iam.ma/fibre-optique;officiel_site
+2026-08-16;Orange;Fibre;Fibre 20 Mega;20 Mb/s;;249;Engagement 12 mois;lebrief.ma + confirme "a partir de 249 DH" sur orange.ma;presse_2025-04
+2026-08-16;Orange;Fibre;Fibre 50 Mega;50 Mb/s;;299;Engagement 12 mois;lebrief.ma (grille avril 2025);presse_2025-04
+2026-08-16;Orange;Fibre;Fibre 100 Mega;100 Mb/s;;349;Engagement 12 mois - installation offerte des 100M (connecto.ma);lebrief.ma (grille avril 2025);presse_2025-04
+2026-08-16;Orange;Fibre;Fibre 200 Mega;200 Mb/s;;449;Engagement 12 mois;lebrief.ma (grille avril 2025);presse_2025-04
+2026-08-16;Orange;Fibre;Fibre 500 Mega;500 Mb/s;;749;Engagement 12 mois;lebrief.ma (grille avril 2025);presse_2025-04
+2026-08-16;Orange;Fibre;Fibre 1000 Mega;1 Gb/s;Illimite fixes nationaux + 20h mobiles et intl Z1;949;Grille complete lisible en HTML sur pro.orange.ma (Business Box Fibre);pro.orange.ma;officiel_site
+2026-08-16;inwi;Fibre;Fibre optique 20 Mega;20 Mb/s;2h vers mobiles nationaux + appels illimites (concli);249;Engagement 12 mois - installation gratuite;inwi.ma;officiel_site
+2026-08-16;inwi;Fibre;Fibre optique 50 Mega;50 Mb/s;;299;;inwi.ma;officiel_site
+2026-08-16;inwi;Fibre;Fibre optique 100 Mega;100 Mb/s;;349;;inwi.ma;officiel_site
+2026-08-16;inwi;Fibre;Fibre optique 200 Mega;200 Mb/s;;449;;inwi.ma;officiel_site
+2026-08-16;inwi;Fibre;Fibre optique 500 Mega;500 Mb/s;;749;;inwi.ma;officiel_site
+2026-08-16;inwi;Fibre;Fibre optique 1G;1 Gb/s;;949;;medias24 + lematin (avril 2025);presse_2025-04
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte 119;29 Go;1h;119;Gamme Liberte (e-catalogue);maroctelecom.cld.bz;officiel_catalogue
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 165 (data);30 Go;180 min;165;4G+/5G;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 165 (voix);14 Go;840 min;165;4G+/5G;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 199;50 Go;90 min;199;+1 Go roaming Z1;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 220 (voix);12 Go;1320 min;220;;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 220 (equilibre);30 Go;720 min;220;;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 249;25 Go;1200 min;249;;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 259;65 Go;180 min;259;+2 Go roaming Z1;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 329;80 Go;240 min;329;+3 Go roaming Z1;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 349 (data);55 Go;900 min;349;;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 349 (voix);30 Go;1800 min;349;;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Maroc Telecom;Forfait mobile;Liberte Plus 479;100 Go;1200 min;479;+4 Go roaming Z1;iam.ma/forfaits-mobile;officiel_site
+2026-08-16;Orange;Forfait mobile;Yo Max 5G 99;25 Go;1h;99;;boutique.orange.ma (slugs offres);officiel_site
+2026-08-16;Orange;Forfait mobile;Yo Max 5G 199;52 Go;10h;199;;boutique.orange.ma (slugs offres);officiel_site
+2026-08-16;Orange;Forfait mobile;Yo Max 5G 299;80 Go;;299;+2 Go roaming;boutique.orange.ma (slugs offres);officiel_site
+2026-08-16;Orange;Forfait mobile;Yo Max 5G 399;120 Go;Illimite national;399;+5 Go roaming;boutique.orange.ma (slugs offres);officiel_site
+2026-08-16;Orange;Forfait mobile;Yo Max 5G 499;160 Go;Illimite national;499;+8 Go roaming;boutique.orange.ma (slugs offres);officiel_site
+2026-08-16;Orange;Forfait mobile;Yo Max 5G 649;Tout illimite;Tout illimite;649;+10 Go roaming - 5 services;boutique.orange.ma (slugs offres);officiel_site
+2026-08-16;Orange;Forfait mobile;Yoxo 50/100/200/250;;;50-250;Gamme 100% digitale - detail par palier a extraire (yoxo.ma);yoxo.ma;a_completer
+2026-08-16;inwi;Forfait mobile;Gammes Max DATA / Max Appels / Max RS;jusqu'a 100 Go;Illimite inwi apres epuisement - illimite national des 199 DH;49+;Detail par palier rendu en JS - a extraire via navigateur;inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;a_completer
+2026-08-16;inwi;Forfait mobile;Forfait FLEXI;;;49;Forfait ajustable sans engagement;inwi.ma;officiel_site
+2026-08-16;inwi;Forfait mobile;win by inwi;composable;composable;variable;Offre 100% digitale composable - grille sur win.ma;win.ma;a_completer
+2026-08-16;Maroc Telecom;Box;Box El Manzil 5G / Box 4G+;;;;Pages iam.ma/box-el-manzil-5g et /box-4g - prix a extraire au prochain run;iam.ma;a_completer
+2026-08-16;Orange;Box;Dar Box 5G / Dar Box 4G+;;;;Prix rendus en JS sur boutique.orange.ma/offres-dar-box;boutique.orange.ma;a_completer
+2026-08-16;Orange;ADSL;ADSL Orange;;;149;"A partir de 149 DH/mois" affiche sur orange.ma;orange.ma;officiel_site
