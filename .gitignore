@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 run.log
 run-output.txt
+
+# artefacts locaux
+_site/
+.venv/
