@@ -323,6 +323,22 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     padding: 1.5px 7px; margin-inline-start: 6px; vertical-align: 2px;
   }
   .val-more { font-size: 12px; color: var(--muted); margin: 10px 0 2px; }
+  .val-stats { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 2px; }
+  .val-stat {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12.5px; color: var(--ink-2);
+    background: var(--page); border: 1px solid var(--grid);
+    border-radius: 99px; padding: 5px 12px;
+  }
+  .val-stat b {
+    font-family: var(--head); font-size: 13px; font-weight: 800;
+    color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .val-stat.global {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+  .val-stat.global b { color: var(--accent); }
   @media (max-width: 640px) {
     .val-info { flex-basis: 44%; }
     .val-num { flex-basis: 76px; font-size: 12.5px; }
@@ -522,7 +538,16 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.5 5a3 3 0 0 0 5 0L5 7zM19 7l-2.5 5a3 3 0 0 0 5 0L19 7z"/></svg></span>
       <span data-i18n="val_titre">Le vrai prix du Go</span></h2>
     <p class="hint" data-i18n="val_hint">Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord.</p>
-    <div class="seg" id="val-dim" role="group" aria-label="Dimension"></div>
+    <div class="filters" style="margin-bottom:4px">
+      <div class="seg" id="val-dim" role="group" aria-label="Dimension"></div>
+      <label class="flt"><span id="val-crit-label">Volume minimum</span>
+        <select id="val-crit"></select>
+      </label>
+      <label class="flt"><span data-i18n="val_budget">Budget max</span>
+        <select id="val-budget"></select>
+      </label>
+    </div>
+    <div class="val-stats" id="val-stats"></div>
     <div class="val-list" id="val-list"></div>
     <p class="val-more" id="val-more" hidden></p>
   </section>
@@ -681,6 +706,9 @@ const I18N = {
     val_best: "MEILLEUR RAPPORT",
     val_more: n => `… et ${n} autre(s) offre(s) — colonne « Prix / unité » de la table pour le classement complet.`,
     val_vide: "Aucune offre avec volume mesurable dans la sélection.",
+    val_budget: "Budget max",
+    val_moy: "moyenne", val_moy_toutes: "Moyenne toutes offres",
+    val_moy_moy: "Moyenne des moyennes",
   },
   ar: {
     h1: "أسعار الألياف البصرية والهاتف والإنترنت المنزلي في المغرب، تُرصد كل شهر",
@@ -743,6 +771,9 @@ const I18N = {
     val_best: "أفضل قيمة",
     val_more: n => `… و${n} عرض آخر — عمود « سعر الوحدة » في الجدول للترتيب الكامل.`,
     val_vide: "لا عروض بحجم قابل للقياس ضمن الاختيار.",
+    val_budget: "الميزانية القصوى",
+    val_moy: "المعدل", val_moy_toutes: "معدل جميع العروض",
+    val_moy_moy: "معدل المعدلات",
   },
 };
 
@@ -836,7 +867,8 @@ let ALL = [];          // toutes les lignes du CSV
 let RESUMES = {};      // resumes.json : paragraphe éditorial par mois
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
-              besoin: "Fibre", crit: 0, val: "mobile" };
+              besoin: "Fibre", crit: 0, val: "mobile",
+              valCrit: 0, valBudget: 0 };
 
 /* ---------- état ↔ URL (vues partageables) ---------- */
 
@@ -980,6 +1012,7 @@ function refreshControls() {
   document.querySelectorAll("#val-dim button").forEach(b => {
     b.textContent = T(b.dataset.dim === "mobile" ? "val_mobile" : "val_fibre");
   });
+  fillValFilters();
 
   const selE = document.getElementById("f-evo");
   const tiers = fibreTiers(ALL);
@@ -1396,30 +1429,106 @@ function initValeur() {
     b.setAttribute("aria-pressed", String(dim === state.val));
     b.onclick = () => {
       state.val = dim;
+      state.valCrit = 0; state.valBudget = 0;
       seg.querySelectorAll("button").forEach(x =>
         x.setAttribute("aria-pressed", String(x.dataset.dim === dim)));
-      renderValeur();
+      fillValFilters(); renderValeur();
     };
     return b;
   }));
+  document.getElementById("val-crit").onchange = e => {
+    state.valCrit = +e.target.value; renderValeur();
+  };
+  document.getElementById("val-budget").onchange = e => {
+    state.valBudget = +e.target.value; renderValeur();
+  };
+}
+
+/* offres qualifiées de la section (avant filtres locaux) */
+function valRows() {
+  const cat = state.val === "mobile" ? "Forfait mobile" : "Fibre";
+  return rowsOfMonth(state.month)
+    .filter(r => r.categorie === cat && r.prix && state.ops.has(r.operateur))
+    .map(r => ({ r, u: unitPrice(r), d: parseDebit(r.debit_ou_data) }))
+    .filter(x => x.u);
+}
+
+/* options des filtres locaux — dépendent du mois et de la dimension */
+function fillValFilters() {
+  const lab = document.getElementById("val-crit-label");
+  const selC = document.getElementById("val-crit");
+  const selB = document.getElementById("val-budget");
+  const rows = valRows();
+  let opts;
+  if (state.val === "mobile") {
+    lab.textContent = T("data_min");
+    const gos = rows.map(x => x.d.go).filter(Boolean);
+    opts = [5, 10, 20, 50, 100].filter(v => gos.some(g => g >= v))
+      .map(v => [v, "≥ " + v + " " + T("go_unit")]);
+  } else {
+    lab.textContent = T("debit_min");
+    opts = [...new Set(rows.map(x => x.d.mb).filter(Boolean))]
+      .sort((a, b) => a - b).map(mb => [mb, "≥ " + tierLabel(mb)]);
+  }
+  selC.replaceChildren(new Option(T("peu_importe"), 0),
+                       ...opts.map(([v, l]) => new Option(l, v)));
+  selC.value = String(state.valCrit);
+  if (selC.selectedIndex < 0) { state.valCrit = 0; selC.value = "0"; }
+
+  const maxP = Math.max(0, ...rows.map(x => x.r.prix));
+  const tiers = [50, 100, 150, 200, 300, 500, 800, 1000].filter(v => v < maxP);
+  selB.replaceChildren(new Option(T("peu_importe"), 0),
+                       ...tiers.map(v => new Option("≤ " + fmtDH(v), v)));
+  selB.value = String(state.valBudget);
+  if (selB.selectedIndex < 0) { state.valBudget = 0; selB.value = "0"; }
 }
 
 function renderValeur() {
   const list = document.getElementById("val-list");
   const more = document.getElementById("val-more");
-  const cat = state.val === "mobile" ? "Forfait mobile" : "Fibre";
-  const rows = rowsOfMonth(state.month)
-    .filter(r => r.categorie === cat && r.prix && state.ops.has(r.operateur))
-    .map(r => ({ r, u: unitPrice(r) }))
-    .filter(x => x.u)
+  const stats = document.getElementById("val-stats");
+  const mesure = x => state.val === "mobile" ? x.d.go : x.d.mb;
+  const rows = valRows()
+    .filter(x => !state.valCrit || (mesure(x) != null && mesure(x) >= state.valCrit))
+    .filter(x => !state.valBudget || x.r.prix <= state.valBudget)
     .sort((a, b) => a.u.v - b.u.v);
   list.replaceChildren();
+  stats.replaceChildren();
   more.hidden = true;
   if (!rows.length) {
     const e = document.createElement("div"); e.className = "empty";
     e.textContent = T("val_vide"); list.append(e);
     return;
   }
+
+  /* moyennes sur TOUTES les offres filtrées (pas seulement le top affiché) :
+     par opérateur, toutes offres confondues, et moyenne des moyennes */
+  const unit = rows[0].u.unit;
+  const moy = arr => arr.reduce((s_, x) => s_ + x.u.v, 0) / arr.length;
+  const chip = (nodeOrLabel, v, global) => {
+    const c = document.createElement("span");
+    c.className = "val-stat" + (global ? " global" : "");
+    if (nodeOrLabel instanceof Node) c.append(nodeOrLabel);
+    else c.append(document.createTextNode(nodeOrLabel));
+    const b = document.createElement("b");
+    b.textContent = fmtUnit({ v, unit });
+    c.append(b);
+    return c;
+  };
+  const parOp = OPS.filter(o => state.ops.has(o.name))
+    .map(o => ({ o, sel: rows.filter(x => x.r.operateur === o.name) }))
+    .filter(x => x.sel.length);
+  parOp.forEach(({ o, sel }) => {
+    const frag = document.createDocumentFragment();
+    frag.append(brandBadge(o.name, true),
+                document.createTextNode(" " + T("val_moy")));
+    stats.append(chip(frag, moy(sel)));
+  });
+  stats.append(chip(T("val_moy_toutes"), moy(rows), true));
+  if (parOp.length > 1)
+    stats.append(chip(T("val_moy_moy"),
+                      parOp.reduce((s_, x) => s_ + moy(x.sel), 0) / parOp.length,
+                      true));
   const shown = rows.slice(0, VAL_MAX_ROWS);
   const maxV = shown[shown.length - 1].u.v;
   const bestV = shown[0].u.v;
