@@ -118,11 +118,10 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
 ## Backlog (dans l'ordre — détail dans README « À faire plus tard »)
 1. Pack SEO (JSON-LD Dataset, sitemap, hreflang, pages mensuelles).
 2. data/barometre.json (mini-API).
-3. Coût 1ère année (frais de mise en service).
-4. health.json « état des sources ».
-5. % du SMIG.
-6. Prépayé & pass (gros chantier — le vrai trou de couverture).
-7. Comparaison internationale (source tierce en annexe).
-8. Profils d'usage dans le finder.
-9. Bonus : archiver les catalogues PDF mensuels d'IAM dans
+3. health.json « état des sources ».
+4. % du SMIG.
+5. Prépayé & pass (gros chantier — le vrai trou de couverture).
+6. Comparaison internationale (source tierce en annexe).
+7. Profils d'usage dans le finder.
+8. Bonus : archiver les catalogues PDF mensuels d'IAM dans
    `data/catalogues/`.
