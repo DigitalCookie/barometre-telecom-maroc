@@ -729,7 +729,8 @@ const I18N = {
     count: (n, f) => `${n} offre${n > 1 ? "s" : ""}${f ? " (filtrées)" : ""}`,
     col_operateur: "Opérateur", col_categorie: "Catégorie", col_offre: "Offre",
     col_debit: "Débit / data", col_appels: "Appels", col_prix: "Prix",
-    col_unite: "Prix / unité", col_fiab: "Fiabilité",
+    col_unite: "Prix / unité", col_an1: "Coût 1ère année", col_fiab: "Fiabilité",
+    frais_court: "de frais", an1_title: "12 mensualités + frais de mise en service publiés",
     resume_titre: "L'analyse du mois",
     resume_hint: "Résumé généré automatiquement à partir des données du relevé.",
     resume_note: "(analyse disponible en français)",
@@ -737,7 +738,7 @@ const I18N = {
     metho_s1: "D'où viennent les prix ?",
     metho_p1: "Chaque relevé est collecté automatiquement le 2 du mois sur les pages publiques des sites officiels des opérateurs : iam.ma (Maroc Telecom), orange.ma, boutique.orange.ma et yoxo.ma (Orange), inwi.ma (inwi). Aucune donnée de presse ni de comparateur tiers n'est utilisée comme source de prix.",
     metho_s2: "Ce que le baromètre ne voit pas",
-    metho_p2: "Les prix relevés sont les prix catalogue TTC affichés en ligne. Les promotions temporaires, offres de fidélisation ou remises négociées en boutique ne sont pas captées.",
+    metho_p2: "Les prix relevés sont les prix catalogue TTC affichés en ligne. Les promotions temporaires, offres de fidélisation ou remises négociées en boutique ne sont pas captées. Le coût 1ère année = 12 mensualités + frais de mise en service, uniquement quand l'opérateur les publie (certains affichent le libellé sans le montant).",
     metho_s3: "Niveaux de fiabilité",
     metho_p3: "<code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.",
     metho_s4: "Données ouvertes",
@@ -800,7 +801,8 @@ const I18N = {
     count: (n, f) => `${n} عرضاً${f ? " (مصفّاة)" : ""}`,
     col_operateur: "المشغل", col_categorie: "الفئة", col_offre: "العرض",
     col_debit: "السرعة / البيانات", col_appels: "المكالمات", col_prix: "الثمن",
-    col_unite: "سعر الوحدة", col_fiab: "الموثوقية",
+    col_unite: "سعر الوحدة", col_an1: "كلفة السنة الأولى", col_fiab: "الموثوقية",
+    frais_court: "رسوم التفعيل", an1_title: "12 قسطاً شهرياً + رسوم التفعيل المنشورة",
     resume_titre: "تحليل الشهر",
     resume_hint: "ملخص مُولَّد آلياً من بيانات الرصد.",
     resume_note: "(التحليل متوفر بالفرنسية)",
@@ -808,7 +810,7 @@ const I18N = {
     metho_s1: "من أين تأتي الأسعار؟",
     metho_p1: "يُجمع كل رصد آلياً في اليوم الثاني من الشهر من الصفحات العمومية للمواقع الرسمية للمشغلين : iam.ma (اتصالات المغرب)، orange.ma وboutique.orange.ma وyoxo.ma (أورنج)، inwi.ma (إنوي). لا تُستعمل أي بيانات صحفية أو مقارنات طرف ثالث كمصدر للأسعار.",
     metho_s2: "ما لا يراه الباروميتر",
-    metho_p2: "الأسعار المرصودة هي أسعار الكتالوج المعروضة على الإنترنت (شاملة للضرائب). العروض الترويجية المؤقتة وتخفيضات الوكالات غير مشمولة.",
+    metho_p2: "الأسعار المرصودة هي أسعار الكتالوج المعروضة على الإنترنت (شاملة للضرائب). العروض الترويجية المؤقتة وتخفيضات الوكالات غير مشمولة. كلفة السنة الأولى = 12 قسطاً شهرياً + رسوم التفعيل، فقط عندما ينشرها المشغل.",
     metho_s3: "مستويات الموثوقية",
     metho_p3: "<code>officiel_site</code> : مستخرج بمحلل مخصص للصفحة. <code>officiel_svg</code> : مقروء من الصور التعريفية الرسمية. <code>officiel_archive</code> : تاريخ مُعاد بناؤه من أرشيف web.archive.org للصفحة الرسمية. <code>officiel_js_generique</code> / <code>a_completer</code> : استخراج عام، يتطلب تأكيداً يدوياً.",
     metho_s4: "بيانات مفتوحة",
@@ -906,6 +908,17 @@ const monthLabel = m => {
                 "juil.", "août", "sept.", "oct.", "nov.", "déc."];
   return noms[+mo - 1] + " " + y;
 };
+
+/* frais de mise en service/installation publiés dans les remarques
+   (ex. Dar Box : « Frais de mise en service 299 DH ») */
+function fraisOf(r) {
+  const m = (r.remarques || "").match(/frais[^0-9]{0,40}(\d{2,4})\s*DH/i);
+  return m ? +m[1] : null;
+}
+/* coût réel de la première année : 12 mensualités + frais publiés */
+function coutAn1(r) {
+  return r.prix == null ? null : r.prix * 12 + (fraisOf(r) || 0);
+}
 
 /* prix à l'unité : DH/Go (data) ou DH/Mbps (débit) — l'indicateur de valeur */
 function unitPrice(r) {
@@ -1160,8 +1173,10 @@ function fillCrit() {
 }
 
 function specOf(r) {
-  return [r.debit_ou_data, r.appels_inclus].filter(Boolean).join(" · ") ||
-         (r.remarques || "").slice(0, 60);
+  const frais = fraisOf(r);
+  const parts = [r.debit_ou_data, r.appels_inclus].filter(Boolean);
+  if (frais) parts.push("+" + fmtDH(frais) + " " + T("frais_court"));
+  return parts.join(" · ") || (r.remarques || "").slice(0, 60);
 }
 
 function renderFinder() {
@@ -1844,6 +1859,7 @@ const T_COLS = [
   { key: "appels_inclus", label: "col_appels" },
   { key: "prix",          label: "col_prix", num: true },
   { key: "unitp",         label: "col_unite", num: true },
+  { key: "an1",           label: "col_an1", num: true },
   { key: "fiabilite",     label: "col_fiab" },
 ];
 
@@ -1856,7 +1872,8 @@ function debitKey(r) {
 function renderTable() {
   const wrap = document.getElementById("tablewrap");
   let rows = filtered().map(r => ({ ...r, debitTri: debitKey(r),
-                                    unitp: (unitPrice(r) || { v: Infinity }).v }));
+                                    unitp: (unitPrice(r) || { v: Infinity }).v,
+                                    an1: coutAn1(r) ?? Infinity }));
   if (state.query)
     rows = rows.filter(r =>
       [r.operateur, r.categorie, r.offre, r.debit_ou_data, r.appels_inclus,
@@ -1867,6 +1884,7 @@ function renderTable() {
   const va = r => col === "prix" ? (r.prix ?? Infinity)
              : col === "debitTri" ? r.debitTri
              : col === "unitp" ? r.unitp
+             : col === "an1" ? r.an1
              : (r[col] || "").toLowerCase();
   rows.sort((a, b) => {
     const x = va(a), y = va(b);
@@ -1908,6 +1926,7 @@ function renderTable() {
       cellWrap(r.appels_inclus),
       cellNum(r.prix != null ? fmtDH(r.prix) : "—"),
       cellNum(fmtUnit(unitPrice(r)) || "—"),
+      cellAn1(r),
       cellFiab(r.fiabilite));
     tbody.append(tr);
   });
@@ -1917,6 +1936,19 @@ function renderTable() {
   function cell(t) { const td = document.createElement("td"); td.textContent = t || ""; return td; }
   function cellWrap(t) { const td = cell(t); td.className = "wrapcell"; return td; }
   function cellNum(t) { const td = cell(t); td.className = "num"; return td; }
+  function cellAn1(r) {
+    const total = coutAn1(r), frais = fraisOf(r);
+    const td = document.createElement("td"); td.className = "num";
+    if (total == null) { td.textContent = "—"; return td; }
+    td.textContent = fmtDH(total);
+    if (frais) {
+      td.title = T("an1_title") + " (" + fmtDH(frais) + ")";
+      const st = document.createElement("sup");
+      st.textContent = "+"; st.style.color = "var(--accent)";
+      td.append(st);
+    }
+    return td;
+  }
   function cellFiab(t) { const td = document.createElement("td");
     const s = document.createElement("span");
     s.className = "fiab" + (t === "officiel_site" ? " ok" : "");
