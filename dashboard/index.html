@@ -590,7 +590,12 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
       <label class="flt"><span data-i18n="val_budget">Budget max</span>
         <select id="val-budget"></select>
       </label>
+      <label class="flt">
+        <input type="checkbox" id="val-frais">
+        <span data-i18n="val_frais">Inclure les frais (amortis sur 12 mois)</span>
+      </label>
     </div>
+    <p class="val-more" id="val-frais-note" hidden data-i18n="val_frais_note">Aucuns frais de mise en service publiés sur ces offres — le classement est inchangé.</p>
     <div class="val-stats" id="val-stats"></div>
     <div class="val-list" id="val-list"></div>
     <p class="val-more" id="val-more" hidden></p>
@@ -749,6 +754,9 @@ const I18N = {
     val_titre: "Le vrai prix du Go",
     val_hint: "Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord.",
     val_mobile: "Forfaits — DH/Go", val_fibre: "Fibre — DH/Mbps",
+    val_box: "Box — DH/Mbps",
+    val_frais: "Inclure les frais (amortis sur 12 mois)",
+    val_frais_note: "Aucuns frais de mise en service publiés sur ces offres — le classement est inchangé.",
     val_best: "MEILLEUR RAPPORT",
     val_more: n => `… et ${n} autre(s) offre(s) — colonne « Prix / unité » de la table pour le classement complet.`,
     val_vide: "Aucune offre avec volume mesurable dans la sélection.",
@@ -821,6 +829,9 @@ const I18N = {
     val_titre: "السعر الحقيقي للجيغا",
     val_hint: "القيمة مقابل الثمن : السعر مقسوماً على الجيغا (الباقات) أو الميغا (الفيبر) — أفضل الصفقات أولاً.",
     val_mobile: "الباقات — درهم/جيغا", val_fibre: "الفيبر — درهم/ميغا",
+    val_box: "بوكس — درهم/ميغا",
+    val_frais: "احتساب رسوم التفعيل (موزعة على 12 شهراً)",
+    val_frais_note: "لا رسوم تفعيل منشورة على هذه العروض — الترتيب دون تغيير.",
     val_best: "أفضل قيمة",
     val_more: n => `… و${n} عرض آخر — عمود « سعر الوحدة » في الجدول للترتيب الكامل.`,
     val_vide: "لا عروض بحجم قابل للقياس ضمن الاختيار.",
@@ -939,7 +950,7 @@ let ANNOTS = [];       // annotations.json : événements marqués sur l'évolut
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
               besoin: "Fibre", crit: 0, val: "mobile",
-              valCrit: 0, valBudget: 0 };
+              valCrit: 0, valBudget: 0, valFrais: false };
 
 /* ---------- état ↔ URL (vues partageables) ---------- */
 
@@ -1085,7 +1096,8 @@ function refreshControls() {
   fillCrit();
 
   document.querySelectorAll("#val-dim button").forEach(b => {
-    b.textContent = T(b.dataset.dim === "mobile" ? "val_mobile" : "val_fibre");
+    b.textContent = T({ mobile: "val_mobile", fibre: "val_fibre",
+                        box: "val_box" }[b.dataset.dim]);
   });
   fillValFilters();
 
@@ -1495,7 +1507,8 @@ function renderMobile() {
 
 /* ---------- le vrai prix du Go : barres horizontales ---------- */
 
-const VAL_DIMS = ["mobile", "fibre"];
+const VAL_DIMS = ["mobile", "fibre", "box"];
+const VAL_CATS = { mobile: "Forfait mobile", fibre: "Fibre", box: "Box" };
 const VAL_MAX_ROWS = 12;
 
 function initValeur() {
@@ -1519,15 +1532,29 @@ function initValeur() {
   document.getElementById("val-budget").onchange = e => {
     state.valBudget = +e.target.value; renderValeur();
   };
+  document.getElementById("val-frais").onchange = e => {
+    state.valFrais = e.target.checked; renderValeur();
+  };
 }
 
-/* offres qualifiées de la section (avant filtres locaux) */
+/* offres qualifiées de la section (avant filtres locaux).
+   Mesure par dimension : Go pour les forfaits, Mbps pour fibre ET box
+   (les box se vendent au débit ; les box à volume plafonné, sans débit,
+   sortent du classement). Frais amortis sur 12 mois si le toggle est actif. */
 function valRows() {
-  const cat = state.val === "mobile" ? "Forfait mobile" : "Fibre";
+  const cat = VAL_CATS[state.val];
   return rowsOfMonth(state.month)
     .filter(r => r.categorie === cat && r.prix && state.ops.has(r.operateur))
-    .map(r => ({ r, u: unitPrice(r), d: parseDebit(r.debit_ou_data) }))
-    .filter(x => x.u);
+    .map(r => {
+      const d = parseDebit(r.debit_ou_data);
+      const mesure = state.val === "mobile" ? d.go : d.mb;
+      if (!mesure) return null;
+      const frais = state.valFrais ? (fraisOf(r) || 0) : 0;
+      return { r, d, frais,
+               u: { v: (r.prix + frais / 12) / mesure,
+                    unit: state.val === "mobile" ? "dh_go" : "dh_mbps" } };
+    })
+    .filter(Boolean);
 }
 
 /* options des filtres locaux — dépendent du mois et de la dimension */
@@ -1542,7 +1569,7 @@ function fillValFilters() {
     const gos = rows.map(x => x.d.go).filter(Boolean);
     opts = [5, 10, 20, 50, 100].filter(v => gos.some(g => g >= v))
       .map(v => [v, "≥ " + v + " " + T("go_unit")]);
-  } else {
+  } else {                       /* fibre et box : critère de débit */
     lab.textContent = T("debit_min");
     opts = [...new Set(rows.map(x => x.d.mb).filter(Boolean))]
       .sort((a, b) => a - b).map(mb => [mb, "≥ " + tierLabel(mb)]);
@@ -1572,6 +1599,10 @@ function renderValeur() {
   list.replaceChildren();
   stats.replaceChildren();
   more.hidden = true;
+  /* toggle frais actif mais aucune offre de la sélection n'en publie :
+     le dire, plutôt que de laisser un filtre muet */
+  document.getElementById("val-frais-note").hidden =
+    !(state.valFrais && rows.length && rows.every(x => !fraisOf(x.r)));
   if (!rows.length) {
     const e = document.createElement("div"); e.className = "empty";
     e.textContent = T("val_vide"); list.append(e);
@@ -1620,7 +1651,10 @@ function renderValeur() {
       bd.textContent = T("val_best"); name.append(bd);
     }
     const sub = document.createElement("div"); sub.className = "val-sub";
-    sub.textContent = [r.debit_ou_data, fmtDH(r.prix)].filter(Boolean).join(" · ");
+    const fr = state.valFrais && fraisOf(r);
+    sub.textContent = [r.debit_ou_data,
+                       fmtDH(r.prix) + (fr ? " + " + fmtDH(fr) + " " + T("frais_court") : "")]
+      .filter(Boolean).join(" · ");
     info.append(name, sub);
     const bar = document.createElement("div"); bar.className = "val-bar";
     const fill = document.createElement("i");
