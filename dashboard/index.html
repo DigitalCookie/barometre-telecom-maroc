@@ -129,6 +129,14 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   .brandmark svg { display: block; }
   .brandmark b { font-weight: 800; }
   .hero-actions { display: flex; gap: 8px; flex: none; }
+  #analyse-link {
+    display: inline-flex; align-items: center;
+    height: 38px; padding: 0 16px; border-radius: 99px;
+    font-size: 13.5px; font-weight: 700; font-family: var(--head);
+    color: var(--navy); background: #fff; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.28);
+  }
+  #analyse-link:hover { background: #e8edfb; }
   #theme-btn, #lang-btn {
     flex: none; cursor: pointer;
     height: 38px; border-radius: 99px;
@@ -500,6 +508,7 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
         Baromètre <b>Télécoms Maroc</b>
       </span>
       <div class="hero-actions">
+        <a id="analyse-link" href="analyse.html" data-i18n="lien_analyse">Analyse</a>
         <button id="lang-btn" type="button" aria-label="التبديل إلى العربية">عربية</button>
         <button id="theme-btn" type="button" aria-label="Basculer entre thème clair et sombre">◐</button>
       </div>
@@ -657,7 +666,8 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
 
   <footer>
     <span data-i18n="footer_src">Source : sites officiels des opérateurs — relevé automatisé le 2 de chaque mois, prix catalogue TTC.</span>
-    <a href="data/changements.xml">RSS</a>
+    <a href="analyse.html" data-i18n="lien_analyse_footer">Signaux du marché (analyse)</a>
+    · <a href="data/changements.xml">RSS</a>
     · <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">Code &amp; données</a>
   </footer>
 </div>
@@ -763,6 +773,7 @@ const I18N = {
     val_budget: "Budget max",
     val_moy: "moyenne", val_moy_toutes: "Moyenne toutes offres",
     val_moy_moy: "Moyenne des moyennes",
+    lien_analyse: "Analyse", lien_analyse_footer: "Signaux du marché (analyse)",
     ind_titre: "Indice Baromètre",
     ind_hint: "Panier d'entrée du marché : fibre ≥ 100 Mb/s + forfait ≥ 20 Go + box, chacun au prix le moins cher. Indépendant des filtres.",
     ind_base: (m, v) => `Base 100 = ${m} (premier relevé complet). Panier actuel : ${v} DH/mois.`,
@@ -838,6 +849,7 @@ const I18N = {
     val_budget: "الميزانية القصوى",
     val_moy: "المعدل", val_moy_toutes: "معدل جميع العروض",
     val_moy_moy: "معدل المعدلات",
+    lien_analyse: "التحليل", lien_analyse_footer: "إشارات السوق (تحليل بالفرنسية)",
     ind_titre: "مؤشر الباروميتر",
     ind_hint: "سلة دخول السوق : ألياف ≥ 100 ميغا + باقة ≥ 20 جيغا + بوكس، كل منها بأرخص سعر. مستقل عن المرشحات.",
     ind_base: (m, v) => `الأساس 100 = ${m} (أول رصد كامل). السلة الحالية : ${v} درهم شهرياً.`,

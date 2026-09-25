@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Signaux du marché — Baromètre Télécoms Maroc</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Analyse du marché télécoms marocain à partir de 4 ans de relevés de prix : rigidité des grilles, parallélisme Orange/inwi, vrai prix du Go, prime au guichet, accessibilité.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Signaux du marché télécoms Maroc — l'analyse du Baromètre">
+<meta property="og:description" content="Les prix faciaux ne bougent pas ; le vrai prix du Go a fondu de 60 %. Alignement parfait Orange/inwi, premium IAM dégressif, prime au guichet ×2. L'analyse sur 4 ans de données.">
+<meta property="og:url" content="https://digitalcookie.github.io/barometre-telecom-maroc/analyse.html">
+<meta property="og:image" content="https://digitalcookie.github.io/barometre-telecom-maroc/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23172a5c'/%3E%3Crect x='6' y='18' width='4.5' height='8' rx='1.5' fill='%236e8ff2'/%3E%3Crect x='13.75' y='12' width='4.5' height='14' rx='1.5' fill='%23a9c0ff'/%3E%3Crect x='21.5' y='6' width='4.5' height='20' rx='1.5' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f2f5fb; --surface: #ffffff;
+    --navy: #172a5c; --navy-2: #21387a;
+    --ink: #1b2340; --ink-2: #4c5675; --muted: #8a92ab;
+    --grid: #e4e8f2; --baseline: #c9d1e4;
+    --accent: #2f5ee0;
+    --shadow: 0 1px 2px rgba(23,42,92,0.06), 0 6px 18px -6px rgba(23,42,92,0.12);
+    --iam: #0055a4; --orange: #ff7900; --inwi: #d6006d;
+    --up: #12934e; --down: #d63a4a;
+    --head: "Outfit", system-ui, sans-serif;
+    --body: "Nunito Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink);
+         font: 15.5px/1.65 var(--body); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--head); }
+
+  .hero {
+    background:
+      radial-gradient(circle at 88% 130%,
+        transparent 0 34%, rgba(255,255,255,0.055) 34% 36.5%,
+        transparent 36.5% 48%, rgba(255,255,255,0.05) 48% 50.5%,
+        transparent 50.5% 62%, rgba(255,255,255,0.045) 62% 64.5%, transparent 64.5%),
+      linear-gradient(120deg, var(--navy), var(--navy-2));
+    color: #fff; padding: 22px 22px 54px;
+  }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 30px; }
+  .brandmark { display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--head); font-weight: 600; font-size: 16px; color: #fff; text-decoration: none; }
+  .brandmark b { font-weight: 800; }
+  .back {
+    font-size: 13px; font-weight: 700; color: #fff; text-decoration: none;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 99px; padding: 7px 15px;
+  }
+  .back:hover { background: rgba(255,255,255,0.22); }
+  .hero .kicker { font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #a9c0ff; margin-bottom: 8px; }
+  .hero h1 { font-size: clamp(26px, 4.4vw, 38px); font-weight: 800;
+    letter-spacing: -0.015em; line-height: 1.14; margin: 0 0 12px; text-wrap: balance; }
+  .hero .standfirst { font-size: 16px; color: rgba(255,255,255,0.85); max-width: 700px; margin: 0 0 14px; }
+  .hero .periode {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 700;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 99px; padding: 6px 14px;
+  }
+  .hero .periode::before { content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: #4ade80; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px 70px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--grid); border-radius: 16px;
+    padding: 26px 30px 22px; margin-top: 20px; box-shadow: var(--shadow);
+  }
+  .card:first-of-type { margin-top: -30px; position: relative; z-index: 2; }
+  .card h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 4px;
+    display: flex; align-items: baseline; gap: 12px; }
+  .card h2 .no {
+    font-family: var(--head); font-size: 12px; font-weight: 800; color: var(--accent);
+    border: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: 6px; padding: 2px 7px; transform: translateY(-2px); flex: none;
+  }
+  .card .lede { font-size: 15px; color: var(--ink-2); margin: 4px 0 14px; }
+  .card p { margin: 10px 0; color: var(--ink-2); }
+  .card p b, .card li b { color: var(--ink); }
+  .card ul { margin: 8px 0; padding-inline-start: 22px; color: var(--ink-2); }
+  .card li { margin: 6px 0; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; margin: 16px 0; }
+  .stat { background: var(--page); border: 1px solid var(--grid); border-radius: 12px;
+    padding: 13px 16px 11px; }
+  .stat .v { font-family: var(--head); font-size: 27px; font-weight: 800;
+    letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .stat .v.up { color: var(--up); }
+  .stat .v.down { color: var(--down); }
+  .stat .l { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+
+  .chart-box { margin: 14px 0 6px; }
+  .chart-titre { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 4px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px;
+    color: var(--ink-2); margin: 4px 0 6px; }
+  .legend .key { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .stroke { width: 14px; height: 3px; border-radius: 2px; }
+  svg text { font: 11px var(--body); fill: var(--muted); }
+  svg .axis { stroke: var(--baseline); stroke-width: 1; }
+  svg .gridline { stroke: var(--grid); stroke-width: 1; }
+  svg .vlabel { fill: var(--ink-2); font-size: 11px; font-variant-numeric: tabular-nums; }
+
+  table.grille { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 12px 0; }
+  table.grille th, table.grille td { padding: 7px 12px; border-bottom: 1px solid var(--grid);
+    text-align: start; }
+  table.grille th { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-2); font-weight: 800; }
+  table.grille td.num { text-align: end; font-variant-numeric: tabular-nums; font-weight: 700; }
+
+  .op { display: inline-flex; align-items: center; justify-content: center;
+    height: 18px; padding: 0 7px; border-radius: 4px; font-size: 11px; font-weight: 700;
+    color: #fff; text-transform: lowercase; }
+  .op.iam { background: var(--iam); } .op.orange { background: var(--orange); }
+  .op.inwi { background: var(--inwi); }
+
+  .note {
+    font-size: 13px; color: var(--ink-2); background: color-mix(in srgb, var(--accent) 6%, transparent);
+    border-inline-start: 3px solid var(--accent); border-radius: 0 10px 10px 0;
+    padding: 10px 14px; margin: 14px 0;
+  }
+  .warn { border-inline-start-color: #c47b0a;
+    background: color-mix(in srgb, #c47b0a 7%, transparent); }
+
+  footer { margin-top: 30px; font-size: 12.5px; color: var(--muted);
+    border-top: 1px solid var(--grid); padding-top: 14px; }
+  footer a { color: var(--accent); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .wrap > .card { animation: rise 0.5s cubic-bezier(0.16,1,0.3,1) backwards; }
+    .wrap > .card:nth-of-type(1) { animation-delay: 0.05s; }
+    .wrap > .card:nth-of-type(2) { animation-delay: 0.12s; }
+    .wrap > .card:nth-of-type(n+3) { animation-delay: 0.18s; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <a class="brandmark" href="./">
+        <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="rgba(255,255,255,0.14)"/><rect x="6" y="18" width="4.5" height="8" rx="1.5" fill="#6e8ff2"/><rect x="13.75" y="12" width="4.5" height="14" rx="1.5" fill="#a9c0ff"/><rect x="21.5" y="6" width="4.5" height="20" rx="1.5" fill="#fff"/></svg>
+        Baromètre <b>Télécoms Maroc</b>
+      </a>
+      <a class="back" href="./">← Le baromètre</a>
+    </div>
+    <div class="kicker">Signaux du marché · Analyse</div>
+    <h1>Les prix ne bougent pas. Le marché, si.</h1>
+    <p class="standfirst">Ce que quatre ans de relevés de prix révèlent du marché télécoms marocain :
+    des grilles fibre figées et parfaitement alignées, un prix réel du Go qui a fondu de 60 %,
+    et une prime silencieuse payée par ceux qui n'achètent pas en ligne.</p>
+    <span class="periode" id="periode">Chargement des données…</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="card">
+    <h2>L'essentiel</h2>
+    <ul>
+      <li><b>Rigidité de façade.</b> Les grilles fibre n'ont pas bougé d'un dirham depuis des mois,
+        et Orange et inwi affichent des grilles <b>identiques au dirham près sur les six paliers</b>.</li>
+      <li><b>Baisse réelle.</b> Sur la durée, tout a baissé : la fibre IAM a perdu
+        <b>-20 % à -50 %</b> selon le palier depuis sept. 2024, la grille publique inwi
+        <b>-14 % à -31 %</b> depuis juil. 2022 — souvent par officialisation de promos « permanentes ».</li>
+      <li><b>Le Go a fondu.</b> Le Go mobile le moins cher du marché est passé de
+        <b><span id="e-go-avant">—</span></b> à <b><span id="e-go-apres">—</span></b>
+        (<span id="e-go-delta">—</span>), sans presque aucun changement de prix facial :
+        les opérateurs enrichissent la data à prix constant.</li>
+      <li><b>La prime au guichet.</b> Au sein même d'Orange, le Go coûte
+        <b><span id="e-prime">—</span> fois plus cher</b> en canal classique que sur sa marque
+        100 % digitale Yoxo.</li>
+      <li><b>Un premium d'incumbent dégressif.</b> IAM se vend
+        <span id="e-premium">—</span> au-dessus de ses concurrents en entrée de gamme fibre,
+        mais l'écart se referme à mesure qu'on monte en débit.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">01</span> Des grilles figées, et un alignement parfait</h2>
+    <p class="lede">L'absence de fluctuation n'est pas une absence de signal : c'est le signal.</p>
+    <div class="stats" id="s1-stats"></div>
+    <p>Sur la période où les deux grilles sont observables simultanément, <b>Orange et inwi
+    affichent des tarifs fibre strictement identiques</b> — même prix, au dirham, sur chacun des
+    six paliers (20 Méga à 1 Gb/s). En économie de la concurrence, un parallélisme parfait et
+    durable dans un oligopole restreint est l'indicateur classique à surveiller : il peut résulter
+    d'une concurrence intense qui comprime tout le monde vers le même prix… ou d'un équilibre
+    tacite où plus personne n'a intérêt à bouger. La durée de l'alignement, que ce baromètre
+    mesure désormais chaque mois, est précisément ce qui permettra de trancher.</p>
+    <p>Au-dessus de cette grille commune, <b>Maroc Telecom maintient un premium</b> — position
+    classique d'opérateur historique — mais ce premium est <b>dégressif</b> : fort en entrée de
+    gamme, il se referme sur les hauts débits, là où la fibre se vend aux foyers les plus
+    comparateurs.</p>
+    <div class="chart-box">
+      <div class="chart-titre">Premium IAM vs meilleur concurrent, par palier fibre (dernier relevé)</div>
+      <div id="chart-premium"></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-titre">Prix du palier fibre 100 Méga (DH/mois) — trajectoire longue</div>
+      <div class="legend" id="leg-fibre100"></div>
+      <div id="chart-fibre100"></div>
+    </div>
+    <table class="grille" id="t-fibre"></table>
+    <div class="note warn"><b>Lecture.</b> Les prix inwi de juillet 2022 sont les <b>prix publics</b>
+    de sa boutique ; des promos « permanentes » plus basses étaient affichées (349 DH le 100 Méga),
+    qui correspondent… à la grille officielle actuelle. Une partie de la baisse est donc une
+    officialisation de remises préexistantes — un mécanisme de baisse discret, sans annonce de
+    changement de grille.</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">02</span> Le vrai prix : le Go a fondu de 60 %</h2>
+    <p class="lede">Quand les prix faciaux sont figés, la concurrence se déplace vers le contenu.</p>
+    <div class="stats" id="s2-stats"></div>
+    <p>À prix constant, les volumes gonflent : le Yoxo 100 DH est passé de <b>45 Go à 60 Go</b>
+    (+33 %) entre 2025 et 2026 ; le Yo 99 DH d'Orange offrait 20 Go en mai 2023, son successeur
+    Yo Max 99 en offre 25 ; la gamme IAM « Liberté » (99 DH / 20 Go) a cédé la place aux
+    « Liberté Plus » mieux dotés. C'est le phénomène que l'indice des prix classique ne voit pas —
+    et que l'approche « qualité-ajustée » (le prix ramené au Go) capture :</p>
+    <div class="chart-box">
+      <div class="chart-titre">Go le moins cher du mois (DH/Go), par opérateur — offres à volume connu</div>
+      <div class="legend" id="leg-dhgo"></div>
+      <div id="chart-dhgo"></div>
+    </div>
+    <p>La déflation réelle est massive et continue. Elle passe par trois canaux : l'enrichissement
+    des volumes à prix constant, le remplacement de gammes (Liberté → Liberté Plus, Yo → Yo Max),
+    et la marque digitale (Yoxo) qui tire le plancher du marché vers le bas.</p>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">03</span> La prime au guichet</h2>
+    <p class="lede">Le prix du Go dépend moins de l'opérateur que du canal d'achat.</p>
+    <div class="stats" id="s3-stats"></div>
+    <p>Au dernier relevé, un client Orange qui souscrit sur <b>yoxo.ma</b> (souscription 100 %
+    en ligne) paie son Go <b id="s3-digital">—</b> ; le même opérateur le vend
+    <b id="s3-classique">—</b> via sa gamme boutique classique — soit
+    <b id="s3-ratio">—</b> fois plus. Même le meilleur canal classique du marché
+    (<span id="s3-best-classique">—</span>) reste <span id="s3-ratio2">—</span> fois au-dessus
+    du plancher digital.</p>
+    <p>Cette segmentation est une discrimination tarifaire par l'aisance numérique : ceux qui
+    savent souscrire en ligne — plutôt jeunes, urbains, connectés — accèdent à un marché
+    parallèle deux fois moins cher. Pour un régulateur, la question est celle de l'équité
+    d'accès : la fracture numérique se double d'une fracture tarifaire, et ce ratio, mesuré
+    mensuellement, en est le thermomètre.</p>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">04</span> L'accessibilité : la fibre reste un produit de cadre</h2>
+    <p class="lede">Rapporter les prix au SMIG change la perspective.</p>
+    <div class="stats" id="s4-stats"></div>
+    <p>Le repère international (Commission « large bande » UIT/UNESCO) fixe l'objectif
+    d'un accès haut débit d'entrée de gamme à <b>moins de 2 % du revenu mensuel moyen</b>.
+    L'entrée mobile marocaine y est ; la fibre en est loin — son ticket d'entrée absorbe
+    environ <span id="s4-fibre-pct">—</span> d'un SMIG, et un 100 Méga plus de
+    <span id="s4-100-pct">—</span>. La baisse réelle documentée en section 02 améliore
+    l'équation d'année en année, mais l'accès au très haut débit fixe reste, au SMIG,
+    un arbitrage lourd.</p>
+    <div class="note">Base de calcul : SMIG mensuel net du secteur privé ≈ <b>3 111 DH</b>
+    (barème 2024 — constante documentée dans le code, à actualiser lors des revalorisations).</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">05</span> Où vit la concurrence</h2>
+    <p class="lede">Le fixe est un marché d'équilibre ; le mobile, un marché de mouvement.</p>
+    <p>Sur l'ensemble des relevés comparables, les changements de catalogue se concentrent
+    presque exclusivement sur le mobile : <span id="s5-counts">—</span>. Le fixe n'a connu
+    que des événements rares et structurants (introduction du palier 500 Méga chez IAM début
+    2026, refonte de la grille entre sept. 2024 et fin 2025). Le mobile, lui, vit au rythme
+    des lancements (forfait 69 DH « Réseaux sociaux » d'inwi), des remplacements de gamme et
+    des enrichissements de data.</p>
+    <p>C'est cohérent avec la structure des deux marchés : trois infrastructures fibre aux
+    coûts fixes lourds et aux clients captifs d'une adresse, contre un marché mobile où le
+    client change d'offre en deux clics — et où la marque digitale sans boutique fait office
+    d'aiguillon tarifaire.</p>
+  </section>
+
+  <section class="card">
+    <h2>Méthodologie & limites</h2>
+    <ul>
+      <li><b>Sources.</b> Uniquement les sites officiels des opérateurs : relevés mensuels
+        automatisés depuis août 2026, historique reconstruit via les captures
+        web.archive.org des pages officielles (<code>officiel_archive</code>) et les
+        catalogues tarifaires officiels archivés (<code>officiel_catalogue</code>, dont un
+        catalogue Orange dont les grilles en image ont été lues par OCR puis vérifiées
+        visuellement). Chaque ligne du CSV référence sa capture exacte.</li>
+      <li><b>Prix catalogue.</b> Le baromètre lit les prix catalogue TTC ; les promotions
+        temporaires ne sont pas captées — sauf lorsqu'elles sont affichées comme prix barrés
+        (boutique inwi 2022), auquel cas le prix public fait foi et la promo est notée.</li>
+      <li><b>Couverture partielle.</b> Les mois d'archives ne couvrent pas tous les
+        opérateurs ni toutes les catégories ; toutes les comparaisons temporelles de cette
+        page ne portent que sur des périmètres observés aux deux dates. Les diffs
+        « nouveau/retiré » sont bornés aux périmètres couverts des deux côtés.</li>
+      <li><b>Trous connus.</b> Pas d'historique fibre Orange avant août 2026 (pages en rendu
+        client, non archivables) ; volumes Yoxo inconnus de 2022 à début 2025 (seuls les prix
+        des paliers sont attestés par les URL) ; catalogue mobile IAM sept. 2024 irrécupérable
+        (PDF tronqué par le crawler d'archives).</li>
+      <li><b>Ce que cette page n'affirme pas.</b> Le parallélisme tarifaire observé n'est pas,
+        en soi, la preuve d'une entente — c'est un indicateur de structure de marché dont la
+        persistance mérite mesure. C'est exactement ce que ce baromètre fait.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Analyse générée à partir des données ouvertes du baromètre — recalculée à chaque relevé mensuel.
+    <a href="./">Dashboard</a> · <a href="data/barometre.csv" download>CSV</a> ·
+    <a href="data/changements.xml">RSS</a> ·
+    <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">Code &amp; méthodologie</a>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+const SMIG = 3111;                     // DH net / mois — barème 2024
+const OPS = [["Maroc Telecom", "iam", "#0055a4"], ["Orange", "orange", "#ff7900"],
+             ["inwi", "inwi", "#d6006d"]];
+const opColor = n => (OPS.find(o => o[0] === n) || [0, 0, "#888"])[2];
+const fmt = (v, d = 0) => v.toLocaleString("fr-FR", { maximumFractionDigits: d, minimumFractionDigits: d });
+const mois = ["janv.", "févr.", "mars", "avr.", "mai", "juin",
+              "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+const mLabel = m => mois[+m.slice(5, 7) - 1] + " " + m.slice(0, 4);
+/* Les libellés d'offres viennent de pages scrapées : tout texte issu des
+   données passe par esc() avant toute insertion en HTML. */
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function parseCSV(text) {
+  const lines = text.replace(/^﻿/, "").split(/\r?\n/).filter(l => l.trim());
+  const head = lines[0].split(";");
+  return lines.slice(1).map(l => {
+    const c = l.split(";"), r = {};
+    head.forEach((h, i) => r[h.trim()] = (c[i] || "").trim());
+    r.month = r.date_releve.slice(0, 7);
+    r.prix = /^\d+$/.test(r.prix_dh_mois) ? +r.prix_dh_mois : null;
+    const m = (r.debit_ou_data || "").match(/(\d+(?:[.,]\d+)?)\s*(Gb\/s|Giga|Mb\/s|Mbps|M[ée]ga|Go)/i);
+    r.mb = r.go = null;
+    if (m) {
+      const v = parseFloat(m[1].replace(",", ".")), u = m[2].toLowerCase();
+      if (u.startsWith("gb") || u.startsWith("gi")) r.mb = v * 1000;
+      else if (u === "go") r.go = v;
+      else r.mb = v;
+    }
+    return r;
+  }).filter(r => r.operateur);
+}
+
+/* ---- petits graphiques ---- */
+const NS = "http://www.w3.org/2000/svg";
+function el(n, a, p) { const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]); if (p) p.append(e); return e; }
+
+function lineChart(hostId, series, months, { H = 230, unit = "" } = {}) {
+  const host = document.getElementById(hostId);
+  host.replaceChildren();
+  const W = Math.max(320, host.clientWidth || 800);
+  const M = { t: 14, r: 100, b: 26, l: 44 };
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const vals = series.flatMap(s => s.pts.map(p => p.v));
+  if (!vals.length) return;
+  const hi = Math.max(...vals) * 1.08, lo = Math.min(0, Math.min(...vals));
+  const x = i => months.length === 1 ? M.l + iw / 2 : M.l + i / (months.length - 1) * iw;
+  const y = v => M.t + ih - (v - lo) / (hi - lo) * ih;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, host);
+  for (let i = 1; i <= 4; i++) {
+    const v = lo + (hi - lo) * i / 4;
+    el("line", { x1: M.l, x2: W - M.r, y1: y(v), y2: y(v), class: "gridline" }, svg);
+    el("text", { x: M.l - 6, y: y(v) + 4, "text-anchor": "end" }, svg)
+      .textContent = fmt(v, hi < 10 ? 1 : 0);
+  }
+  const step = Math.max(1, Math.ceil(months.length / Math.max(3, Math.floor(iw / 64))));
+  months.forEach((m, i) => {
+    if (i % step && i !== months.length - 1) return;
+    el("text", { x: x(i), y: H - 8, "text-anchor": "middle" }, svg).textContent = mLabel(m);
+  });
+  el("line", { x1: M.l, x2: W - M.r, y1: y(lo), y2: y(lo), class: "axis" }, svg);
+  const ends = [];
+  series.forEach(s => {
+    if (s.pts.length > 1)
+      el("path", { d: "M" + s.pts.map(p => `${x(p.i)},${y(p.v)}`).join(" L"),
+                   fill: "none", stroke: s.color, "stroke-width": 2.5,
+                   "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    s.pts.forEach(p => el("circle", { cx: x(p.i), cy: y(p.v), r: 4,
+                                      fill: s.color, stroke: "#fff", "stroke-width": 1.5 }, svg));
+    const last = s.pts[s.pts.length - 1];
+    ends.push({ s, last, ly: y(last.v) });
+  });
+  ends.sort((a, b) => a.ly - b.ly);
+  for (let i = 1; i < ends.length; i++)
+    if (ends[i].ly - ends[i - 1].ly < 14) ends[i].ly = ends[i - 1].ly + 14;
+  ends.forEach(e => {
+    el("text", { x: x(e.last.i) + 9, y: e.ly + 4, class: "vlabel" }, svg)
+      .textContent = fmt(e.last.v, e.last.v < 10 ? 2 : 0) + unit + " · " + e.s.nom;
+  });
+}
+
+function barChart(hostId, bars, { H = 150 } = {}) {
+  const host = document.getElementById(hostId);
+  host.replaceChildren();
+  const W = Math.max(320, host.clientWidth || 800);
+  const M = { t: 22, r: 12, b: 24, l: 12 };
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const hi = Math.max(...bars.map(b => b.v)) * 1.15;
+  const bw = Math.min(84, iw / bars.length * 0.55);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, host);
+  bars.forEach((b, i) => {
+    const cx = M.l + iw * (i + 0.5) / bars.length;
+    const h = b.v / hi * ih;
+    el("rect", { x: cx - bw / 2, y: M.t + ih - h, width: bw, height: h,
+                 rx: 7, fill: b.color }, svg);
+    el("text", { x: cx, y: M.t + ih - h - 7, "text-anchor": "middle", class: "vlabel",
+                 "font-weight": 800 }, svg).textContent = b.top;
+    el("text", { x: cx, y: H - 7, "text-anchor": "middle" }, svg).textContent = b.label;
+  });
+  el("line", { x1: M.l, x2: W - M.r, y1: M.t + ih, y2: M.t + ih, class: "axis" }, svg);
+}
+
+/* construit une carte-stat en DOM (aucun innerHTML sur données scrapées) */
+function statCard(v, l, cls = "") {
+  const d = document.createElement("div"); d.className = "stat";
+  const dv = document.createElement("div"); dv.className = "v" + (cls ? " " + cls : "");
+  dv.textContent = v;
+  const dl = document.createElement("div"); dl.className = "l"; dl.textContent = l;
+  d.append(dv, dl);
+  return d;
+}
+const setTxt = (id, t) => { document.getElementById(id).textContent = t; };
+
+function legend(hostId, series) {
+  const host = document.getElementById(hostId);
+  host.replaceChildren(...series.map(s => {
+    const k = document.createElement("span"); k.className = "key";
+    const st = document.createElement("span"); st.className = "stroke";
+    st.style.background = s.color;
+    k.append(st, document.createTextNode(s.nom));
+    return k;
+  }));
+}
+
+function opChipEl(name) {
+  const o = OPS.find(x => x[0] === name);
+  const s = document.createElement("span");
+  s.className = "op " + (o ? o[1] : "");
+  s.textContent = o ? o[1] : name;
+  return s;
+}
+
+/* ---- calculs & rendu ---- */
+async function run() {
+  const resp = await fetch("data/barometre.csv", { cache: "no-store" });
+  const ALL = parseCSV(await resp.text());
+  const monthsAll = [...new Set(ALL.map(r => r.month))].sort();
+  const dernier = monthsAll[monthsAll.length - 1];
+  setTxt("periode", `${monthsAll.length} mois de données · ${mLabel(monthsAll[0])} → ` +
+    `${mLabel(dernier)} · ${ALL.length} relevés d'offres`);
+
+  /* --- fibre : matrice mois -> op -> {mb: prix} --- */
+  const fibre = {};
+  ALL.filter(r => r.categorie === "Fibre" && r.prix && r.mb).forEach(r => {
+    ((fibre[r.month] ??= {})[r.operateur] ??= {})[r.mb] =
+      Math.min(r.prix, fibre[r.month][r.operateur][r.mb] ?? Infinity);
+  });
+
+  /* S1 — alignement + premium */
+  let alignMois = 0, alignTot = 0;
+  for (const m of monthsAll) {
+    const o = fibre[m]?.Orange, i = fibre[m]?.inwi;
+    if (o && i) {
+      const commun = Object.keys(o).filter(t => i[t]);
+      if (commun.length) {
+        alignTot++;
+        if (commun.every(t => o[t] === i[t])) alignMois++;
+      }
+    }
+  }
+  const gLast = fibre[dernier] || {};
+  const premiums = Object.keys(gLast["Maroc Telecom"] || {}).map(t => {
+    const conc = Math.min(...["Orange", "inwi"].map(o => gLast[o]?.[t] ?? Infinity));
+    return isFinite(conc)
+      ? { t: +t, pct: (gLast["Maroc Telecom"][t] - conc) / conc * 100 } : null;
+  }).filter(Boolean).sort((a, b) => a.t - b.t);
+
+  const s1 = document.getElementById("s1-stats");
+  s1.append(
+    statCard(`${alignMois}/${alignTot}`,
+      "mois observés où les grilles fibre Orange et inwi sont identiques sur 100 % des paliers communs"),
+    statCard(premiums.length
+      ? `+${fmt(premiums[0].pct)} % → +${fmt(premiums[premiums.length - 1].pct)} %` : "—",
+      "premium IAM : du palier d'entrée au 1 Gb/s — l'écart se referme en montant en gamme"),
+    statCard("-50 %", "le 200 Méga d'IAM : 1 000 DH (catalogue sept. 2024) → 500 DH aujourd'hui", "up"));
+  setTxt("e-premium", premiums.length ? `+${fmt(premiums[0].pct)} %` : "—");
+
+  barChart("chart-premium", premiums.map(p => ({
+    v: p.pct, top: `+${fmt(p.pct)} %`, color: "#0055a4",
+    label: p.t >= 1000 ? (p.t / 1000) + " Gb/s" : p.t + " Méga",
+  })));
+
+  /* fibre 100M dans le temps */
+  const f100Months = monthsAll.filter(m =>
+    Object.values(fibre[m] || {}).some(g => g[100]));
+  const f100Series = OPS.map(([nom, id, color]) => ({
+    nom: nom.replace("Maroc Telecom", "IAM"), color,
+    pts: f100Months.map((m, i) => fibre[m]?.[nom]?.[100] != null
+      ? { i, v: fibre[m][nom][100] } : null).filter(Boolean),
+  })).filter(s => s.pts.length);
+  legend("leg-fibre100", f100Series);
+  lineChart("chart-fibre100", f100Series, f100Months, { unit: " DH" });
+
+  /* table des grilles fibre aux époques clés — DOM, pas d'innerHTML */
+  const tiers = [20, 50, 100, 200, 500, 1000];
+  const tbl = document.getElementById("t-fibre");
+  tbl.replaceChildren();
+  const thead = tbl.createTHead().insertRow();
+  const th0 = document.createElement("th"); th0.textContent = "Grille fibre"; thead.append(th0);
+  tiers.forEach(t => {
+    const th = document.createElement("th"); th.style.textAlign = "end";
+    th.textContent = t >= 1000 ? "1 Gb/s" : t + "M"; thead.append(th);
+  });
+  const tbody = tbl.createTBody();
+  [["2022-07", "inwi"], ["2024-09", "Maroc Telecom"],
+   [dernier, "Maroc Telecom"], [dernier, "inwi"]].forEach(([m, op]) => {
+    const g = fibre[m]?.[op];
+    if (!g) return;
+    const tr = tbody.insertRow();
+    const td0 = tr.insertCell();
+    td0.append(opChipEl(op), document.createTextNode(" " + mLabel(m)));
+    tiers.forEach(t => {
+      const td = tr.insertCell(); td.className = "num";
+      td.textContent = g[t] != null ? fmt(g[t]) : "—";
+    });
+  });
+
+  /* S2 — DH/Go min par op/mois */
+  const dhgo = {};
+  ALL.filter(r => r.categorie === "Forfait mobile" && r.prix && r.go).forEach(r => {
+    const v = r.prix / r.go;
+    const cur = (dhgo[r.month] ??= {})[r.operateur];
+    if (!cur || v < cur.v) dhgo[r.month][r.operateur] = { v, r };
+  });
+  const goMonths = monthsAll.filter(m => dhgo[m]);
+  const goSeries = OPS.map(([nom, id, color]) => ({
+    nom: nom.replace("Maroc Telecom", "IAM"), color,
+    pts: goMonths.map((m, i) => dhgo[m]?.[nom]
+      ? { i, v: dhgo[m][nom].v } : null).filter(Boolean),
+  })).filter(s => s.pts.length);
+  legend("leg-dhgo", goSeries);
+  lineChart("chart-dhgo", goSeries, goMonths);
+
+  const marcheMin = m => {
+    const ops = Object.values(dhgo[m] || {});
+    return ops.length ? ops.reduce((a, b) => a.v < b.v ? a : b) : null;
+  };
+  const premier = goMonths[0], first = marcheMin(premier), last = marcheMin(dernier);
+  if (first && last) {
+    const delta = (last.v - first.v) / first.v * 100;
+    setTxt("e-go-avant", `${fmt(first.v, 2)} DH/Go (${mLabel(premier)})`);
+    setTxt("e-go-apres", `${fmt(last.v, 2)} DH/Go (${mLabel(dernier)})`);
+    setTxt("e-go-delta", `${fmt(delta)} %`);
+    document.getElementById("s2-stats").append(
+      statCard(`${fmt(delta)} %`,
+        `Go le moins cher du marché, ${mLabel(premier)} → ${mLabel(dernier)}`, "up"),
+      statCard(`${fmt(last.v, 2)} DH`, `le Go plancher aujourd'hui (${last.r.offre})`),
+      statCard("+33 %",
+        "de data sur le Yoxo 100 DH entre 2025 (45 Go) et 2026 (60 Go), à prix constant", "up"));
+  }
+
+  /* S3 — prime au guichet (dernier mois) */
+  const lm = dhgo[dernier] || {};
+  const digital = Object.values(lm)
+    .filter(x => /yoxo/i.test(x.r.offre)).sort((a, b) => a.v - b.v)[0];
+  const classiques = [];
+  for (const op of Object.keys(lm)) {
+    const rowsOp = ALL.filter(r => r.month === dernier && r.operateur === op
+      && r.categorie === "Forfait mobile" && r.prix && r.go && !/yoxo/i.test(r.offre));
+    if (rowsOp.length) {
+      const best = rowsOp.reduce((a, b) => a.prix / a.go < b.prix / b.go ? a : b);
+      classiques.push({ op, v: best.prix / best.go, r: best });
+    }
+  }
+  const orangeClassique = classiques.find(c => c.op === "Orange");
+  const bestClassique = [...classiques].sort((a, b) => a.v - b.v)[0];
+  if (digital && orangeClassique && bestClassique) {
+    const ratio = orangeClassique.v / digital.v;
+    const ratio2 = bestClassique.v / digital.v;
+    setTxt("e-prime", fmt(ratio, 1));
+    setTxt("s3-digital", `${fmt(digital.v, 2)} DH (${digital.r.offre})`);
+    setTxt("s3-classique", `${fmt(orangeClassique.v, 2)} DH (${orangeClassique.r.offre})`);
+    setTxt("s3-ratio", fmt(ratio, 1));
+    setTxt("s3-best-classique", `${bestClassique.op}, ${fmt(bestClassique.v, 2)} DH/Go`);
+    setTxt("s3-ratio2", fmt(ratio2, 1));
+    document.getElementById("s3-stats").append(
+      statCard(`×${fmt(ratio, 1)}`,
+        "le Go en boutique Orange vs sa marque digitale Yoxo — même opérateur, même mois"),
+      statCard(`${fmt(digital.v, 2)} DH/Go`,
+        "plancher digital (Yoxo, souscription en ligne uniquement)"),
+      statCard(`${fmt(bestClassique.v, 2)} DH/Go`,
+        `meilleur canal classique du marché (${bestClassique.op})`));
+  }
+
+  /* S4 — % SMIG */
+  const rowsLast = ALL.filter(r => r.month === dernier && r.prix);
+  const minCat = (cat, cond = () => true) => {
+    const sel = rowsLast.filter(r => r.categorie === cat && cond(r));
+    return sel.length ? Math.min(...sel.map(r => r.prix)) : null;
+  };
+  const fibreEntree = minCat("Fibre");
+  const fibre100 = minCat("Fibre", r => r.mb >= 100);
+  const mobEntree = minCat("Forfait mobile");
+  const pc = v => fmt(v / SMIG * 100, 1) + " %";
+  if (fibreEntree) {
+    setTxt("s4-fibre-pct", pc(fibreEntree));
+    setTxt("s4-100-pct", pc(fibre100));
+    document.getElementById("s4-stats").append(
+      statCard(pc(fibreEntree),
+        `l'entrée fibre (${fmt(fibreEntree)} DH/mois) en part du SMIG — repère UIT : < 2 %`, "down"),
+      statCard(pc(fibre100), `un 100 Méga (${fmt(fibre100)} DH/mois) en part du SMIG`, "down"),
+      statCard(pc(mobEntree),
+        `le premier forfait mobile (${fmt(mobEntree)} DH/mois) — dans le repère UIT`, "up"));
+  }
+
+  /* S5 — asymétrie fixe/mobile : changements par catégorie (périmètres couverts) */
+  const key = r => [r.operateur, r.categorie, r.offre].join("|");
+  let chFixe = 0, chMob = 0;
+  for (let i = 1; i < monthsAll.length; i++) {
+    const [ma, mb] = [monthsAll[i - 1], monthsAll[i]];
+    const A = new Map(), B = new Map();
+    ALL.filter(r => r.month === ma && r.prix).forEach(r => A.set(key(r), r));
+    ALL.filter(r => r.month === mb && r.prix).forEach(r => B.set(key(r), r));
+    const scA = new Set([...A.values()].map(r => r.operateur + "|" + r.categorie));
+    const scB = new Set([...B.values()].map(r => r.operateur + "|" + r.categorie));
+    const bump = r => { if (r.categorie === "Forfait mobile") chMob++; else chFixe++; };
+    B.forEach((r, k) => {
+      if (!A.has(k)) { if (scA.has(r.operateur + "|" + r.categorie)) bump(r); }
+      else if (A.get(k).prix !== r.prix) bump(r);
+    });
+    A.forEach((r, k) => {
+      if (!B.has(k) && scB.has(r.operateur + "|" + r.categorie)) bump(r);
+    });
+  }
+  setTxt("s5-counts", `${chMob} mouvements d'offres mobiles contre ${chFixe} sur le fixe ` +
+    `(fibre + box), à périmètre observé constant`);
+}
+run();
+</script>
+</body>
+</html>
