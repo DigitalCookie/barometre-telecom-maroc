@@ -1,8 +1,17 @@
 [
- {"date": "2026-02",
+ {
+  "date": "2024-09",
+  "texte": "Catalogue officiel IAM : fibre 100M à 500 DH et 200M à 1000 DH — les paliers 500M/1G n'existent pas encore. IAM baissera de -20 %/-50 % d'ici fin 2025.",
+  "texte_ar": "كتالوج اتصالات المغرب الرسمي : الألياف 100 ميغا بـ500 درهم و200 ميغا بـ1000 درهم — قبل تخفيضات نهاية 2025."
+ },
+ {
+  "date": "2026-02",
   "texte": "IAM ajoute le palier Fibre 500 Mb/s à 800 DH (relevé d'archives)",
-  "texte_ar": "اتصالات المغرب تضيف عرض الألياف البصرية 500 ميغا بـ800 درهم (رصد من الأرشيف)"},
- {"date": "2026-09",
+  "texte_ar": "اتصالات المغرب تضيف عرض الألياف البصرية 500 ميغا بـ800 درهم (رصد من الأرشيف)"
+ },
+ {
+  "date": "2026-09",
   "texte": "inwi lance le forfait 69 DH Réseaux sociaux",
-  "texte_ar": "إنوي تطلق باقة 69 درهم لمواقع التواصل الاجتماعي"}
+  "texte_ar": "إنوي تطلق باقة 69 درهم لمواقع التواصل الاجتماعي"
+ }
 ]
