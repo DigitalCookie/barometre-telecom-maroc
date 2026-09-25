@@ -38,8 +38,20 @@ python barometre.py feed           # régénérer flux RSS + résumés mensuels
 `backfill` interroge l'API CDX de la Wayback Machine et re-parse les captures
 des pages **rendues serveur** (IAM fibre/forfaits/box, grille pro Orange,
 fibre inwi) pour les mois absents de la base. Les lignes sortent en
-`fiabilite=officiel_archive` avec la capture exacte en `source`. L'API est
-très rate-limitée : le run est lent (backoff automatique), c'est un one-off.
+`fiabilite=officiel_archive` avec la capture exacte en `source`. Les
+captures sont mises en cache dans `data/raw_archive/` (itération des
+parsers hors ligne) ; `--refetch` re-traite les mois d'archives avec les
+parsers d'époque (`ERA_PARSERS` — ex. gamme « Forfait Liberté » d'IAM),
+sans jamais toucher un mois contenant des données live. L'API est très
+rate-limitée : le run est lent (backoff automatique).
+
+`discover` cartographie les URLs historiques des opérateurs dans la
+Wayback Machine (les URLs actuelles n'existent souvent que depuis fin
+2025 — l'histoire vit à d'anciennes adresses et dans les catalogues) →
+`data/wayback_inventory.json`. `catalogues` fusionne les grilles
+extraites manuellement des catalogues officiels archivés
+(`data/catalogues_extraits.csv`, sortie `officiel_catalogue`, PDF
+d'audit dans `data/catalogues/`).
 
 `check` sert à trancher la question qui revient à chaque anomalie : **site
 refondu ou source injoignable ?** Un `run` qui ne ramène rien après un `check`

@@ -10,7 +10,11 @@ on:
     inputs:
       from:
         description: "Premier mois à reconstruire (YYYY-MM)"
-        default: "2023-01"
+        default: "2022-01"
+      refetch:
+        description: "Re-traiter aussi les mois d'archives déjà en base (parsers d'époque)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -40,9 +44,9 @@ jobs:
 
       - name: Backfill
         env:
-          FROM: ${{ inputs.from || '2023-01' }}
+          FROM: ${{ inputs.from || '2022-01' }}
         run: |
-          python barometre.py backfill --from "$FROM" --write | tee backfill-output.txt
+          python barometre.py backfill --from "$FROM" --write ${{ inputs.refetch && '--refetch' || '' }} | tee backfill-output.txt
 
       - name: Commit des données
         run: |

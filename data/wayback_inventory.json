@@ -1,0 +1,700 @@
+{
+ "genere_le": "2026-09-25",
+ "de": "2022-01",
+ "a": "2026-09",
+ "domaines": {
+  "iam.ma": {
+   "candidats": {
+    "https://www.iam.ma/particulier/catalogue-des-equipements/equipements-adsl-et-fibre-optique.aspx": {
+     "mois": 1,
+     "de": "202508",
+     "a": "202508",
+     "timestamps": {
+      "202508": "20250806050314"
+     }
+    },
+    "https://www.iam.ma/forfaits-internet-4g": {
+     "mois": 1,
+     "de": "202511",
+     "a": "202511",
+     "timestamps": {
+      "202511": "20251106070745"
+     }
+    },
+    "https://www.iam.ma/forfaits-mobile": {
+     "mois": 5,
+     "de": "202511",
+     "a": "202605",
+     "timestamps": {
+      "202511": "20251106072104",
+      "202512": "20251206065433",
+      "202601": "20260113230500",
+      "202602": "20260213214119",
+      "202605": "20260520234755"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-fixe-et-internet-b2c-avril-2026": {
+     "mois": 1,
+     "de": "202604",
+     "a": "202604",
+     "timestamps": {
+      "202604": "20260410195737"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-fixe-internet-r%C3%A9sidentiels-mai-2025": {
+     "mois": 3,
+     "de": "202511",
+     "a": "202601",
+     "timestamps": {
+      "202511": "20251106093924",
+      "202512": "20251208021217",
+      "202601": "20260122041635"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-fixe-internet-r%C3%A9sidentiels-octobre-2025": {
+     "mois": 4,
+     "de": "202511",
+     "a": "202603",
+     "timestamps": {
+      "202511": "20251106063806",
+      "202512": "20251201170036",
+      "202601": "20260128093925",
+      "202603": "20260305013914"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-mobile-b2c-020126": {
+     "mois": 1,
+     "de": "202601",
+     "a": "202601",
+     "timestamps": {
+      "202601": "20260102224626"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-mobile-b2c-d%C3%A9cembre-2025": {
+     "mois": 2,
+     "de": "202512",
+     "a": "202601",
+     "timestamps": {
+      "202512": "20251212062952",
+      "202601": "20260109160448"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-mobile-b2c-d%C3%A9cembre2025_17-12-2025": {
+     "mois": 2,
+     "de": "202512",
+     "a": "202601",
+     "timestamps": {
+      "202512": "20251218043415",
+      "202601": "20260120174624"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-mobile-b2c-d%C3%A9cembre2025_23-12-2025": {
+     "mois": 2,
+     "de": "202512",
+     "a": "202601",
+     "timestamps": {
+      "202512": "20251223225705",
+      "202601": "20260116033354"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-mobile-b2c-janvier-2026": {
+     "mois": 2,
+     "de": "202601",
+     "a": "202603",
+     "timestamps": {
+      "202601": "20260113223004",
+      "202603": "20260310152126"
+     }
+    },
+    "https://www.iam.ma/w/catalogue-des-offres-mobile-b2c-mai-2026-1": {
+     "mois": 1,
+     "de": "202605",
+     "a": "202605",
+     "timestamps": {
+      "202605": "20260519210757"
+     }
+    }
+   },
+   "pdf": {
+    "https://iam.ma/iam-public/catalogue-Fixe/CatalogueDesOffresFixeInternetResidentiels-Septembre2024.pdf": {
+     "mois": 1,
+     "de": "202410",
+     "a": "202410",
+     "timestamps": {
+      "202410": "20241010113031"
+     }
+    },
+    "http://www.iam.ma/iam-public/Catalogue-Mobile/CatalogueDesOffresMobile-Septembre2024.pdf": {
+     "mois": 1,
+     "de": "202410",
+     "a": "202410",
+     "timestamps": {
+      "202410": "20241004205100"
+     }
+    },
+    "https://4g.iam.ma/iam-public/Catalogue-Mobile/CatalogueDesOffresMobile-Septembre2024.pdf": {
+     "mois": 1,
+     "de": "202412",
+     "a": "202412",
+     "timestamps": {
+      "202412": "20241214215837"
+     }
+    },
+    "https://eboutique.iam.ma/iam-public/Catalogue-Mobile/CatalogueDesOffresMobile-Septembre2024.pdf": {
+     "mois": 1,
+     "de": "202410",
+     "a": "202410",
+     "timestamps": {
+      "202410": "20241007045607"
+     }
+    },
+    "https://musee.iam.ma/iam-public/Catalogue-Mobile/CatalogueDesOffresMobile-Septembre2024.pdf": {
+     "mois": 1,
+     "de": "202410",
+     "a": "202410",
+     "timestamps": {
+      "202410": "20241005072229"
+     }
+    },
+    "https://www.iam.ma/documents/d/iam-portal/maroc-telecom-catalogue-des-offres-fixe-et-internet-professionnels-decembre-2025": {
+     "mois": 1,
+     "de": "202601",
+     "a": "202601",
+     "timestamps": {
+      "202601": "20260116085103"
+     }
+    }
+   }
+  },
+  "inwi.ma": {
+   "candidats": {
+    "https://inwi.ma/adsl-vers-fibre": {
+     "mois": 3,
+     "de": "202309",
+     "a": "202501",
+     "timestamps": {
+      "202309": "20230929142528",
+      "202404": "20240420105614",
+      "202501": "20250115063455"
+     }
+    },
+    "https://inwi.ma/boutique/7-h-mobile-offre-forfait-in": {
+     "mois": 1,
+     "de": "202308",
+     "a": "202308",
+     "timestamps": {
+      "202308": "20230815172720"
+     }
+    },
+    "https://inwi.ma/forfait-max-internet.html": {
+     "mois": 5,
+     "de": "202501",
+     "a": "202606",
+     "timestamps": {
+      "202501": "20250123200434",
+      "202504": "20250423173606",
+      "202511": "20251111223404",
+      "202603": "20260314163537",
+      "202606": "20260606133813"
+     }
+    },
+    "https://inwi.ma/ar/entreprise/forfaits-internet-mobile": {
+     "mois": 1,
+     "de": "202603",
+     "a": "202603",
+     "timestamps": {
+      "202603": "20260314171332"
+     }
+    },
+    "https://inwi.ma/en/entreprise/forfaits-internet-mobile": {
+     "mois": 1,
+     "de": "202603",
+     "a": "202603",
+     "timestamps": {
+      "202603": "20260314172756"
+     }
+    },
+    "https://inwi.ma/entreprise/forfaits-mobile": {
+     "mois": 7,
+     "de": "202202",
+     "a": "202505",
+     "timestamps": {
+      "202202": "20220210165534",
+      "202303": "20230314093229",
+      "202402": "20240226080631",
+      "202406": "20240612175343",
+      "202411": "20241102173217",
+      "202501": "20250125052750",
+      "202505": "20250513191026"
+     }
+    },
+    "https://www.inwi.ma/fibre-optique": {
+     "mois": 4,
+     "de": "202206",
+     "a": "202410",
+     "timestamps": {
+      "202206": "20220627174857",
+      "202210": "20221006135401",
+      "202312": "20231208055823",
+      "202410": "20241011144521"
+     }
+    },
+    "https://inwi.ma/fibre-optique-100mbps-2.html": {
+     "mois": 1,
+     "de": "202207",
+     "a": "202207",
+     "timestamps": {
+      "202207": "20220710013241"
+     }
+    },
+    "https://inwi.ma/fibre-optique-100mbps-4.html": {
+     "mois": 1,
+     "de": "202207",
+     "a": "202207",
+     "timestamps": {
+      "202207": "20220709200835"
+     }
+    },
+    "https://inwi.ma/fibre-optique-100mbps-5.html": {
+     "mois": 1,
+     "de": "202207",
+     "a": "202207",
+     "timestamps": {
+      "202207": "20220709231001"
+     }
+    },
+    "https://inwi.ma/fibre-optique-100mbps.html": {
+     "mois": 1,
+     "de": "202207",
+     "a": "202207",
+     "timestamps": {
+      "202207": "20220709200622"
+     }
+    },
+    "https://inwi.ma/fibre-optique-20mbps.html": {
+     "mois": 1,
+     "de": "202207",
+     "a": "202207",
+     "timestamps": {
+      "202207": "20220709200711"
+     }
+    }
+   },
+   "pdf": {
+    "https://api.inwi.ma/api/v1/ms-content/media/inwi_pdf/22-00095-Brochure_tarifaire-B2B-service_mobile-V36_2_051023_002_.pdf": {
+     "mois": 2,
+     "de": "202411",
+     "a": "202508",
+     "timestamps": {
+      "202411": "20241103053154",
+      "202508": "20250807020702"
+     }
+    },
+    "https://api.inwi.ma/api/v1/ms-content/media/inwi_pdf/22-00095-Brochure_tarifaire-B2B-service_mobile-V39x.pdf": {
+     "mois": 4,
+     "de": "202411",
+     "a": "202508",
+     "timestamps": {
+      "202411": "20241103064737",
+      "202503": "20250312105930",
+      "202505": "20250506082909",
+      "202508": "20250806072936"
+     }
+    },
+    "https://api.inwi.ma/api/v1/ms-content/media/inwi_pdf/22-00095-Brochure_tarifaire-B2B-service_mobile-V40.pdf": {
+     "mois": 1,
+     "de": "202503",
+     "a": "202503",
+     "timestamps": {
+      "202503": "20250312105933"
+     }
+    },
+    "https://api.inwi.ma/api/v1/ms-content/media/inwi_pdf/Brochure_tarifaire-B2B-service_mobile-2023.pdf": {
+     "mois": 2,
+     "de": "202401",
+     "a": "202603",
+     "timestamps": {
+      "202401": "20240104122951",
+      "202603": "20260315072200"
+     }
+    },
+    "https://api.inwi.ma/api/v1/ms-content/media/press/22-00095-Brochure_tarifaire-B2B-service_mobile_06012025.pdf": {
+     "mois": 1,
+     "de": "202602",
+     "a": "202602",
+     "timestamps": {
+      "202602": "20260214224806"
+     }
+    },
+    "https://api.inwi.ma/api/v1/ms-content/media/inwi_pdf/22-00095-Brochure_tarifaire_B2C-24.pdf": {
+     "mois": 2,
+     "de": "202311",
+     "a": "202312",
+     "timestamps": {
+      "202311": "20231114110748",
+      "202312": "20231202180548"
+     }
+    }
+   }
+  },
+  "orange.ma": {
+   "candidats": {
+    "https://www.orange.ma/WiFi-a-la-Maison/Dar-Box-4G/Forfaits-Dar-Box-4G": {
+     "mois": 11,
+     "de": "202302",
+     "a": "202605",
+     "timestamps": {
+      "202302": "20230216194636",
+      "202303": "20230331122708",
+      "202310": "20231002004129",
+      "202404": "20240415120320",
+      "202409": "20240920032045",
+      "202411": "20241126203409",
+      "202412": "20241204150102",
+      "202503": "20250321064845",
+      "202506": "20250615143827",
+      "202601": "20260124234256",
+      "202605": "20260514222250"
+     }
+    },
+    "https://boutique.orange.ma/dar-box": {
+     "mois": 3,
+     "de": "202509",
+     "a": "202609",
+     "timestamps": {
+      "202509": "20250916190002",
+      "202602": "20260226070729",
+      "202609": "20260905064056"
+     }
+    },
+    "https://boutique.orange.ma/en/offres-dar-box": {
+     "mois": 2,
+     "de": "202601",
+     "a": "202603",
+     "timestamps": {
+      "202601": "20260101184314",
+      "202603": "20260312113445"
+     }
+    },
+    "https://boutique.orange.ma/offres-dar-box/dar-box-5g": {
+     "mois": 2,
+     "de": "202511",
+     "a": "202608",
+     "timestamps": {
+      "202511": "20251107180828",
+      "202608": "20260814041251"
+     }
+    },
+    "https://pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre": {
+     "mois": 9,
+     "de": "202211",
+     "a": "202602",
+     "timestamps": {
+      "202211": "20221128042001",
+      "202302": "20230209090955",
+      "202306": "20230602043610",
+      "202309": "20230927174936",
+      "202403": "20240304042716",
+      "202406": "20240620113541",
+      "202410": "20241007231149",
+      "202509": "20250919165151",
+      "202602": "20260208094353"
+     }
+    },
+    "https://www.orange.ma/Guichetfibre": {
+     "mois": 6,
+     "de": "202211",
+     "a": "202602",
+     "timestamps": {
+      "202211": "20221126232744",
+      "202302": "20230204081109",
+      "202303": "20230325154232",
+      "202312": "20231210160649",
+      "202407": "20240719111110",
+      "202602": "20260213014324"
+     }
+    },
+    "https://www.orange.ma/lafibre": {
+     "mois": 9,
+     "de": "202208",
+     "a": "202604",
+     "timestamps": {
+      "202208": "20220810202328",
+      "202211": "20221126224505",
+      "202303": "20230331124619",
+      "202312": "20231210170750",
+      "202405": "20240527220242",
+      "202411": "20241111011918",
+      "202504": "20250421015338",
+      "202512": "20251211212415",
+      "202604": "20260412194627"
+     }
+    },
+    "https://www.orange.ma/Offres-services/Offres-Mobile/forfaits": {
+     "mois": 9,
+     "de": "202205",
+     "a": "202605",
+     "timestamps": {
+      "202205": "20220517113028",
+      "202211": "20221126231847",
+      "202302": "20230204092048",
+      "202403": "20240304222145",
+      "202407": "20240719122521",
+      "202503": "20250321074141",
+      "202511": "20251110044747",
+      "202601": "20260125004551",
+      "202605": "20260514225144"
+     }
+    },
+    "https://www.orange.ma/Offres-services/Wifi-a-la-Maison/Dar-Box-4G": {
+     "mois": 11,
+     "de": "202205",
+     "a": "202501",
+     "timestamps": {
+      "202205": "20220517120810",
+      "202207": "20220714113551",
+      "202208": "20220810202502",
+      "202209": "20220907140137",
+      "202302": "20230204100506",
+      "202304": "20230428124558",
+      "202306": "20230606071936",
+      "202312": "20231210180828",
+      "202407": "20240719125936",
+      "202411": "20241111020540",
+      "202501": "20250124000313"
+     }
+    },
+    "https://www.orange.ma/Offres-services/Wifi-a-la-Maison/Dar-Box-4G-rechargeable": {
+     "mois": 1,
+     "de": "202301",
+     "a": "202301",
+     "timestamps": {
+      "202301": "20230121140125"
+     }
+    },
+    "https://www.orange.ma/Offres-services/Wifi-a-la-Maison/Dar-Box-4G2": {
+     "mois": 4,
+     "de": "202208",
+     "a": "202301",
+     "timestamps": {
+      "202208": "20220810194610",
+      "202210": "20221030163621",
+      "202211": "20221126220119",
+      "202301": "20230121140125"
+     }
+    },
+    "https://www.orange.ma/Offres-services/Wifi-a-la-Maison/dar-box-fixe": {
+     "mois": 7,
+     "de": "202206",
+     "a": "202605",
+     "timestamps": {
+      "202206": "20220626142151",
+      "202303": "20230331125734",
+      "202410": "20241007021139",
+      "202505": "20250522194310",
+      "202507": "20250722213059",
+      "202509": "20250906200811",
+      "202605": "20260514224509"
+     }
+    }
+   },
+   "pdf": {
+    "https://www.orange.ma/content/download/182641/2926926/version/1/file/Catalogue+Tarifaire+Mobile+Pr%C3%A9pay%C3%A9-+F%C3%A9v2022.pdf": {
+     "mois": 1,
+     "de": "202205",
+     "a": "202205",
+     "timestamps": {
+      "202205": "20220502054904"
+     }
+    },
+    "https://www.orange.ma/content/download/183108/2933778/version/1/file/CATALOGUE%2BTARIFAIRE%2B+Mobile+Pr%C3%A9pay%C3%A9++Ao%C3%BBt+2022.pdf": {
+     "mois": 1,
+     "de": "202210",
+     "a": "202210",
+     "timestamps": {
+      "202210": "20221004090853"
+     }
+    },
+    "https://www.orange.ma/content/download/184400/2954295/version/1/file/Catalogue+Mobile+Orange+-+Mai+2023+DEF.pdf": {
+     "mois": 1,
+     "de": "202306",
+     "a": "202306",
+     "timestamps": {
+      "202306": "20230607201521"
+     }
+    },
+    "https://www.orange.ma/content/download/183079/2933522/version/1/file/REGLEMENT+JEU+FIBRE+KITEA.pdf": {
+     "mois": 1,
+     "de": "202208",
+     "a": "202208",
+     "timestamps": {
+      "202208": "20220810201720"
+     }
+    },
+    "https://www.orange.ma/content/download/183364/2937597/version/1/file/STREET+Flyer+Fibre+BTS+2022.pdf": {
+     "mois": 1,
+     "de": "202303",
+     "a": "202303",
+     "timestamps": {
+      "202303": "20230325054847"
+     }
+    },
+    "https://www.orange.ma/content/download/184511/2955468/version/1/file/Cahier+des+charges+Fibre+optique+Orange+(FTTH).pdf": {
+     "mois": 1,
+     "de": "202308",
+     "a": "202308",
+     "timestamps": {
+      "202308": "20230813081147"
+     }
+    }
+   }
+  },
+  "yoxo.ma": {
+   "candidats": {
+    "https://www.yoxo.ma/forfait-yoxo-100dh": {
+     "mois": 6,
+     "de": "202503",
+     "a": "202607",
+     "timestamps": {
+      "202503": "20250321005330",
+      "202506": "20250628084649",
+      "202509": "20250919104837",
+      "202601": "20260112112558",
+      "202602": "20260215220854",
+      "202607": "20260727105226"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-199dh.html": {
+     "mois": 1,
+     "de": "202202",
+     "a": "202202",
+     "timestamps": {
+      "202202": "20220222100154"
+     }
+    },
+    "https://yoxo.ma/forfait-yoxo-199dhs": {
+     "mois": 7,
+     "de": "202212",
+     "a": "202501",
+     "timestamps": {
+      "202212": "20221201085834",
+      "202302": "20230216194516",
+      "202303": "20230320145440",
+      "202306": "20230606114927",
+      "202309": "20230927235909",
+      "202402": "20240222194422",
+      "202501": "20250108084343"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-199dhs.html": {
+     "mois": 3,
+     "de": "202205",
+     "a": "202210",
+     "timestamps": {
+      "202205": "20220525032539",
+      "202208": "20220810165918",
+      "202210": "20221007085612"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-200dhs": {
+     "mois": 5,
+     "de": "202503",
+     "a": "202602",
+     "timestamps": {
+      "202503": "20250321010435",
+      "202506": "20250619193019",
+      "202509": "20250904115548",
+      "202512": "20251226043524",
+      "202602": "20260206212010"
+     }
+    },
+    "https://yoxo.ma/forfait-yoxo-249dhs": {
+     "mois": 4,
+     "de": "202403",
+     "a": "202501",
+     "timestamps": {
+      "202403": "20240304115314",
+      "202405": "20240521230323",
+      "202406": "20240615071020",
+      "202501": "20250108130131"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-250dhs": {
+     "mois": 5,
+     "de": "202503",
+     "a": "202602",
+     "timestamps": {
+      "202503": "20250321010546",
+      "202506": "20250628084649",
+      "202509": "20250907212047",
+      "202601": "20260101081227",
+      "202602": "20260209052814"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-250dhs.html": {
+     "mois": 2,
+     "de": "202503",
+     "a": "202512",
+     "timestamps": {
+      "202503": "20250321013447",
+      "202512": "20251228125806"
+     }
+    },
+    "https://yoxo.ma/forfait-yoxo-49dh": {
+     "mois": 9,
+     "de": "202212",
+     "a": "202412",
+     "timestamps": {
+      "202212": "20221201103007",
+      "202302": "20230216194449",
+      "202303": "20230320163930",
+      "202306": "20230606134645",
+      "202309": "20230928015700",
+      "202405": "20240527071641",
+      "202408": "20240808015540",
+      "202409": "20240914131149",
+      "202412": "20241227233330"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-49dh.html": {
+     "mois": 5,
+     "de": "202202",
+     "a": "202404",
+     "timestamps": {
+      "202202": "20220222100150",
+      "202205": "20220525045431",
+      "202208": "20220810182437",
+      "202210": "20221007102733",
+      "202404": "20240419013329"
+     }
+    },
+    "https://www.yoxo.ma/forfait-yoxo-50dh": {
+     "mois": 6,
+     "de": "202503",
+     "a": "202602",
+     "timestamps": {
+      "202503": "20250321004457",
+      "202505": "20250519050428",
+      "202506": "20250628084649",
+      "202509": "20250903014004",
+      "202512": "20251227154530",
+      "202602": "20260224164206"
+     }
+    },
+    "https://yoxo.ma/forfait-yoxo-99dh": {
+     "mois": 5,
+     "de": "202212",
+     "a": "202501",
+     "timestamps": {
+      "202212": "20221201103213",
+      "202302": "20230202070755",
+      "202305": "20230515233649",
+      "202411": "20241101215355",
+      "202501": "20250108163926"
+     }
+    }
+   },
+   "pdf": {}
+  }
+ }
+}

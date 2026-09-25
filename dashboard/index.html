@@ -648,7 +648,7 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
       </div>
       <div>
         <h3 data-i18n="metho_s3">Niveaux de fiabilité</h3>
-        <p data-i18n-html="metho_p3"><code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.</p>
+        <p data-i18n-html="metho_p3"><code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_catalogue</code> : extrait d'un catalogue tarifaire officiel archivé (PDF daté). <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.</p>
         <h3 data-i18n="metho_s4">Données ouvertes</h3>
         <p data-i18n-html="metho_p4">Les données sont librement réutilisables : <a href="data/barometre.csv" download>CSV complet</a>, <a href="data/changements.xml">flux RSS des changements</a>, <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">code source et historique sur GitHub</a>.</p>
       </div>
@@ -745,7 +745,7 @@ const I18N = {
     metho_s2: "Ce que le baromètre ne voit pas",
     metho_p2: "Les prix relevés sont les prix catalogue TTC affichés en ligne. Les promotions temporaires, offres de fidélisation ou remises négociées en boutique ne sont pas captées. Le coût 1ère année = 12 mensualités + frais de mise en service, uniquement quand l'opérateur les publie (certains affichent le libellé sans le montant).",
     metho_s3: "Niveaux de fiabilité",
-    metho_p3: "<code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.",
+    metho_p3: "<code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_catalogue</code> : extrait d'un catalogue tarifaire officiel archivé (PDF daté). <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.",
     metho_s4: "Données ouvertes",
     metho_p4: 'Les données sont librement réutilisables : <a href="data/barometre.csv" download>CSV complet</a>, <a href="data/changements.xml">flux RSS des changements</a>, <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">code source et historique sur GitHub</a>.',
     footer_src: "Source : sites officiels des opérateurs — relevé automatisé le 2 de chaque mois, prix catalogue TTC.",
@@ -820,7 +820,7 @@ const I18N = {
     metho_s2: "ما لا يراه الباروميتر",
     metho_p2: "الأسعار المرصودة هي أسعار الكتالوج المعروضة على الإنترنت (شاملة للضرائب). العروض الترويجية المؤقتة وتخفيضات الوكالات غير مشمولة. كلفة السنة الأولى = 12 قسطاً شهرياً + رسوم التفعيل، فقط عندما ينشرها المشغل.",
     metho_s3: "مستويات الموثوقية",
-    metho_p3: "<code>officiel_site</code> : مستخرج بمحلل مخصص للصفحة. <code>officiel_svg</code> : مقروء من الصور التعريفية الرسمية. <code>officiel_archive</code> : تاريخ مُعاد بناؤه من أرشيف web.archive.org للصفحة الرسمية. <code>officiel_js_generique</code> / <code>a_completer</code> : استخراج عام، يتطلب تأكيداً يدوياً.",
+    metho_p3: "<code>officiel_site</code> : مستخرج بمحلل مخصص للصفحة. <code>officiel_svg</code> : مقروء من الصور التعريفية الرسمية. <code>officiel_archive</code> : تاريخ مُعاد بناؤه من أرشيف web.archive.org للصفحة الرسمية. <code>officiel_catalogue</code> : مستخرج من كتالوج تعريفات رسمي مؤرشف (PDF مؤرخ). <code>officiel_js_generique</code> / <code>a_completer</code> : استخراج عام، يتطلب تأكيداً يدوياً.",
     metho_s4: "بيانات مفتوحة",
     metho_p4: 'البيانات قابلة لإعادة الاستعمال بحرية : <a href="data/barometre.csv" download>ملف CSV كامل</a>، <a href="data/changements.xml">تدفق RSS للتغييرات</a>، <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">الشيفرة المصدرية على GitHub</a>.',
     footer_src: "المصدر : المواقع الرسمية للمشغلين — رصد آلي في اليوم الثاني من كل شهر، أسعار الكتالوج شاملة للضرائب.",

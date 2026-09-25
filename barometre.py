@@ -56,6 +56,9 @@ from bs4 import BeautifulSoup
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 RAW_DIR = DATA_DIR / "raw"
+# Dumps des captures d'archives (backfill) : même boucle d'itération des
+# parsers que data/raw, mais pour les pages historiques.
+RAW_ARCHIVE_DIR = DATA_DIR / "raw_archive"
 MASTER_CSV = DATA_DIR / "barometre.csv"
 REFERENCE_CSV = DATA_DIR / "reference_manuelle_2026-08.csv"
 
@@ -246,6 +249,33 @@ def parse_iam_forfaits(text, url):
                         f"Liberte Plus {prix} ({go} Go)",
                         f"{go} Go", f"{mn} min", prix, rem, url))
     return rows
+
+
+def parse_iam_forfaits_liberte(text, url):
+    """iam.ma/forfaits-mobile — ANCIEN format (gamme « Forfait Liberté »,
+    observé sur les captures d'archives jusqu'à début 2026) :
+    « Forfait Liberté 99 DH/mois 20 Go 1 Heure Pass et options Acheter ».
+    Go / Heures / SMS apparaissent dans un ordre variable, et plusieurs
+    bundles différents existent au même prix — le libellé embarque la data
+    (ou les heures) pour les distinguer."""
+    t = norm(text)
+    rows = []
+    pat = re.compile(r"Forfait Libert[ée]\s+(\d{2,3})\s*DH/mois\s*(.{0,80}?)"
+                     r"(?:Pass et options|Acheter|Forfait Libert|\Z)", re.S)
+    for prix, corps in pat.findall(t):
+        go = re.search(r"(\d+)\s*Go\b", corps)
+        heures = re.search(r"(\d+)\s*Heures?\b", corps)
+        sms = re.search(r"(\d+)\s*SMS\b", corps)
+        distingue = f"{go.group(1)} Go" if go else \
+                    f"{heures.group(1)}h" if heures else ""
+        appels = f"{heures.group(1)}h" if heures else ""
+        rem = f"{sms.group(1)} SMS" if sms else ""
+        rows.append(row("Maroc Telecom", "Forfait mobile",
+                        f"Forfait Liberte {prix} ({distingue})".strip(),
+                        go.group(1) + " Go" if go else "", appels, prix,
+                        rem, url))
+    return dedup(rows, key=lambda r_: (r_["offre"], r_["prix_dh_mois"],
+                                       r_["appels_inclus"]))
 
 
 def parse_iam_box(text, url, produit):
@@ -1190,9 +1220,13 @@ def texte_resume(rows, month, months):
     ops = [o for o in ordre if any(r_["operateur"] == o for r_ in sel)]
     liste_ops = (" et ".join([", ".join(ops[:-1]), ops[-1]])
                  if len(ops) > 1 else ops[0] if ops else "")
-    if sel and all(r_["fiabilite"] == "officiel_archive" for r_ in sel):
+    if sel and all(r_["fiabilite"] in ("officiel_archive", "officiel_catalogue")
+                   for r_ in sel):
+        src = ("catalogues officiels archivés"
+               if any(r_["fiabilite"] == "officiel_catalogue" for r_ in sel)
+               else "archives web des sites officiels")
         phrases = [f"En {mois_label(month)}, relevé rétrospectif reconstruit "
-                   f"depuis les archives web des sites officiels "
+                   f"depuis les {src} "
                    f"({liste_ops}) : {len(sel)} offres — couverture partielle."]
     else:
         phrases = [f"En {mois_label(month)}, le baromètre a relevé "
@@ -1249,6 +1283,13 @@ def ecrire_resumes():
 # --------------------------------------------------------------------------
 
 WAYBACK_CDX = "https://web.archive.org/cdx/search/cdx"
+# Parsers d'époque : quand le parser courant rend 0 offre sur une capture
+# d'archive (« format ancien »), ces variantes sont essayées dans l'ordre.
+# Clé = label de la page dans PAGES.
+ERA_PARSERS = {
+    "IAM forfaits mobile": [parse_iam_forfaits_liberte],
+}
+
 # Pages dont le HTML archivé est rendu serveur : parsables sans navigateur.
 # (boutique Orange, yoxo, forfaits inwi : rendu client — les captures
 # n'exécutent pas le JS applicatif de façon fiable, on ne backfill pas.)
@@ -1288,12 +1329,25 @@ def wayback_mois(url, m_from, m_to):
     return {ts[0][:6]: ts[0] for ts in data[1:]} if data else {}
 
 
-def backfill(m_from, m_to=None, only=None, write=False, delai=1.5):
+def backfill(m_from, m_to=None, only=None, write=False, delai=1.5,
+             refetch=False):
     """Relevés rétrospectifs : pour chaque mois absent du master, re-parser
     les captures web.archive.org des pages rendues serveur. Les lignes
-    sortent en fiabilite=officiel_archive avec la capture exacte en source."""
+    sortent en fiabilite=officiel_archive avec la capture exacte en source.
+
+    --refetch : re-traite aussi les mois d'archives déjà en base (nouveaux
+    parsers d'époque, nouvelles captures). Garde-fou : un mois contenant la
+    moindre ligne NON-archive (relevé live) n'est JAMAIS retouché.
+    Chaque capture est sauvegardée dans data/raw_archive/YYYY-MM/ — la
+    boucle de mise au point des parsers d'époque travaille hors ligne."""
     m_to = m_to or today()[:7]
-    mois_existants = {r_["date_releve"][:7] for r_ in read_master()}
+    master = read_master()
+    par_mois_master = {}
+    for r_ in master:
+        par_mois_master.setdefault(r_["date_releve"][:7], []).append(r_)
+    mois_proteges = {m for m, rs in par_mois_master.items()
+                     if any(x["fiabilite"] != "officiel_archive" for x in rs)}
+    mois_existants = set(par_mois_master)
     pages = [p for p in PAGES if p["label"] in BACKFILL_LABELS
              and (not only or p["op"] in only)]
 
@@ -1308,14 +1362,35 @@ def backfill(m_from, m_to=None, only=None, write=False, delai=1.5):
             print(f"ECHEC ({exc.__class__.__name__}: {exc})")
             continue
         time.sleep(delai)
+        # Les dumps déjà en cache comptent même si le CDX vient d'échouer :
+        # une fois la capture téléchargée, la boucle est 100 % hors ligne.
+        slug = slugify(page["label"])
+        for cache in RAW_ARCHIVE_DIR.glob(f"*/{slug}@*.txt"):
+            ym_c = cache.parent.name.replace("-", "")
+            ts_c = cache.stem.split("@", 1)[1]
+            if m_from.replace("-", "") <= ym_c[:6] <= m_to.replace("-", ""):
+                snaps.setdefault(ym_c[:6], ts_c)
         for ym, ts in sorted(snaps.items()):
             month = f"{ym[:4]}-{ym[4:6]}"
-            if month in mois_existants:
+            if month in mois_proteges:
+                continue                      # mois avec données live : intouchable
+            if month in mois_existants and not refetch:
                 continue
             url_arch = f"https://web.archive.org/web/{ts}id_/{page['url']}"
+            dump = RAW_ARCHIVE_DIR / month / f"{slug}@{ts}.txt"
             try:
-                rs = page["parse"](html_to_text(_wayback_get(url_arch).text),
-                                   page["url"])
+                if dump.exists():             # déjà téléchargé : hors ligne
+                    text = dump.read_text(encoding="utf-8")
+                else:
+                    text = html_to_text(_wayback_get(url_arch).text)
+                    dump.parent.mkdir(parents=True, exist_ok=True)
+                    dump.write_text(text, encoding="utf-8")
+                    time.sleep(delai)
+                rs = page["parse"](text, page["url"])
+                for era in ERA_PARSERS.get(page["label"], []):
+                    if rs:
+                        break
+                    rs = era(text, page["url"])
             except Exception as exc:
                 print(f"    {month}  {page['label']}: ECHEC "
                       f"({exc.__class__.__name__})")
@@ -1333,7 +1408,6 @@ def backfill(m_from, m_to=None, only=None, write=False, delai=1.5):
             print(f"    {month}  {page['label']}: {etat}")
             if rs:
                 par_mois.setdefault(month, []).extend(rs)
-            time.sleep(delai)
 
     if not par_mois:
         # Résultat normal du cron de rattrapage mensuel : rien de neuf
@@ -1354,6 +1428,142 @@ def backfill(m_from, m_to=None, only=None, write=False, delai=1.5):
         ecrire_resumes()
     else:
         print("\nRien n'est écrit — ajouter --write pour enregistrer ces mois.")
+    return 0
+
+# --------------------------------------------------------------------------
+# Catalogues : ingestion des grilles extraites des catalogues officiels
+# archivés (PDF/pages datés). Extraction MANUELLE et auditée — un PDF de
+# 19 pages ne se regexe pas fiablement ; chaque ligne de
+# data/catalogues_extraits.csv référence sa capture d'archive en source.
+# --------------------------------------------------------------------------
+
+CATALOGUES_CSV = DATA_DIR / "catalogues_extraits.csv"
+
+
+def catalogues(write=False):
+    """Fusionne les extraits de catalogues officiels dans le master.
+    Protection : un mois contenant des lignes live (ni archive ni catalogue)
+    n'est jamais touché. À l'intérieur d'un mois, seuls les périmètres
+    (opérateur, catégorie) présents dans les extraits sont remplacés."""
+    if not CATALOGUES_CSV.exists():
+        print(f"Pas d'extraits ({CATALOGUES_CSV.name}).")
+        return 1
+    with open(CATALOGUES_CSV, newline="", encoding="utf-8-sig") as fh:
+        extraits = [r_ for r_ in csv.DictReader(fh, delimiter=";")
+                    if r_.get("operateur")]
+    master = read_master()
+    par_mois_master = {}
+    for r_ in master:
+        par_mois_master.setdefault(r_["date_releve"][:7], []).append(r_)
+
+    par_mois = {}
+    for r_ in extraits:
+        par_mois.setdefault(r_["date_releve"][:7], []).append(r_)
+    ecrits = 0
+    for month in sorted(par_mois):
+        rs = par_mois[month]
+        existants = par_mois_master.get(month, [])
+        if any(x["fiabilite"] not in ("officiel_archive", "officiel_catalogue")
+               for x in existants):
+            print(f"  {month} : mois avec données live — extraits ignorés.")
+            continue
+        perimetres = {(r_["operateur"], r_["categorie"]) for r_ in rs}
+        conserves = [x for x in existants
+                     if (x["operateur"], x["categorie"]) not in perimetres]
+        final = conserves + rs
+        print(f"  {month} : {len(rs)} ligne(s) de catalogue"
+              + (f" + {len(conserves)} conservée(s)" if conserves else ""))
+        signaler_anomalies(final)
+        if write:
+            ecrire_releve(final, month)
+            ecrits += 1
+    if write and ecrits:
+        ecrire_feed()
+        ecrire_resumes()
+    elif not write:
+        print("\nRien n'est écrit — ajouter --write pour enregistrer.")
+    return 0
+
+# --------------------------------------------------------------------------
+# Discover : cartographier les URLs historiques des opérateurs dans la
+# Wayback Machine — AVANT d'écrire des parsers d'époque, savoir où vit
+# l'histoire (les URLs actuelles n'existent souvent que depuis fin 2025).
+# --------------------------------------------------------------------------
+
+DISCOVER_DOMAINS = ["iam.ma", "inwi.ma", "orange.ma", "yoxo.ma"]
+DISCOVER_KEYWORDS = ("fibre", "forfait", "mobile", "box", "adsl", "tarif",
+                     "catalogue", "offre", "internet", "dar-box", "jawal")
+DISCOVER_EXCLU = ("actualite", "presse", "communique", "recrutement", "blog",
+                  "faq", "aide", "contact", "mentions", "apropos", "a-propos",
+                  ".jpg", ".png", ".css", ".js", ".svg", ".gif", ".woff",
+                  "facebook", "twitter", "?", "assistance", "corporate")
+INVENTORY_JSON = DATA_DIR / "wayback_inventory.json"
+
+
+def _cdx_urls(domain, m_from, m_to, mimetype):
+    """URLs uniques archivées (HTTP 200) d'un domaine et ses sous-domaines."""
+    params = {"url": domain, "matchType": "domain", "output": "json",
+              "fl": "original", "collapse": "urlkey",
+              "filter": ["statuscode:200", f"mimetype:{mimetype}"],
+              "from": m_from.replace("-", ""), "to": m_to.replace("-", "") + "31",
+              "limit": "30000"}
+    data = _wayback_get(WAYBACK_CDX, params).json()
+    return [row[0] for row in data[1:]] if data else []
+
+
+def _score_url(u):
+    """Priorise les pages tarifaires probables : mots-clés forts, chemin court."""
+    lo = u.lower()
+    score = sum(3 for k in ("fibre", "forfait", "dar-box", "catalogue") if k in lo)
+    score += sum(1 for k in DISCOVER_KEYWORDS if k in lo)
+    score -= lo.count("/")                 # les pages profondes sont du détail
+    return score
+
+
+def discover(m_from="2022-01", m_to=None, par_domaine=12, delai=2.0):
+    """Inventaire Wayback : URLs candidates par domaine + couverture mensuelle
+    des meilleures. Écrit data/wayback_inventory.json et affiche le rapport.
+    Lent (rate-limit CDX) — à lancer en tâche de fond."""
+    import json
+    m_to = m_to or today()[:7]
+    inv = {"genere_le": today(), "de": m_from, "a": m_to, "domaines": {}}
+    for dom in DISCOVER_DOMAINS:
+        entry = {"candidats": {}, "pdf": {}}
+        for mime, cible in (("text/html", "candidats"),
+                            ("application/pdf", "pdf")):
+            print(f"\n=== {dom} ({mime}) ===", flush=True)
+            try:
+                urls = _cdx_urls(dom, m_from, m_to, mime)
+            except Exception as exc:
+                print(f"  CDX ECHEC ({exc.__class__.__name__}: {exc})")
+                continue
+            time.sleep(delai)
+            lo_ok = [u for u in urls
+                     if any(k in u.lower() for k in DISCOVER_KEYWORDS)
+                     and not any(x in u.lower() for x in DISCOVER_EXCLU)]
+            print(f"  {len(urls)} URLs archivées, {len(lo_ok)} candidates "
+                  "après filtrage")
+            lo_ok.sort(key=_score_url, reverse=True)
+            quota = par_domaine if mime == "text/html" else 6
+            for u in lo_ok[:quota]:
+                try:
+                    mois = wayback_mois(u, m_from, m_to)
+                except Exception as exc:
+                    print(f"  ? {u} — couverture inconnue "
+                          f"({exc.__class__.__name__})")
+                    continue
+                time.sleep(delai)
+                if not mois:
+                    continue
+                cover = sorted(mois)
+                entry[cible][u] = {"mois": len(cover),
+                                   "de": cover[0], "a": cover[-1],
+                                   "timestamps": mois}
+                print(f"  {len(cover):>3} mois  {cover[0][:6]}->{cover[-1][:6]}  {u}")
+        inv["domaines"][dom] = entry
+    INVENTORY_JSON.write_text(json.dumps(inv, ensure_ascii=False, indent=1),
+                              encoding="utf-8")
+    print(f"\nInventaire écrit -> {INVENTORY_JSON.name}")
     return 0
 
 # --------------------------------------------------------------------------
@@ -1566,6 +1776,18 @@ SAMPLES = {
         <img src="https://cdn-exemple.orange.ma/FibreOrange/fibre-cards/1000go.svg">
         <img src="https://cdn-exemple.orange.ma/FibreOrange/fibre-cards/20go.svg">
     """,
+    # ANCIEN format iam.ma/forfaits-mobile (capture réelle du 06/12/2025) —
+    # gamme « Forfait Liberté », bundles différents au même prix.
+    "iam_forfaits_liberte": """
+        Filtrer Budget DH - DH
+        Forfait Liberté 59 DH/mois 11 Go 1 Heure Pass et options Acheter
+        Forfait Liberté 59 DH/mois 3 Go 3 Heures 300 SMS Pass et options Acheter
+        Forfait Liberté 99 DH/mois 20 Go 1 Heure Pass et options Acheter
+        Forfait Liberté 99 DH/mois 11 Heures 2 Go Pass et options Acheter
+        Forfait Liberté 99 DH/mois 13 Go 4 Heures Pass et options Acheter
+        Forfait Liberté 119 DH/mois 22 Go 2 Heures Pass et options Acheter
+        Forfait Liberté 59 DH/mois 11 Go 1 Heure Pass et options Acheter
+    """,
     # Palier dont le SVG ne contient AUCUN prix en texte (tracés vectoriels) :
     # depuis 09/2026, la ligne est ignorée au lieu de sortir vide.
     "orange_svg_page_sans_prix": """
@@ -1679,6 +1901,21 @@ def test():
     # Chaque prix garde SA data : pas de contamination par l'offre voisine.
     ok &= {(x["prix_dh_mois"], x["debit_ou_data"]) for x in r} == {
         ("199", "100 Go"), ("299", "300 Go")}
+
+    r = parse_iam_forfaits_liberte(SAMPLES["iam_forfaits_liberte"], "test")
+    print(f"[iam_liberte]      {len(r)} offres :",
+          [(x['offre'], x['appels_inclus'], x['prix_dh_mois']) for x in r])
+    # 6 bundles distincts (la grille dupliquée est dédoublonnée) ; les deux
+    # 59 DH et les trois 99 DH restent distincts grâce à la data/aux heures.
+    ok &= len(r) == 6
+    ok &= {(x["offre"], x["prix_dh_mois"]) for x in r} == {
+        ("Forfait Liberte 59 (11 Go)", "59"),
+        ("Forfait Liberte 59 (3 Go)", "59"),
+        ("Forfait Liberte 99 (20 Go)", "99"),
+        ("Forfait Liberte 99 (2 Go)", "99"),
+        ("Forfait Liberte 99 (13 Go)", "99"),
+        ("Forfait Liberte 119 (22 Go)", "119")}
+    ok &= any(x["remarques"] == "300 SMS" for x in r)
 
     r = parse_iam_box(SAMPLES["iam_box_5g"], "test", "El Manzil 5G")
     print(f"[iam_box_5g]       {len(r)} offres :",
@@ -1842,11 +2079,23 @@ def main():
     p_bf.add_argument("--only", nargs="+", choices=ops)
     p_bf.add_argument("--write", action="store_true",
                       help="enregistrer les mois reconstitués")
+    p_bf.add_argument("--refetch", action="store_true",
+                      help="re-traiter aussi les mois d'archives déjà en base "
+                           "(les mois avec données live restent intouchables)")
 
     sub.add_parser("test", help="valider les parsers sur les échantillons")
     sub.add_parser("diff", help="comparer les deux derniers relevés")
     sub.add_parser("compare", help="confronter le dernier relevé à la référence")
     sub.add_parser("feed", help="régénérer changements.xml + resumes.json")
+
+    p_cat = sub.add_parser(
+        "catalogues", help="fusionner les extraits de catalogues officiels")
+    p_cat.add_argument("--write", action="store_true")
+
+    p_disc = sub.add_parser(
+        "discover", help="inventaire Wayback des URLs historiques (lent)")
+    p_disc.add_argument("--from", dest="m_from", default="2022-01")
+    p_disc.add_argument("--to", dest="m_to")
     args = ap.parse_args()
 
     if args.cmd == "run":
@@ -1857,7 +2106,7 @@ def main():
         sys.exit(replay(month=args.month, only=args.only, write=args.write))
     if args.cmd == "backfill":
         sys.exit(backfill(args.m_from, args.m_to, only=args.only,
-                          write=args.write))
+                          write=args.write, refetch=args.refetch))
     if args.cmd == "test":
         sys.exit(test())
     if args.cmd == "diff":
@@ -1867,6 +2116,10 @@ def main():
     if args.cmd == "feed":
         ecrire_feed()
         ecrire_resumes()
+    if args.cmd == "catalogues":
+        sys.exit(catalogues(write=args.write))
+    if args.cmd == "discover":
+        sys.exit(discover(m_from=args.m_from, m_to=args.m_to))
 
 
 if __name__ == "__main__":
