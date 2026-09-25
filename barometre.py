@@ -752,6 +752,18 @@ def garde_fou(rows, month, master=None):
     return alertes
 
 
+def fusion_mois(existants, nouveaux):
+    """Union par offre au sein d'un mois : une nouvelle ligne remplace la
+    même (opérateur, catégorie, offre) ; tout le reste du mois est conservé.
+    Indispensable quand un mois d'archives est assemblé par plusieurs runs
+    (pages différentes, --only, catalogues) — un run partiel ne doit JAMAIS
+    effacer ce que les autres sources ont apporté."""
+    cles = {(r_["operateur"], r_["categorie"], r_["offre"]) for r_ in nouveaux}
+    return [x for x in existants
+            if (x["operateur"], x["categorie"], x["offre"]) not in cles] \
+        + nouveaux
+
+
 def ecrire_releve(rows, month):
     """Snapshot du mois + base cumulée (un même mois relancé est remplacé)."""
     snap = DATA_DIR / f"releve_{month}.csv"
@@ -1293,10 +1305,26 @@ ERA_PARSERS = {
 # Pages dont le HTML archivé est rendu serveur : parsables sans navigateur.
 # (boutique Orange, yoxo, forfaits inwi : rendu client — les captures
 # n'exécutent pas le JS applicatif de façon fiable, on ne backfill pas.)
+# Les pages boutique Orange (Next.js) sont rendues côté serveur (SSR) :
+# leurs captures d'archives contiennent cartes ET liens — nos parsers
+# (cartes + slugs) marchent tels quels, à condition d'extraire les hrefs
+# que html_to_text jette (la section LIENS, comme le fait le navigateur).
 BACKFILL_LABELS = {
     "IAM fibre", "IAM forfaits mobile", "IAM Box El Manzil 5G", "IAM Box 4G+",
     "Orange fibre (grille pro, HTML)", "inwi fibre",
+    "Orange forfaits (boutique)", "Orange Dar Box 5G", "Orange Dar Box 4G+",
+    "Yoxo (digital)",
 }
+
+
+def _texte_archive(raw_html, avec_liens):
+    """Texte d'une capture + section LIENS si la page l'exige (slugs)."""
+    text = html_to_text(raw_html)
+    if avec_liens:
+        soup = BeautifulSoup(raw_html, "html.parser")
+        hrefs = [a.get("href", "") for a in soup.find_all("a")]
+        text += "\nLIENS\n" + "\n".join(dict.fromkeys(h for h in hrefs if h))
+    return text
 
 
 def _wayback_get(url, params=None, essais=6):
@@ -1382,7 +1410,8 @@ def backfill(m_from, m_to=None, only=None, write=False, delai=1.5,
                 if dump.exists():             # déjà téléchargé : hors ligne
                     text = dump.read_text(encoding="utf-8")
                 else:
-                    text = html_to_text(_wayback_get(url_arch).text)
+                    text = _texte_archive(_wayback_get(url_arch).text,
+                                          page.get("links", False))
                     dump.parent.mkdir(parents=True, exist_ok=True)
                     dump.write_text(text, encoding="utf-8")
                     time.sleep(delai)
@@ -1417,8 +1446,9 @@ def backfill(m_from, m_to=None, only=None, write=False, delai=1.5,
         return 0
 
     for month in sorted(par_mois):
-        rs = par_mois[month]
-        print(f"\n=== {month} : {len(rs)} offre(s) reconstituées ===")
+        rs = fusion_mois(par_mois_master.get(month, []), par_mois[month])
+        print(f"\n=== {month} : {len(par_mois[month])} offre(s) "
+              f"reconstituées, {len(rs)} au total après fusion ===")
         apercu(rs, 12)
         signaler_anomalies(rs)
         if write:
@@ -1467,12 +1497,9 @@ def catalogues(write=False):
                for x in existants):
             print(f"  {month} : mois avec données live — extraits ignorés.")
             continue
-        perimetres = {(r_["operateur"], r_["categorie"]) for r_ in rs}
-        conserves = [x for x in existants
-                     if (x["operateur"], x["categorie"]) not in perimetres]
-        final = conserves + rs
-        print(f"  {month} : {len(rs)} ligne(s) de catalogue"
-              + (f" + {len(conserves)} conservée(s)" if conserves else ""))
+        final = fusion_mois(existants, rs)
+        print(f"  {month} : {len(rs)} ligne(s) de catalogue, "
+              f"{len(final)} au total après fusion")
         signaler_anomalies(final)
         if write:
             ecrire_releve(final, month)
