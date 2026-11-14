@@ -126,6 +126,10 @@
     border-inline-start: 3px solid var(--accent); border-radius: 0 10px 10px 0;
     padding: 10px 14px; margin: 14px 0;
   }
+  .com { white-space: pre-line; }
+  .com-titre { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .com-sign { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; }
   .warn { border-inline-start-color: #c47b0a;
     background: color-mix(in srgb, #c47b0a 7%, transparent); }
 
@@ -183,6 +187,7 @@
         <span id="e-premium">—</span> au-dessus de ses concurrents en entrée de gamme fibre,
         mais l'écart se referme à mesure qu'on monte en débit.</li>
     </ul>
+    <div class="note com" id="com-essentiel" hidden></div>
   </section>
 
   <section class="card">
@@ -215,6 +220,7 @@
     qui correspondent… à la grille officielle actuelle. Une partie de la baisse est donc une
     officialisation de remises préexistantes — un mécanisme de baisse discret, sans annonce de
     changement de grille.</div>
+    <div class="note com" id="com-s1" hidden></div>
   </section>
 
   <section class="card">
@@ -234,6 +240,7 @@
     <p>La déflation réelle est massive et continue. Elle passe par trois canaux : l'enrichissement
     des volumes à prix constant, le remplacement de gammes (Liberté → Liberté Plus, Yo → Yo Max),
     et la marque digitale (Yoxo) qui tire le plancher du marché vers le bas.</p>
+    <div class="note com" id="com-s2" hidden></div>
   </section>
 
   <section class="card">
@@ -251,6 +258,7 @@
     parallèle deux fois moins cher. Pour un régulateur, la question est celle de l'équité
     d'accès : la fracture numérique se double d'une fracture tarifaire, et ce ratio, mesuré
     mensuellement, en est le thermomètre.</p>
+    <div class="note com" id="com-s3" hidden></div>
   </section>
 
   <section class="card">
@@ -266,6 +274,7 @@
     un arbitrage lourd.</p>
     <div class="note">Base de calcul : SMIG mensuel net du secteur privé ≈ <b>3 111 DH</b>
     (barème 2024 — constante documentée dans le code, à actualiser lors des revalorisations).</div>
+    <div class="note com" id="com-s4" hidden></div>
   </section>
 
   <section class="card">
@@ -281,6 +290,7 @@
     coûts fixes lourds et aux clients captifs d'une adresse, contre un marché mobile où le
     client change d'offre en deux clics — et où la marque digitale sans boutique fait office
     d'aiguillon tarifaire.</p>
+    <div class="note com" id="com-s5" hidden></div>
   </section>
 
   <section class="card">
@@ -307,6 +317,7 @@
         en soi, la preuve d'une entente — c'est un indicateur de structure de marché dont la
         persistance mérite mesure. C'est exactement ce que ce baromètre fait.</li>
     </ul>
+    <div class="note com" id="com-methodo" hidden></div>
   </section>
 
   <footer>
@@ -648,7 +659,31 @@ async function run() {
   setTxt("s5-counts", `${chMob} mouvements d'offres mobiles contre ${chFixe} sur le fixe ` +
     `(fibre + box), à périmètre observé constant`);
 }
+/* ---- commentaires de l'admin (data/commentaires.json, édités via Pages CMS) ---- */
+async function commentaires() {
+  let c = {};
+  try {
+    const resp = await fetch("data/commentaires.json", { cache: "no-store" });
+    if (resp.ok) c = (await resp.json()) || {};
+  } catch (e) { return; }
+  const sign = String(c.signature || "").trim();
+  Object.entries(c.analyse || {}).forEach(([k, t]) => {
+    const box = document.getElementById("com-" + k);
+    const txt = String(t || "").trim();
+    if (!box || !txt) return;
+    const titre = document.createElement("span");
+    titre.className = "com-titre"; titre.textContent = "Le commentaire de la rédaction";
+    box.replaceChildren(titre, document.createTextNode(txt));
+    if (sign) {
+      const s = document.createElement("span");
+      s.className = "com-sign"; s.textContent = "— " + sign;
+      box.append(s);
+    }
+    box.hidden = false;
+  });
+}
 run();
+commentaires();
 </script>
 </body>
 </html>

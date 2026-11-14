@@ -1,0 +1,76 @@
+# Pages CMS (https://app.pagescms.org) — espace d'édition des commentaires.
+# Chaque enregistrement crée un commit sur main, qui redéploie le site
+# (workflow pages.yml). Le code et les données de prix ne sont pas exposés ici.
+content:
+  - name: commentaires
+    label: Commentaires
+    type: file
+    path: data/commentaires.json
+    format: json
+    fields:
+      - name: signature
+        label: Signature
+        description: "Affichée sous chaque commentaire (ex. « La rédaction »). Laisser vide pour ne rien afficher."
+        type: string
+      - name: mois
+        label: Commentaires du mois (tableau de bord)
+        description: "Un commentaire par mois, affiché dans « L'analyse du mois »."
+        type: object
+        list: true
+        fields:
+          - name: mois
+            label: Mois (AAAA-MM)
+            description: "Exemple : 2026-11"
+            type: string
+            required: true
+            pattern:
+              regex: '^20\d\d-(0[1-9]|1[0-2])$'
+              message: "Format attendu : AAAA-MM, par exemple 2026-11"
+          - name: texte
+            label: Commentaire (français)
+            type: text
+            required: true
+          - name: texte_ar
+            label: Commentaire (arabe, facultatif)
+            description: "Si vide, la version arabe du site affiche le texte français."
+            type: text
+          - name: remplacer
+            label: Remplacer le résumé automatique
+            description: "Coché : seul ce commentaire est affiché. Décoché : il s'affiche au-dessus du résumé automatique."
+            type: boolean
+            default: false
+      - name: analyse
+        label: Commentaires de la page Analyse
+        description: "Encadrés libres ajoutés sous chaque partie. Un champ vide n'affiche rien. Les textes chiffrés de la page restent calculés automatiquement."
+        type: object
+        fields:
+          - { name: essentiel, label: "L'essentiel", type: text }
+          - { name: s1, label: "01 — Grilles figées et alignement", type: text }
+          - { name: s2, label: "02 — Le prix du Go", type: text }
+          - { name: s3, label: "03 — La prime au guichet", type: text }
+          - { name: s4, label: "04 — L'accessibilité (SMIG)", type: text }
+          - { name: s5, label: "05 — Où vit la concurrence", type: text }
+          - { name: methodo, label: "Méthodologie & limites", type: text }
+
+  - name: annotations
+    label: Annotations du graphique d'évolution
+    type: file
+    path: data/annotations.json
+    format: json
+    list: true
+    fields:
+      - name: date
+        label: Mois (AAAA-MM)
+        description: "Mois sur lequel le repère en pointillés est placé. Exemple : 2026-09"
+        type: string
+        required: true
+        pattern:
+          regex: '^20\d\d-(0[1-9]|1[0-2])$'
+          message: "Format attendu : AAAA-MM, par exemple 2026-09"
+      - name: texte
+        label: Texte (français)
+        type: text
+        required: true
+      - name: texte_ar
+        label: Texte (arabe, facultatif)
+        type: text

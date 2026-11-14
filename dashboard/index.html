@@ -435,6 +435,12 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   }
   [dir="rtl"] .resume-text { border-radius: 10px 0 0 10px; }
   .resume-note { font-size: 11.5px; color: var(--muted); margin: 6px 0 0; }
+  .resume-admin { margin: 0 0 14px; }
+  .resume-admin-titre { font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 5px; }
+  .resume-admin-texte { font-size: 15px; line-height: 1.65; color: var(--ink);
+    margin: 0; white-space: pre-line; }
+  .resume-admin-sign { font-size: 12.5px; color: var(--muted); margin: 5px 0 0; }
 
   /* ---- méthodologie ------------------------------------------------ */
   .methodo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 26px; }
@@ -535,7 +541,12 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   <section class="card" id="resume-card" hidden>
     <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V4a1 1 0 0 1 1-1h11l4 4v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>
       <span data-i18n="resume_titre">L'analyse du mois</span></h2>
-    <p class="hint" data-i18n="resume_hint">Résumé généré automatiquement à partir des données du relevé.</p>
+    <div class="resume-admin" id="resume-admin" hidden>
+      <p class="resume-admin-titre" data-i18n="resume_com">Le commentaire de la rédaction</p>
+      <p class="resume-admin-texte" id="resume-admin-texte"></p>
+      <p class="resume-admin-sign" id="resume-admin-sign" hidden></p>
+    </div>
+    <p class="hint" id="resume-hint" data-i18n="resume_hint">Résumé généré automatiquement à partir des données du relevé.</p>
     <p class="resume-text" id="resume-text"><!--RESUME_SEO--></p>
     <p class="resume-note" id="resume-note" hidden data-i18n="resume_note">(analyse disponible en français)</p>
   </section>
@@ -749,6 +760,7 @@ const I18N = {
     resume_titre: "L'analyse du mois",
     resume_hint: "Résumé généré automatiquement à partir des données du relevé.",
     resume_note: "(analyse disponible en français)",
+    resume_com: "Le commentaire de la rédaction",
     metho_titre: "Méthodologie",
     metho_s1: "D'où viennent les prix ?",
     metho_p1: "Chaque relevé est collecté automatiquement le 2 du mois sur les pages publiques des sites officiels des opérateurs : iam.ma (Maroc Telecom), orange.ma, boutique.orange.ma et yoxo.ma (Orange), inwi.ma (inwi). Aucune donnée de presse ni de comparateur tiers n'est utilisée comme source de prix.",
@@ -825,6 +837,7 @@ const I18N = {
     resume_titre: "تحليل الشهر",
     resume_hint: "ملخص مُولَّد آلياً من بيانات الرصد.",
     resume_note: "(التحليل متوفر بالفرنسية)",
+    resume_com: "تعليق هيئة التحرير",
     metho_titre: "المنهجية",
     metho_s1: "من أين تأتي الأسعار؟",
     metho_p1: "يُجمع كل رصد آلياً في اليوم الثاني من الشهر من الصفحات العمومية للمواقع الرسمية للمشغلين : iam.ma (اتصالات المغرب)، orange.ma وboutique.orange.ma وyoxo.ma (أورنج)، inwi.ma (إنوي). لا تُستعمل أي بيانات صحفية أو مقارنات طرف ثالث كمصدر للأسعار.",
@@ -959,6 +972,7 @@ const fmtUnit = u => u
 let ALL = [];          // toutes les lignes du CSV
 let RESUMES = {};      // resumes.json : paragraphe éditorial par mois
 let ANNOTS = [];       // annotations.json : événements marqués sur l'évolution
+let COMMENTS = {};     // commentaires.json : commentaires saisis par l'admin (Pages CMS)
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
               besoin: "Fibre", crit: 0, val: "mobile",
@@ -1005,6 +1019,10 @@ async function loadData() {
     const resp = await fetch("data/annotations.json", { cache: "no-store" });
     if (resp.ok) ANNOTS = await resp.json();
   } catch (e) { /* pas d'annotations */ }
+  try {
+    const resp = await fetch("data/commentaires.json", { cache: "no-store" });
+    if (resp.ok) COMMENTS = (await resp.json()) || {};
+  } catch (e) { /* pas de commentaires */ }
   init();
 }
 
@@ -2089,11 +2107,29 @@ function renderIndice() {
 
 function renderResume() {
   const card = document.getElementById("resume-card");
-  const txt = RESUMES[state.month];
-  if (!txt) { card.hidden = true; return; }
+  const auto = RESUMES[state.month];
+  const liste = Array.isArray(COMMENTS.mois) ? COMMENTS.mois : [];
+  const com = liste.find(c => c && c.mois === state.month && String(c.texte || "").trim());
+  if (!auto && !com) { card.hidden = true; return; }
   card.hidden = false;
-  document.getElementById("resume-text").textContent = txt;
-  document.getElementById("resume-note").hidden = LANG !== "ar";
+
+  /* commentaire de l'admin : au-dessus du résumé automatique, ou à sa place */
+  const box = document.getElementById("resume-admin");
+  box.hidden = !com;
+  if (com) {
+    const ar = LANG === "ar" && String(com.texte_ar || "").trim();
+    document.getElementById("resume-admin-texte").textContent =
+      (ar ? com.texte_ar : com.texte).trim();
+    const sign = document.getElementById("resume-admin-sign");
+    const s = String(COMMENTS.signature || "").trim();
+    sign.hidden = !s;
+    sign.textContent = s ? "— " + s : "";
+  }
+  const showAuto = !!auto && !(com && com.remplacer);
+  document.getElementById("resume-hint").hidden = !showAuto;
+  document.getElementById("resume-text").hidden = !showAuto;
+  document.getElementById("resume-text").textContent = auto || "";
+  document.getElementById("resume-note").hidden = !showAuto || LANG !== "ar";
 }
 
 /* ---------- rendu global ---------- */

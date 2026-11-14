@@ -33,7 +33,7 @@ jobs:
           cp dashboard/analyse.html _site/analyse.html
           cp dashboard/og.png _site/og.png
           cp data/*.csv _site/data/
-          cp data/changements.xml data/resumes.json data/annotations.json _site/data/ 2>/dev/null || true
+          cp data/changements.xml data/resumes.json data/annotations.json data/commentaires.json _site/data/ 2>/dev/null || true
 
       - name: Baker le résumé du mois dans la page (SEO)
         # Le résumé du dernier mois remplace le placeholder RESUME_SEO :
@@ -46,7 +46,16 @@ jobs:
           if res.exists():
               resumes = json.loads(res.read_text(encoding="utf-8"))["resumes"]
               if resumes:
-                  dernier = resumes[max(resumes)]
+                  mois = max(resumes)
+                  dernier = resumes[mois]
+                  # commentaire de l'admin pour ce mois : avant le résumé, ou à sa place
+                  com = pathlib.Path("data/commentaires.json")
+                  if com.exists():
+                      for c in json.loads(com.read_text(encoding="utf-8")).get("mois") or []:
+                          t = (c.get("texte") or "").strip()
+                          if c.get("mois") == mois and t:
+                              dernier = t if c.get("remplacer") else t + " " + dernier
+                              break
                   site.write_text(site.read_text(encoding="utf-8").replace(
                       "<!--RESUME_SEO-->", html.escape(dernier)),
                       encoding="utf-8")

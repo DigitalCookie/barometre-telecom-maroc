@@ -112,6 +112,13 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   mois d'archives partiels sont exclus du calcul.
 - Annotations : `data/annotations.json` `[{date, texte, texte_ar}]` —
   pointillés sur le graphique d'évolution + liste dessous.
+- Commentaires de l'admin : `data/commentaires.json` `{signature, mois:
+  [{mois, texte, texte_ar, remplacer}], analyse: {essentiel, s1…s5, methodo}}`
+  — édité par formulaire via Pages CMS (`.pages.yml`, app.pagescms.org),
+  chaque enregistrement = commit sur main = redéploiement. Affiché dans
+  « L'analyse du mois » (au-dessus du résumé auto, ou à sa place si
+  `remplacer`) et en encadrés sur analyse.html. Jamais écrit par
+  `barometre.py` : un relevé ne l'écrase pas.
 - `backfill.yml` : cron le 15 du mois (rattrapage archives, sans
   Playwright) ; « rien à reconstruire » = exit 0.
 
