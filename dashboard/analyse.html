@@ -113,6 +113,8 @@
     text-align: start; }
   table.grille th { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--ink-2); font-weight: 800; }
+  .scroll-x { overflow-x: auto; }
+  .scroll-x table.grille { min-width: 640px; }
   table.grille td.num { text-align: end; font-variant-numeric: tabular-nums; font-weight: 700; }
 
   .op { display: inline-flex; align-items: center; justify-content: center;
@@ -180,9 +182,9 @@
         <b><span id="e-go-avant">—</span></b> à <b><span id="e-go-apres">—</span></b>
         (<span id="e-go-delta">—</span>), sans presque aucun changement de prix facial :
         les opérateurs enrichissent la data à prix constant.</li>
-      <li><b>La prime au guichet.</b> Au sein même d'Orange, le Go coûte
-        <b><span id="e-prime">—</span> fois plus cher</b> en canal classique que sur sa marque
-        100 % digitale Yoxo.</li>
+      <li><b>La prime au guichet.</b> À besoin égal (même data, mêmes heures d'appels),
+        un client Orange paie jusqu'à <b><span id="e-prime">—</span> fois plus cher</b> en canal
+        classique que sur sa marque 100 % digitale Yoxo.</li>
       <li><b>Un premium d'incumbent dégressif.</b> IAM se vend
         <span id="e-premium">—</span> au-dessus de ses concurrents en entrée de gamme fibre,
         mais l'écart se referme à mesure qu'on monte en débit.</li>
@@ -240,23 +242,30 @@
     <p>La déflation réelle est massive et continue. Elle passe par trois canaux : l'enrichissement
     des volumes à prix constant, le remplacement de gammes (Liberté → Liberté Plus, Yo → Yo Max),
     et la marque digitale (Yoxo) qui tire le plancher du marché vers le bas.</p>
+    <div class="note warn"><b>Limite.</b> Le prix du Go rapporte tout le prix du forfait à la
+    seule data : il ignore les heures d'appels incluses, qui varient d'une offre à l'autre et
+    d'une année à l'autre. La correction par <b>paniers d'usage</b> (comparer à data <i>et</i>
+    appels égaux) n'est possible que depuis août 2026 : les heures d'appels ne figurent pas dans
+    la plupart des archives. Cette courbe mesure donc une tendance, pas un écart exact — la
+    comparaison à besoin égal est faite en section 03 et sur le
+    <a href="./#paniers">tableau de bord</a>.</div>
     <div class="note com" id="com-s2" hidden></div>
   </section>
 
   <section class="card">
     <h2><span class="no">03</span> La prime au guichet</h2>
-    <p class="lede">Le prix du Go dépend moins de l'opérateur que du canal d'achat.</p>
+    <p class="lede">À besoin égal, le prix dépend autant du canal d'achat que de l'opérateur.</p>
     <div class="stats" id="s3-stats"></div>
-    <p>Au dernier relevé, un client Orange qui souscrit sur <b>yoxo.ma</b> (souscription 100 %
-    en ligne) paie son Go <b id="s3-digital">—</b> ; le même opérateur le vend
-    <b id="s3-classique">—</b> via sa gamme boutique classique — soit
-    <b id="s3-ratio">—</b> fois plus. Même le meilleur canal classique du marché
-    (<span id="s3-best-classique">—</span>) reste <span id="s3-ratio2">—</span> fois au-dessus
-    du plancher digital.</p>
+    <p>Pour comparer sans biais, on fixe un besoin — tant de Go <i>et</i> tant d'heures d'appels —
+    et on retient le forfait le moins cher qui le couvre (méthode des paniers d'usage, celle des
+    régulateurs). Au dernier relevé, voici ce que paie un client Orange selon qu'il souscrit sur
+    <b>yoxo.ma</b> (100 % en ligne) ou dans la gamme boutique classique :</p>
+    <div class="scroll-x"><table class="grille" id="t-prime"></table></div>
+    <p id="s3-lecture"></p>
     <p>Cette segmentation est une discrimination tarifaire par l'aisance numérique : ceux qui
     savent souscrire en ligne — plutôt jeunes, urbains, connectés — accèdent à un marché
-    parallèle deux fois moins cher. Pour un régulateur, la question est celle de l'équité
-    d'accès : la fracture numérique se double d'une fracture tarifaire, et ce ratio, mesuré
+    parallèle moins cher. Pour un régulateur, la question est celle de l'équité d'accès : la
+    fracture numérique se double d'une fracture tarifaire, et cet écart à besoin égal, mesuré
     mensuellement, en est le thermomètre.</p>
     <div class="note com" id="com-s3" hidden></div>
   </section>
@@ -305,6 +314,10 @@
       <li><b>Prix catalogue.</b> Le baromètre lit les prix catalogue TTC ; les promotions
         temporaires ne sont pas captées — sauf lorsqu'elles sont affichées comme prix barrés
         (boutique inwi 2022), auquel cas le prix public fait foi et la promo est notée.</li>
+      <li><b>Paniers d'usage.</b> Les comparaisons de forfaits mobiles « à besoin égal »
+        retiennent, pour un profil donné (data + heures d'appels), le forfait le moins cher qui
+        couvre les deux. Les appels illimités vers le seul réseau de l'opérateur ne sont pas
+        comptés ; les offres dont le volume ou les heures ne sont pas publiés sont exclues.</li>
       <li><b>Couverture partielle.</b> Les mois d'archives ne couvrent pas tous les
         opérateurs ni toutes les catégories ; toutes les comparaisons temporelles de cette
         page ne portent que sur des périmètres observés aux deux dates. Les diffs
@@ -432,6 +445,25 @@ function barChart(hostId, bars, { H = 150 } = {}) {
     el("text", { x: cx, y: H - 7, "text-anchor": "middle" }, svg).textContent = b.label;
   });
   el("line", { x1: M.l, x2: W - M.r, y1: M.t + ih, y2: M.t + ih, class: "axis" }, svg);
+}
+
+/* paniers d'usage — mêmes règles que le tableau de bord (index.html) */
+const PANIERS_DEFAUT = [
+  { nom: "Essentiel", go: 5, heures: 1 }, { nom: "Standard", go: 20, heures: 2 },
+  { nom: "Gros consommateur de data", go: 50, heures: 5 },
+  { nom: "Gros appelant", go: 10, heures: 10 },
+  { nom: "Appels illimités", go: 60, heures: 0, appels_illimites: true },
+];
+const goOf = r => /illimit/i.test(r.debit_ou_data || "") ? Infinity : r.go;
+function heuresOf(r) {
+  const t = (r.appels_inclus || "").trim();
+  if (!t) return /appels\s+illimit/i.test(r.offre || "") ? Infinity : null;
+  const base = t.split("+")[0];
+  if (/illimit/i.test(base)) return Infinity;
+  const m = base.match(/(\d+(?:[.,]\d+)?)\s*(h|min)/i);
+  if (!m) return null;
+  const v = parseFloat(m[1].replace(",", "."));
+  return m[2].toLowerCase() === "min" ? v / 60 : v;
 }
 
 /* construit une carte-stat en DOM (aucun innerHTML sur données scrapées) */
@@ -583,37 +615,73 @@ async function run() {
         "de data sur le Yoxo 100 DH entre 2025 (45 Go) et 2026 (60 Go), à prix constant", "up"));
   }
 
-  /* S3 — prime au guichet (dernier mois) */
-  const lm = dhgo[dernier] || {};
-  const digital = Object.values(lm)
-    .filter(x => /yoxo/i.test(x.r.offre)).sort((a, b) => a.v - b.v)[0];
-  const classiques = [];
-  for (const op of Object.keys(lm)) {
-    const rowsOp = ALL.filter(r => r.month === dernier && r.operateur === op
-      && r.categorie === "Forfait mobile" && r.prix && r.go && !/yoxo/i.test(r.offre));
-    if (rowsOp.length) {
-      const best = rowsOp.reduce((a, b) => a.prix / a.go < b.prix / b.go ? a : b);
-      classiques.push({ op, v: best.prix / best.go, r: best });
-    }
-  }
-  const orangeClassique = classiques.find(c => c.op === "Orange");
-  const bestClassique = [...classiques].sort((a, b) => a.v - b.v)[0];
-  if (digital && orangeClassique && bestClassique) {
-    const ratio = orangeClassique.v / digital.v;
-    const ratio2 = bestClassique.v / digital.v;
-    setTxt("e-prime", fmt(ratio, 1));
-    setTxt("s3-digital", `${fmt(digital.v, 2)} DH (${digital.r.offre})`);
-    setTxt("s3-classique", `${fmt(orangeClassique.v, 2)} DH (${orangeClassique.r.offre})`);
-    setTxt("s3-ratio", fmt(ratio, 1));
-    setTxt("s3-best-classique", `${bestClassique.op}, ${fmt(bestClassique.v, 2)} DH/Go`);
-    setTxt("s3-ratio2", fmt(ratio2, 1));
+  /* S3 — prime au guichet, à besoin égal (paniers d'usage, dernier mois) */
+  let paniers = PANIERS_DEFAUT;
+  try {
+    const rp = await fetch("data/paniers.json", { cache: "no-store" });
+    const pj = rp.ok ? (await rp.json()).paniers : null;
+    if (Array.isArray(pj) && pj.length) paniers = pj.filter(x => x && x.nom && Number(x.go) >= 0);
+  } catch (e) { /* paniers par défaut */ }
+  const mobLast = ALL.filter(r => r.month === dernier && r.categorie === "Forfait mobile" && r.prix)
+    .map(r => ({ r, go: goOf(r), h: heuresOf(r) }))
+    .filter(x => x.go != null && x.h != null);
+  const moinsCher = (p, cond) => mobLast
+    .filter(x => cond(x.r) && x.go >= p.go
+      && x.h >= (p.appels_illimites ? Infinity : (Number(p.heures) || 0)))
+    .sort((a, b) => a.r.prix - b.r.prix)[0] || null;
+  const yoxo = r => /yoxo/i.test(r.offre);
+  const lignes = paniers.map(p => ({
+    p,
+    digital: moinsCher(p, r => r.operateur === "Orange" && yoxo(r)),
+    classique: moinsCher(p, r => r.operateur === "Orange" && !yoxo(r)),
+    marche: moinsCher(p, r => !yoxo(r)),
+  }));
+  const tp = document.getElementById("t-prime");
+  const hp = tp.createTHead().insertRow();
+  ["Profil d'usage", "Yoxo (en ligne)", "Orange classique", "Écart", "Meilleur classique du marché"]
+    .forEach(t => { const th = document.createElement("th"); th.textContent = t; hp.append(th); });
+  const bp = tp.createTBody();
+  const cellOffre = (tr, x, avecOp) => {
+    const td = tr.insertCell();
+    if (!x) { td.textContent = "aucun forfait"; return; }
+    const b = document.createElement("b"); b.textContent = fmt(x.r.prix) + " DH";
+    td.append(b, document.createTextNode(" · " + (avecOp ? x.r.operateur + " · " : "") + x.r.offre));
+  };
+  lignes.forEach(({ p, digital, classique, marche }) => {
+    const tr = bp.insertRow();
+    const td0 = tr.insertCell();
+    const nom = document.createElement("b"); nom.textContent = p.nom;
+    td0.append(nom, document.createTextNode(` (≥ ${p.go} Go, ` +
+      (p.appels_illimites ? "appels illimités" : `≥ ${fmt(Number(p.heures) || 0)} h`) + ")"));
+    cellOffre(tr, digital); cellOffre(tr, classique);
+    const te = tr.insertCell(); te.className = "num";
+    te.textContent = digital && classique
+      ? "×" + fmt(classique.r.prix / digital.r.prix, 1) : "—";
+    cellOffre(tr, marche, true);
+  });
+  const compar = lignes.filter(l => l.digital && l.classique)
+    .map(l => ({ ...l, ratio: l.classique.r.prix / l.digital.r.prix }));
+  if (compar.length) {
+    const pire = compar.reduce((a, b) => a.ratio > b.ratio ? a : b);
+    const chers = compar.filter(l => l.ratio > 1.05);
+    setTxt("e-prime", fmt(pire.ratio, 1));
     document.getElementById("s3-stats").append(
-      statCard(`×${fmt(ratio, 1)}`,
-        "le Go en boutique Orange vs sa marque digitale Yoxo — même opérateur, même mois"),
-      statCard(`${fmt(digital.v, 2)} DH/Go`,
-        "plancher digital (Yoxo, souscription en ligne uniquement)"),
-      statCard(`${fmt(bestClassique.v, 2)} DH/Go`,
-        `meilleur canal classique du marché (${bestClassique.op})`));
+      statCard(`×${fmt(pire.ratio, 1)}`,
+        `prime maximale du canal classique Orange sur Yoxo, à besoin égal (profil « ${pire.p.nom} »)`),
+      statCard(`${chers.length}/${compar.length}`,
+        "profils comparables où le canal classique Orange coûte plus cher que Yoxo"),
+      statCard(`${lignes.length - compar.length}/${lignes.length}`,
+        "profils que l'un des deux canaux ne couvre pas (volume ou appels insuffisants, ou non publiés)"));
+    setTxt("s3-lecture", chers.length === compar.length
+      ? `Sur les ${compar.length} profils comparables, le canal classique est toujours plus cher, ` +
+        `jusqu'à ${fmt(pire.ratio, 1)} fois le prix du digital.`
+      : `La prime n'est pas uniforme : sur ${compar.length} profils comparables, le canal classique ` +
+        `est plus cher sur ${chers.length}, jusqu'à ${fmt(pire.ratio, 1)} fois le prix du digital ` +
+        `(profil « ${pire.p.nom} ») ; sur les autres, les deux canaux se valent. ` +
+        `Elle se concentre là où le besoin dépasse l'entrée de gamme.`);
+  } else {
+    setTxt("s3-lecture", "Au dernier relevé, aucun profil n'est couvert à la fois par Yoxo et par " +
+      "la gamme classique Orange : la comparaison n'est pas possible ce mois-ci.");
   }
 
   /* S4 — % SMIG */
