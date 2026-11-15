@@ -154,6 +154,16 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   quand les 3 sont relevés sur site. Un mode « prix brut du Go » en
   historique long a été essayé puis retiré (15/11/2026) : avant 2026-08 il
   reflétait les trous des archives, pas les prix.
+- Tendance longue UIT (`data/uit.json`, en tête de la même carte,
+  `renderUit`) : paniers annuels « ITU ICT Price Baskets » pour le Maroc
+  (fichier ITU_ICTPriceBaskets_2008-2025.xlsx, feuille economies, lignes MAR
+  en USD ; opérateur à la plus grande part de marché). Mobile : panier data
+  de référence (1,5 Go 2018-20, 2 Go 2021-24, 5 Go 2025) et panier 10 Go
+  (expérimental), en DH/Go ; fibre : fixe d'entrée de gamme 2008-2025.
+  Conversion en DH = calcul du baromètre (taux moyen annuel Banque mondiale
+  PA.NUS.FCRF). À régénérer à chaque édition annuelle (décembre). Seule
+  source d'historique long : nos relevés mensuels complets ne commencent
+  qu'en 2026-08.
 - Repère ANRT (`data/anrt.json`, sous le même graphique) : indicateurs
   trimestriels officiels — ARPM, facture Internet moyenne, minutes (open data
   data.gov.ma, ODbL, XLSX mis à jour chaque trimestre) + usage data par

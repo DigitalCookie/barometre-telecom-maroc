@@ -387,6 +387,7 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   #gm-profil button { white-space: nowrap; flex: none; }
   .sous-titre { font-family: var(--head); font-size: 15px; font-weight: 700; margin: 22px 0 4px;
     padding-top: 16px; border-top: 1px solid var(--grid); }
+  .sous-titre.premier { border-top: 0; padding-top: 0; margin-top: 6px; }
   /* téléphone : un bloc par profil, les opérateurs empilés */
   @media (max-width: 640px) {
     .pan-table, .pan-table tbody, .pan-table tr, .pan-table th, .pan-table td { display: block; }
@@ -585,6 +586,14 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     <div class="filters" style="margin-bottom:8px">
       <div class="seg" id="gm-mode" role="group" aria-label="Méthode"></div>
     </div>
+    <div id="uit-bloc" hidden>
+      <h3 class="sous-titre premier" data-i18n="uit_titre">La tendance longue : les paniers de l'UIT</h3>
+      <p class="hint" id="uit-hint"></p>
+      <div class="legend" id="leg-uit"></div>
+      <div id="chart-uit"></div>
+      <ul class="pan-notes" id="uit-notes"></ul>
+    </div>
+    <h3 class="sous-titre" data-i18n="gm_detail">Le détail par opérateur : relevé mensuel du baromètre</h3>
     <p class="hint" id="gm-hint" data-i18n="gm_hint">Pour chaque profil d'usage, le forfait le moins cher qui couvre la data et les appels demandés ; son prix est rapporté aux Go du profil, puis on fait la moyenne des profils. Les heures d'appels incluses ne faussent plus la comparaison.</p>
     <div class="filters" style="margin-bottom:4px">
       <div class="seg" id="gm-profil" role="group" aria-label="Profil"></div>
@@ -853,6 +862,17 @@ const I18N = {
     anrt_note_diff: "Ce repère n'est pas comparable au graphique ci-dessus : il rapporte le revenu à tous les Go consommés, fibre comprise, alors que le baromètre rapporte un prix catalogue aux Go d'un besoin mobile.",
     anrt_note_usage: (t, go, fact, min) => `Dernier trimestre publié (${t}) : ` + [go ? `${go} Go consommés par client et par mois` : "", fact ? `facture Internet moyenne de ${fact} DH HT par mois` : "", min ? `${min} minutes d'appels par mois pour un abonné postpayé` : ""].filter(Boolean).join(", ") + ".",
     anrt_source: "Source : observatoires de l'ANRT",
+    gm_detail: "Le détail par opérateur : relevé mensuel du baromètre",
+    uit_titre: "La tendance longue : les paniers de l'UIT",
+    uit_hint_mobile: "Le prix du Go au Maroc d'après l'UIT, l'agence télécoms de l'ONU, qui relève chaque année le prix d'un panier de data chez l'opérateur dominant. Son panier de référence est passé de 1,5 Go à 2 Go en 2021, puis à 5 Go en 2025.",
+    uit_hint_fibre: "Le prix mensuel de l'accès Internet fixe le moins cher au Maroc, relevé chaque année par l'UIT, l'agence télécoms de l'ONU, chez l'opérateur dominant.",
+    uit_ref: "Panier data de référence", uit_ref_court: "référence",
+    uit_10: "Panier 10 Go (collecte expérimentale)", uit_10_court: "10 Go",
+    uit_fixe: "Internet fixe d'entrée de gamme", uit_fixe_court: "fixe",
+    uit_detail: (go, dh) => `${go} Go pour ${dh} DH`,
+    uit_note_conv: "L'UIT publie ses prix en dollars : la conversion en dirhams est un calcul du baromètre (taux de change moyen de l'année, Banque mondiale), juste à quelques dirhams près.",
+    uit_note_national: "Un seul chiffre national par an, sans détail par opérateur : le détail est dans le relevé mensuel ci-dessous.",
+    uit_source: "Source : UIT, ICT Price Baskets (édition de décembre 2025)",
     gm_titre: "Prix moyen à besoin égal",
     gm_mode_mobile: "Mobile — prix du Go", gm_mode_fibre: "Fibre — prix mensuel",
     gm_hint_fibre: "Pour chaque débit de référence, l'offre fibre la moins chère de chaque opérateur qui atteint au moins ce débit ; puis la moyenne des débits. Un opérateur sans petite offre est compté avec sa première offre suffisante.",
@@ -962,6 +982,17 @@ const I18N = {
     anrt_note_diff: "هذا المرجع غير قابل للمقارنة مع المبيان أعلاه : فهو يقسم العائد على كل الجيغات المستهلكة بما فيها الألياف، بينما يقسم الباروميتر سعر الكتالوج على جيغات حاجة في المحمول.",
     anrt_note_usage: (t, go, fact, min) => `آخر فصل منشور (${t}) : ` + [go ? `${go} جيغا مستهلكة لكل زبون شهرياً` : "", fact ? `متوسط فاتورة الإنترنت ${fact} درهم دون رسوم شهرياً` : "", min ? `${min} دقيقة مكالمات شهرياً للمشترك بالاشتراك` : ""].filter(Boolean).join("، ") + ".",
     anrt_source: "المصدر : مراصد الوكالة الوطنية لتقنين المواصلات",
+    gm_detail: "التفاصيل حسب المشغل : الرصد الشهري للباروميتر",
+    uit_titre: "الاتجاه على المدى الطويل : سلال الاتحاد الدولي للاتصالات",
+    uit_hint_mobile: "سعر الجيغا في المغرب حسب الاتحاد الدولي للاتصالات (وكالة الأمم المتحدة للاتصالات) الذي يرصد سنوياً سعر سلة بيانات لدى المشغل المهيمن. انتقلت سلته المرجعية من 1,5 جيغا إلى 2 جيغا سنة 2021 ثم إلى 5 جيغا سنة 2025.",
+    uit_hint_fibre: "السعر الشهري لأرخص ولوج للإنترنت الثابت في المغرب، يرصده سنوياً الاتحاد الدولي للاتصالات (وكالة الأمم المتحدة للاتصالات) لدى المشغل المهيمن.",
+    uit_ref: "سلة البيانات المرجعية", uit_ref_court: "المرجعية",
+    uit_10: "سلة 10 جيغا (رصد تجريبي)", uit_10_court: "10 جيغا",
+    uit_fixe: "الإنترنت الثابت الأساسي", uit_fixe_court: "الثابت",
+    uit_detail: (go, dh) => `${go} جيغا بـ${dh} درهم`,
+    uit_note_conv: "ينشر الاتحاد أسعاره بالدولار : التحويل إلى الدرهم من حساب الباروميتر (متوسط سعر الصرف السنوي، البنك الدولي)، بدقة بضعة دراهم.",
+    uit_note_national: "رقم وطني واحد في السنة دون تفصيل حسب المشغل : التفاصيل في الرصد الشهري أدناه.",
+    uit_source: "المصدر : الاتحاد الدولي للاتصالات، ICT Price Baskets (إصدار دجنبر 2025)",
     gm_titre: "متوسط السعر بنفس الحاجة",
     gm_mode_mobile: "المحمول — سعر الجيغا", gm_mode_fibre: "الألياف — السعر الشهري",
     gm_hint_fibre: "لكل صبيب مرجعي، أرخص عرض ألياف لدى كل مشغل يبلغ هذا الصبيب على الأقل ؛ ثم متوسط الصبيبات. المشغل الذي لا يتوفر على عرض صغير يُحتسب بأول عرض كافٍ لديه.",
@@ -1119,6 +1150,7 @@ let PANIERS = [
 ];
 let PANIERS_FIBRE = [{ id: "f20", mb: 20 }, { id: "f100", mb: 100 },
                       { id: "f200", mb: 200 }, { id: "f1000", mb: 1000 }];
+let UIT = null;          // uit.json : paniers de prix annuels de l'UIT pour le Maroc
 let ANRT = null;         // anrt.json : indicateurs officiels trimestriels du régulateur
 let COMMENTS = {};     // commentaires.json : commentaires saisis par l'admin (Pages CMS)
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
@@ -1184,6 +1216,10 @@ async function loadData() {
     const resp = await fetch("data/anrt.json", { cache: "no-store" });
     if (resp.ok) ANRT = await resp.json();
   } catch (e) { /* pas de repère ANRT */ }
+  try {
+    const resp = await fetch("data/uit.json", { cache: "no-store" });
+    if (resp.ok) UIT = await resp.json();
+  } catch (e) { /* pas de tendance UIT */ }
   init();
 }
 
@@ -1819,6 +1855,7 @@ function renderGoMoyen() {
   if (!visible) return;
   const fibre = gmMode() === "fibre";
   initGoMoyen();
+  renderUit(fibre);
   renderAnrt(!fibre);
   host.replaceChildren();
   const { ms, parMois } = fibre ? fibreMoyenSeries(state.gmProfil) : goMoyenSeries(state.gmProfil);
@@ -1860,6 +1897,41 @@ function renderGoMoyen() {
     pts: s_.pts.map(p => ({ i: p.i, v: p.v, detail: p.offre, creux: !!p.partiel })) })),
     { unite: T(fibre ? "gm_unite_fibre" : "gm_unite"), aria: T("gm_titre"), dec: fibre ? 0 : 2,
       pos: ms.map(m => (rang(m) - rang(ms[0])) / span), ecartMax: 3 / span });
+}
+
+/* Tendance longue : paniers annuels de l'UIT pour le Maroc (uit.json).
+   Mobile : prix du panier ÷ Go du panier ; fibre : prix mensuel du fixe
+   d'entrée de gamme. Un chiffre national par an, converti en dirhams. */
+function renderUit(fibre) {
+  const bloc = document.getElementById("uit-bloc");
+  const u = UIT || {};
+  const defs = fibre
+    ? [["fixe_entree", "uit_fixe", "--accent"]]
+    : [["data_reference", "uit_ref", "--accent"], ["data_10go", "uit_10", "--delta-up"]];
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const annees = [...new Set(defs.flatMap(([k]) => (u[k] || []).map(p => p.annee)))].sort();
+  bloc.hidden = annees.length < 2;
+  if (bloc.hidden) return;
+  const fmtDH = v => Math.round(v).toLocaleString("fr-FR");
+  const series = defs.map(([k, nom, coul]) => ({
+    nom: T(nom), court: T(nom + "_court"), color: css(coul),
+    pts: (u[k] || []).map(p => ({ i: annees.indexOf(p.annee),
+      v: fibre ? p.dh : p.dh / p.go,
+      detail: fibre ? "" : T("uit_detail")(String(p.go).replace(".", ","), fmtDH(p.dh)) })),
+  })).filter(s_ => s_.pts.length);
+  document.getElementById("uit-hint").textContent = T(fibre ? "uit_hint_fibre" : "uit_hint_mobile");
+  legendInto("leg-uit", series.map(s_ => [s_.nom, s_.color]), "line");
+  const host = document.getElementById("chart-uit");
+  host.replaceChildren();
+  traceLignes(host, annees.map(String), series,
+    { unite: T(fibre ? "gm_unite_fibre" : "gm_unite"), aria: T("uit_titre"), dec: fibre ? 0 : 1 });
+  const li = t => { const e = document.createElement("li"); e.textContent = t; return e; };
+  const src = document.createElement("li");
+  const a = document.createElement("a");
+  a.href = u.lien || "https://www.itu.int"; a.rel = "noopener";
+  a.textContent = T("uit_source"); src.append(a);
+  document.getElementById("uit-notes").replaceChildren(
+    li(T("uit_note_national")), li(T("uit_note_conv")), src);
 }
 
 /* Courbes génériques : `labels` en abscisse, séries {nom, color, dash?,

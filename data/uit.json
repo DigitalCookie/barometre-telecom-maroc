@@ -1,0 +1,240 @@
+{
+ "source": "UIT — ITU ICT Price Baskets, historical data series, Dec 2025 release",
+ "lien": "https://www.itu.int/en/ITU-D/Statistics/Pages/ICTprices/default.aspx",
+ "note": "Prix de détail relevés par l'UIT auprès de l'opérateur ayant la plus grande part de marché. L'UIT publie en dollars ; la colonne dh est un calcul du baromètre (taux de change officiel moyen de l'année, Banque mondiale, indicateur PA.NUS.FCRF) : valeurs indicatives à quelques dirhams près. Les paniers changent de définition au fil des ans (table BasketHistory du fichier UIT).",
+ "releve_le": "2026-11-15",
+ "taux_mad_usd": {
+  "2008": 7.75,
+  "2009": 8.057,
+  "2010": 8.417,
+  "2011": 8.09,
+  "2012": 8.628,
+  "2013": 8.406,
+  "2014": 8.406,
+  "2015": 9.764,
+  "2016": 9.807,
+  "2017": 9.692,
+  "2018": 9.386,
+  "2019": 9.617,
+  "2020": 9.497,
+  "2021": 8.988,
+  "2022": 10.161,
+  "2023": 10.131,
+  "2024": 9.942,
+  "2025": 9.35
+ },
+ "data_reference": [
+  {
+   "annee": 2018,
+   "usd": 5.33,
+   "dh": 50.0,
+   "go": 1.5
+  },
+  {
+   "annee": 2019,
+   "usd": 5.33,
+   "dh": 51.3,
+   "go": 1.5
+  },
+  {
+   "annee": 2020,
+   "usd": 2.08,
+   "dh": 19.8,
+   "go": 1.5
+  },
+  {
+   "annee": 2021,
+   "usd": 3.37,
+   "dh": 30.3,
+   "go": 2
+  },
+  {
+   "annee": 2022,
+   "usd": 2.52,
+   "dh": 25.6,
+   "go": 2
+  },
+  {
+   "annee": 2023,
+   "usd": 2.47,
+   "dh": 25.0,
+   "go": 2
+  },
+  {
+   "annee": 2024,
+   "usd": 2,
+   "dh": 19.9,
+   "go": 2
+  },
+  {
+   "annee": 2025,
+   "usd": 4.95,
+   "dh": 46.3,
+   "go": 5
+  }
+ ],
+ "data_10go": [
+  {
+   "annee": 2022,
+   "usd": 10.06,
+   "dh": 102.2,
+   "go": 10,
+   "experimental": true
+  },
+  {
+   "annee": 2023,
+   "usd": 9.9,
+   "dh": 100.3,
+   "go": 10,
+   "experimental": true
+  },
+  {
+   "annee": 2024,
+   "usd": 5.89,
+   "dh": 58.6,
+   "go": 10,
+   "experimental": true
+  },
+  {
+   "annee": 2025,
+   "usd": 4.95,
+   "dh": 46.3,
+   "go": 10,
+   "experimental": true
+  }
+ ],
+ "fixe_entree": [
+  {
+   "annee": 2008,
+   "usd": 19.23,
+   "dh": 149.0
+  },
+  {
+   "annee": 2009,
+   "usd": 16.84,
+   "dh": 135.7
+  },
+  {
+   "annee": 2010,
+   "usd": 11.74,
+   "dh": 98.8
+  },
+  {
+   "annee": 2011,
+   "usd": 11.74,
+   "dh": 95.0
+  },
+  {
+   "annee": 2012,
+   "usd": 11.47,
+   "dh": 99.0
+  },
+  {
+   "annee": 2013,
+   "usd": 11.78,
+   "dh": 99.0
+  },
+  {
+   "annee": 2014,
+   "usd": 11.78,
+   "dh": 99.0
+  },
+  {
+   "annee": 2015,
+   "usd": 10.14,
+   "dh": 99.0
+  },
+  {
+   "annee": 2016,
+   "usd": 10.09,
+   "dh": 99.0
+  },
+  {
+   "annee": 2017,
+   "usd": 10.21,
+   "dh": 99.0
+  },
+  {
+   "annee": 2018,
+   "usd": 10.55,
+   "dh": 99.0
+  },
+  {
+   "annee": 2019,
+   "usd": 10.55,
+   "dh": 101.5
+  },
+  {
+   "annee": 2020,
+   "usd": 10.3,
+   "dh": 97.8
+  },
+  {
+   "annee": 2021,
+   "usd": 11.14,
+   "dh": 100.1
+  },
+  {
+   "annee": 2022,
+   "usd": 9.96,
+   "dh": 101.2
+  },
+  {
+   "annee": 2023,
+   "usd": 9.8,
+   "dh": 99.3
+  },
+  {
+   "annee": 2024,
+   "usd": 9.89,
+   "dh": 98.3
+  },
+  {
+   "annee": 2025,
+   "usd": 9.99,
+   "dh": 93.4
+  }
+ ],
+ "voix_data": [
+  {
+   "annee": 2018,
+   "usd": 6.39,
+   "dh": 60.0
+  },
+  {
+   "annee": 2019,
+   "usd": 6.39,
+   "dh": 61.5
+  },
+  {
+   "annee": 2020,
+   "usd": 5.72,
+   "dh": 54.3
+  },
+  {
+   "annee": 2021,
+   "usd": 6.19,
+   "dh": 55.6
+  },
+  {
+   "annee": 2022,
+   "usd": 5.94,
+   "dh": 60.4
+  },
+  {
+   "annee": 2023,
+   "usd": 5.84,
+   "dh": 59.2
+  },
+  {
+   "annee": 2024,
+   "usd": 5.89,
+   "dh": 58.6
+  },
+  {
+   "annee": 2025,
+   "usd": 7.06,
+   "dh": 66.0
+  }
+ ]
+}
