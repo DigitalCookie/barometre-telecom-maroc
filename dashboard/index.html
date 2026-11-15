@@ -581,8 +581,11 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
 
   <section class="card" id="go-moyen" hidden>
     <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-5 4 3 8-8"/><path d="M15 7h5v5"/></svg></span>
-      <span data-i18n="gm_titre">Prix moyen du Go — à besoin égal</span></h2>
-    <p class="hint" data-i18n="gm_hint">Pour chaque profil d'usage, le forfait le moins cher qui couvre la data et les appels demandés ; son prix est rapporté aux Go du profil, puis on fait la moyenne des profils. Les heures d'appels incluses ne faussent plus la comparaison.</p>
+      <span data-i18n="gm_titre">Prix moyen du Go</span></h2>
+    <div class="filters" style="margin-bottom:8px">
+      <div class="seg" id="gm-mode" role="group" aria-label="Méthode"></div>
+    </div>
+    <p class="hint" id="gm-hint" data-i18n="gm_hint">Pour chaque profil d'usage, le forfait le moins cher qui couvre la data et les appels demandés ; son prix est rapporté aux Go du profil, puis on fait la moyenne des profils. Les heures d'appels incluses ne faussent plus la comparaison.</p>
     <div class="filters" style="margin-bottom:4px">
       <div class="seg" id="gm-profil" role="group" aria-label="Profil"></div>
     </div>
@@ -850,7 +853,13 @@ const I18N = {
     anrt_note_diff: "Ce repère n'est pas comparable au graphique ci-dessus : il rapporte le revenu à tous les Go consommés, fibre comprise, alors que le baromètre rapporte un prix catalogue aux Go d'un besoin mobile.",
     anrt_note_usage: (t, go, fact, min) => `Dernier trimestre publié (${t}) : ` + [go ? `${go} Go consommés par client et par mois` : "", fact ? `facture Internet moyenne de ${fact} DH HT par mois` : "", min ? `${min} minutes d'appels par mois pour un abonné postpayé` : ""].filter(Boolean).join(", ") + ".",
     anrt_source: "Source : observatoires de l'ANRT",
-    gm_titre: "Prix moyen du Go — à besoin égal",
+    gm_titre: "Prix moyen du Go",
+    gm_mode_egal: "À besoin égal", gm_mode_brut: "Prix brut (historique long)",
+    gm_hint_brut: "Moyenne, par opérateur, du prix de chaque forfait divisé par ses Go. Cet historique remonte plus loin, mais il ne corrige pas les heures d'appels incluses : un forfait riche en appels y paraît cher au Go.",
+    gm_national: "National",
+    gm_note_national: (t, parts) => `Moyenne nationale : moyenne des trois opérateurs pondérée par leur parc Internet mobile publié par l'ANRT (${t} : ${parts}). Elle n'est tracée que les mois où les trois opérateurs sont comparables.`,
+    gm_note_national_simple: "Moyenne nationale : moyenne simple des trois opérateurs, tracée seulement les mois où ils sont tous les trois comparables.",
+    gm_note_brut: "Points creux : relevé partiel de l'opérateur ce mois-là (mois reconstitué depuis les archives, ou pages Liberté et Illimité de Maroc Telecom, relevées seulement depuis novembre 2026). Leur niveau dépend des forfaits retrouvés, pas seulement des prix : ne pas les comparer entre eux.",
     gm_hint: "Pour chaque profil d'usage, le forfait le moins cher qui couvre la data et les appels demandés ; son prix est rapporté aux Go du profil, puis on fait la moyenne des profils. Les heures d'appels incluses ne faussent plus la comparaison.",
     gm_moyenne: "Moyenne des profils", gm_unite: "DH/Go",
     gm_note_debut: "Série calculable depuis août 2026 : avant cette date, les heures d'appels ne figurent pas dans les archives.",
@@ -951,7 +960,13 @@ const I18N = {
     anrt_note_diff: "هذا المرجع غير قابل للمقارنة مع المبيان أعلاه : فهو يقسم العائد على كل الجيغات المستهلكة بما فيها الألياف، بينما يقسم الباروميتر سعر الكتالوج على جيغات حاجة في المحمول.",
     anrt_note_usage: (t, go, fact, min) => `آخر فصل منشور (${t}) : ` + [go ? `${go} جيغا مستهلكة لكل زبون شهرياً` : "", fact ? `متوسط فاتورة الإنترنت ${fact} درهم دون رسوم شهرياً` : "", min ? `${min} دقيقة مكالمات شهرياً للمشترك بالاشتراك` : ""].filter(Boolean).join("، ") + ".",
     anrt_source: "المصدر : مراصد الوكالة الوطنية لتقنين المواصلات",
-    gm_titre: "متوسط سعر الجيغا — بنفس الحاجة",
+    gm_titre: "متوسط سعر الجيغا",
+    gm_mode_egal: "بنفس الحاجة", gm_mode_brut: "السعر الخام (سلسلة طويلة)",
+    gm_hint_brut: "متوسط سعر كل باقة مقسوماً على جيغاتها، لكل مشغل. هذه السلسلة أطول زمنياً لكنها لا تصحح ساعات المكالمات المضمّنة : الباقة الغنية بالمكالمات تبدو فيها غالية بالجيغا.",
+    gm_national: "وطنياً",
+    gm_note_national: (t, parts) => `المتوسط الوطني : متوسط المشغلين الثلاثة مرجَّحاً بحظيرة الإنترنت المحمول المنشورة من طرف الوكالة الوطنية لتقنين المواصلات (${t} : ${parts}). لا يُرسم إلا في الأشهر التي يكون فيها المشغلون الثلاثة قابلين للمقارنة.`,
+    gm_note_national_simple: "المتوسط الوطني : متوسط بسيط للمشغلين الثلاثة، يُرسم فقط في الأشهر التي يكونون فيها جميعاً قابلين للمقارنة.",
+    gm_note_brut: "النقاط المفرغة : رصد جزئي للمشغل في ذلك الشهر (أرشيف غير مكتمل، أو صفحتا Liberté و Illimité لاتصالات المغرب المرصودتان فقط منذ نونبر 2026). مستواها يتوقف على الباقات التي عُثر عليها لا على الأسعار وحدها : لا تُقارَن فيما بينها.",
     gm_hint: "لكل نمط استهلاك، أرخص باقة تغطي البيانات والمكالمات المطلوبة ؛ يُقسم سعرها على جيغات النمط ثم يُحسب متوسط الأنماط. هكذا لا تؤثر ساعات المكالمات المضمّنة في المقارنة.",
     gm_moyenne: "متوسط الأنماط", gm_unite: "درهم/جيغا",
     gm_note_debut: "السلسلة قابلة للحساب منذ غشت 2026 : قبل ذلك لا تتوفر ساعات المكالمات في الأرشيف.",
@@ -1102,7 +1117,7 @@ let ANRT = null;         // anrt.json : indicateurs officiels trimestriels du r�
 let COMMENTS = {};     // commentaires.json : commentaires saisis par l'admin (Pages CMS)
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
-              besoin: "Fibre", crit: 0, val: "mobile", gmProfil: "",
+              besoin: "Fibre", crit: 0, val: "mobile", gmProfil: "", gmMode: "egal",
               valCrit: 0, valBudget: 0, valFrais: false };
 
 /* ---------- état ↔ URL (vues partageables) ---------- */
@@ -1709,7 +1724,66 @@ function goMoyenSeries(profilId) {
   return { ms: keep.map(i => ms[i]), parMois: keep.map(i => parMois[i]) };
 }
 
+/* Prix brut du Go : moyenne, par opérateur et par mois, de prix ÷ Go sur les
+   forfaits à volume connu (même mesure que « Le vrai prix du Go »). Pas de
+   correction des appels ni des trous de collecte : c'est l'historique long. */
+function goBrutSeries() {
+  const ms = months(), ref = ms[ms.length - 1];
+  const pagesOf = (m, op) => new Set(rowsOfMonth(m)
+    .filter(r => r.categorie === "Forfait mobile" && r.prix && r.operateur === op).map(pageSource));
+  const parMois = ms.map(m => {
+    const out = {};
+    OPS.forEach(o => {
+      const lignes = rowsOfMonth(m)
+        .filter(r => r.categorie === "Forfait mobile" && r.prix && r.operateur === o.name);
+      const vals = lignes.map(r => { const g = parseDebit(r.debit_ou_data).go; return g ? r.prix / g : null; })
+        .filter(v => v != null);
+      if (!vals.length) return;
+      /* couverture partielle : mois reconstitué depuis les archives, ou
+         page de forfaits manquante par rapport au dernier relevé */
+      const vues = pagesOf(m, o.name);
+      out[o.name] = { v: vals.reduce((a, b) => a + b, 0) / vals.length, offre: "",
+                      partiel: lignes.some(r => r.fiabilite !== "officiel_site") ||
+                               [...pagesOf(ref, o.name)].some(pg => !vues.has(pg)) };
+    });
+    return out;
+  });
+  const keep = ms.map((m, i) => i).filter(i => Object.keys(parMois[i]).length);
+  return { ms: keep.map(i => ms[i]), parMois: keep.map(i => parMois[i]) };
+}
+
+/* Poids des opérateurs pour la moyenne nationale : parc Internet mobile du
+   dernier trimestre ANRT clos avant la fin du mois (à défaut, le premier
+   disponible). null sans données ANRT -> moyenne simple. */
+function poidsNationaux(m) {
+  const tr = ((ANRT && ANRT.trimestres) || []).filter(q => q.parc_internet_mobile_milliers);
+  if (!tr.length) return null;
+  const fin = q => { const [, t, y] = q.t.match(/T(\d)-(\d{4})/); return y + "-" + String(t * 3).padStart(2, "0"); };
+  const q = [...tr].reverse().find(x => fin(x) <= m) || tr[0];
+  const p = q.parc_internet_mobile_milliers;
+  const tot = OPS.reduce((s_, o) => s_ + (p[o.name] || 0), 0);
+  return tot ? { t: q.t, w: Object.fromEntries(OPS.map(o => [o.name, (p[o.name] || 0) / tot])) } : null;
+}
+function moyenneNationale(pm, m) {
+  if (OPS.some(o => !pm[o.name] || pm[o.name].partiel)) return null;
+  const pn = poidsNationaux(m);
+  return pn ? OPS.reduce((s_, o) => s_ + pm[o.name].v * pn.w[o.name], 0)
+            : OPS.reduce((s_, o) => s_ + pm[o.name].v, 0) / OPS.length;
+}
+
 function initGoMoyen() {
+  const segM = document.getElementById("gm-mode");
+  segM.replaceChildren(...[["egal", "gm_mode_egal"], ["brut", "gm_mode_brut"]].map(([id, k]) => {
+    const b = document.createElement("button");
+    b.textContent = T(k);
+    b.setAttribute("aria-pressed", String(id === state.gmMode));
+    b.onclick = () => { state.gmMode = id; renderGoMoyen(); };
+    return b;
+  }));
+  document.getElementById("gm-profil").parentElement.style.display =
+    state.gmMode === "brut" ? "none" : "";
+  document.getElementById("gm-hint").textContent =
+    T(state.gmMode === "brut" ? "gm_hint_brut" : "gm_hint");
   const seg = document.getElementById("gm-profil");
   const opts = [["", null], ...PANIERS.map(p => [p.id, p])];
   seg.replaceChildren(...opts.map(([id, p]) => {
@@ -1737,37 +1811,60 @@ function renderGoMoyen() {
   initGoMoyen();
   renderAnrt();
   host.replaceChildren();
-  const { ms, parMois } = goMoyenSeries(state.gmProfil);
+  const brut = state.gmMode === "brut";
+  const { ms, parMois } = brut ? goBrutSeries() : goMoyenSeries(state.gmProfil);
   const ops = OPS.filter(o => state.ops.has(o.name));
   const series = ops.map(o => ({
     op: o.name, color: opColor(o.name),
     pts: parMois.map((pm, i) => pm[o.name] ? { i, ...pm[o.name] } : null).filter(Boolean),
   })).filter(s_ => s_.pts.length);
+  /* moyenne nationale : indépendante des pastilles opérateurs du filtre */
+  const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
+  const nat = { op: T("gm_national"), color: ink, dash: true, court: T("gm_national"),
+    pts: parMois.map((pm, i) => {
+      const v = moyenneNationale(pm, ms[i]);
+      return v == null ? null : { i, v, offre: "" };
+    }).filter(Boolean) };
+  if (series.length && nat.pts.length) series.push(nat);
   legendInto("leg-gm", series.map(s_ => [s_.op, s_.color]), "line");
   const notes = document.getElementById("gm-notes");
   const li = t => { const e = document.createElement("li"); e.textContent = t; return e; };
-  notes.replaceChildren(li(T("gm_note_debut")), li(T("gm_note_complet")));
+  const pn = poidsNationaux(ms[ms.length - 1] || "");
+  const pct = v => Math.round(v * 100) + " %";
+  notes.replaceChildren(
+    ...(brut ? [li(T("gm_note_brut"))] : [li(T("gm_note_debut")), li(T("gm_note_complet"))]),
+    li(pn ? T("gm_note_national")(pn.t, OPS.map(o =>
+        o.name.replace("Maroc Telecom", "IAM") + " " + pct(pn.w[o.name])).join(", "))
+          : T("gm_note_national_simple")));
   if (!series.length) {
     const e = document.createElement("div"); e.className = "empty";
     e.textContent = T("gm_vide"); host.append(e);
     return;
   }
+  /* mode brut : abscisse proportionnelle au temps (les trous d'archives se
+     voient) et pas de trait entre deux relevés distants de plus de 3 mois */
+  const rang = m => +m.slice(0, 4) * 12 + +m.slice(5, 7);
+  const span = Math.max(1, rang(ms[ms.length - 1]) - rang(ms[0]));
+  const pos = ms.map(m => (rang(m) - rang(ms[0])) / span);
+  const ecart = 3 / span;
   traceLignes(host, ms.map(monthLabel), series.map(s_ => ({
     nom: s_.op.replace("Maroc Telecom", "IAM"), color: s_.color,
-    pts: s_.pts.map(p => ({ i: p.i, v: p.v, detail: p.offre })) })),
-    { unite: T("gm_unite"), aria: T("gm_titre") });
+    dash: s_.dash, court: s_.court,
+    pts: s_.pts.map(p => ({ i: p.i, v: p.v, detail: p.offre, creux: !!p.partiel })) })),
+    { unite: T("gm_unite"), aria: T("gm_titre"), pos: brut ? pos : null, ecartMax: brut ? ecart : null });
 }
 
 /* Courbes génériques : `labels` en abscisse, séries {nom, color, dash?,
    pts: [{i, v, detail?}]} ; étiquettes de fin anti-collision + survol. */
-function traceLignes(host, labels, series, { unite, aria }) {
+function traceLignes(host, labels, series, { unite, aria, pos = null, ecartMax = null }) {
   const fmtV = v => v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const W = Math.max(320, host.clientWidth || 900), H = 250;
   const M = { t: 16, r: 104, b: 28, l: 46 };
   const iw = W - M.l - M.r, ih = H - M.t - M.b;
   const n = labels.length;
   const maxV = niceMax(Math.max(...series.flatMap(s_ => s_.pts.map(p => p.v))));
-  const x = i => n === 1 ? M.l + iw / 2 : M.l + (i / (n - 1)) * iw;
+  const frac = i => pos ? pos[i] : (n === 1 ? 0.5 : i / (n - 1));
+  const x = i => n === 1 ? M.l + iw / 2 : M.l + frac(i) * iw;
   const y = v => M.t + ih - (v / maxV) * ih;
   const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
                           "aria-label": aria }, host);
@@ -1777,20 +1874,30 @@ function traceLignes(host, labels, series, { unite, aria }) {
     el("text", { x: M.l - 7, y: y(v) + 4, "text-anchor": "end" }, svg)
       .textContent = v.toLocaleString("fr-FR");
   }
-  const step = Math.max(1, Math.ceil(n / Math.max(3, Math.floor(iw / 70))));
-  labels.forEach((l, i) => {
-    if (i % step && i !== n - 1) return;
-    el("text", { x: x(i), y: H - 8, "text-anchor": "middle" }, svg).textContent = l;
+  /* étiquettes d'abscisse : la dernière d'abord, puis celles qui ne la
+     chevauchent pas ni ne se chevauchent entre elles (≥ 74 px d'écart) */
+  const poses = [];
+  [n - 1, ...labels.map((l, i) => i).slice(0, -1)].forEach(i => {
+    if (poses.some(px => Math.abs(px - x(i)) < 74)) return;
+    poses.push(x(i));
+    el("text", { x: x(i), y: H - 8, "text-anchor": "middle" }, svg).textContent = labels[i];
   });
   el("line", { x1: M.l, x2: W - M.r, y1: y(0), y2: y(0), class: "axis" }, svg);
   series.forEach(s_ => {
+    /* tronçons : pas de trait à travers un trou de relevé (ecartMax) */
+    let d = "";
+    s_.pts.forEach((p, k) => {
+      const prev = s_.pts[k - 1];
+      const lie = prev && (ecartMax == null || frac(p.i) - frac(prev.i) <= ecartMax + 1e-9);
+      d += (lie ? " L" : " M") + `${x(p.i)},${y(p.v)}`;
+    });
     if (s_.pts.length > 1)
-      el("path", { d: "M" + s_.pts.map(p => `${x(p.i)},${y(p.v)}`).join(" L"),
-                   fill: "none", stroke: s_.color, "stroke-width": 2.5,
+      el("path", { d: d.trim(), fill: "none", stroke: s_.color, "stroke-width": 2.5,
                    "stroke-dasharray": s_.dash ? "5 5" : "none",
                    "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
     s_.pts.forEach(p => el("circle", { cx: x(p.i), cy: y(p.v), r: s_.dash ? 3 : 4.5,
-                                       fill: s_.color, stroke: surface(), "stroke-width": 2 }, svg));
+      fill: p.creux ? surface() : s_.color,
+      stroke: p.creux ? s_.color : surface(), "stroke-width": 2 }, svg));
   });
   const ends = series.map(s_ => {
     const last = s_.pts[s_.pts.length - 1];

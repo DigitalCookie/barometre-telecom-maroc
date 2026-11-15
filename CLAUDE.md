@@ -143,6 +143,12 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   Un opérateur n'a de point que si toutes ses pages de forfaits (référence =
   dernier relevé) sont présentes ce mois-là et qu'il couvre le(s) profil(s).
   Série possible depuis 2026-08 seulement (heures absentes des archives).
+  Bascule « Prix brut (historique long) » : moyenne de prix ÷ Go par
+  opérateur, abscisse proportionnelle au temps, points creux = relevé partiel
+  (archives ou pages manquantes), pas de trait à travers un trou > 3 mois.
+  Ligne « National » (pointillés) : moyenne des 3 opérateurs pondérée par
+  leur parc Internet mobile ANRT (`anrt.json`, dernier trimestre clos),
+  tracée seulement quand les 3 sont comparables (hors points partiels).
 - Repère ANRT (`data/anrt.json`, sous le même graphique) : indicateurs
   trimestriels officiels — ARPM, facture Internet moyenne, minutes (open data
   data.gov.ma, ODbL, XLSX mis à jour chaque trimestre) + usage data par
