@@ -74,3 +74,22 @@ content:
       - name: texte_ar
         label: Texte (arabe, facultatif)
         type: text
+
+  - name: paniers
+    label: Paniers d'usage (méthode de comparaison des forfaits)
+    type: file
+    path: data/paniers.json
+    format: json
+    fields:
+      - name: paniers
+        label: Profils d'usage
+        description: "Pour chaque profil, le site retient le forfait le moins cher de chaque opérateur qui couvre la data ET les appels demandés."
+        type: object
+        list: true
+        fields:
+          - { name: id, label: "Identifiant technique (sans espace)", type: string, required: true }
+          - { name: nom, label: "Nom du profil (français)", type: string, required: true }
+          - { name: nom_ar, label: "Nom du profil (arabe, facultatif)", type: string }
+          - { name: go, label: "Data minimale (Go)", type: number, required: true }
+          - { name: heures, label: "Heures d'appels minimales", description: "Ignoré si « Appels illimités » est coché.", type: number }
+          - { name: appels_illimites, label: "Appels illimités exigés", type: boolean, default: false }

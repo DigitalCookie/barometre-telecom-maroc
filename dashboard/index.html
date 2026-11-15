@@ -355,6 +355,42 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     .val-num { flex-basis: 76px; font-size: 12.5px; }
   }
 
+  /* ---- paniers d'usage (comparaison à besoin égal) ------------------ */
+  .pan-wrap { overflow-x: auto; margin: 0 -4px; }
+  .pan-table { width: 100%; border-collapse: separate; border-spacing: 4px; table-layout: fixed; }
+  .pan-table th { font-size: 12px; font-weight: 700; color: var(--muted); text-align: start;
+    padding: 4px 8px; }
+  .pan-table thead th:not(:first-child) { text-align: center; }
+  .pan-table tbody th { vertical-align: top; padding: 10px 8px; width: 27%; }
+  .pan-nom { display: block; font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .pan-besoin { display: block; font-size: 11.5px; font-weight: 500; color: var(--muted);
+    margin-top: 2px; }
+  .pan-table td { vertical-align: top; padding: 9px 10px; border-radius: 10px;
+    background: var(--page); border: 1px solid var(--grid); }
+  .pan-table td.best { border-color: var(--delta-up);
+    background: color-mix(in srgb, var(--delta-up) 7%, transparent); }
+  .pan-prix { font-family: var(--head); font-size: 19px; font-weight: 800;
+    font-variant-numeric: tabular-nums; }
+  .pan-prix small { font-family: var(--body); font-size: 11px; font-weight: 600; color: var(--muted); }
+  .pan-ecart { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-inline-start: 6px;
+    font-variant-numeric: tabular-nums; }
+  td.best .pan-ecart { color: var(--delta-up); }
+  .pan-offre { font-size: 12px; color: var(--ink-2); line-height: 1.35; margin-top: 3px;
+    unicode-bidi: plaintext; overflow-wrap: anywhere; }
+  .pan-spec { font-size: 11.5px; color: var(--muted); margin-top: 1px; unicode-bidi: plaintext; }
+  .pan-op { display: none; margin-bottom: 5px; }
+  .pan-table td.vide { color: var(--muted); font-size: 12px; background: none; border-style: dashed; }
+  .pan-notes { font-size: 11.5px; color: var(--muted); margin: 10px 0 0; padding: 0; list-style: none; }
+  .pan-notes li { margin-top: 3px; }
+  /* téléphone : un bloc par profil, les opérateurs empilés */
+  @media (max-width: 640px) {
+    .pan-table, .pan-table tbody, .pan-table tr, .pan-table th, .pan-table td { display: block; }
+    .pan-table thead { display: none; }
+    .pan-table tbody th { width: auto; padding: 14px 2px 4px; }
+    .pan-table td { margin-top: 5px; }
+    .pan-op { display: block; }
+  }
+
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
   .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--ink-2); margin: 6px 0 2px; }
@@ -598,10 +634,18 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     </section>
   </div>
 
+  <section class="card" id="paniers" hidden>
+    <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.3 10.2a2 2 0 0 1-2 1.8H8.3a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+      <span data-i18n="pan_titre">Paniers d'usage — comparer à besoin égal</span></h2>
+    <p class="hint" data-i18n="pan_hint">Pour chaque profil de consommation, le forfait le moins cher de chaque opérateur qui couvre à la fois la data et les heures d'appels. La comparaison n'est plus faussée par les appels inclus.</p>
+    <div class="pan-wrap"><table class="pan-table" id="pan-table"></table></div>
+    <ul class="pan-notes" id="pan-notes"></ul>
+  </section>
+
   <section class="card" id="valeur">
     <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.5 5a3 3 0 0 0 5 0L5 7zM19 7l-2.5 5a3 3 0 0 0 5 0L19 7z"/></svg></span>
       <span data-i18n="val_titre">Le vrai prix du Go</span></h2>
-    <p class="hint" data-i18n="val_hint">Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord.</p>
+    <p class="hint" data-i18n="val_hint">Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord. Ce ratio ignore les appels inclus dans les forfaits : pour comparer à besoin égal, voir les paniers d'usage ci-dessus.</p>
     <div class="filters" style="margin-bottom:4px">
       <div class="seg" id="val-dim" role="group" aria-label="Dimension"></div>
       <label class="flt"><span id="val-crit-label">Volume minimum</span>
@@ -663,6 +707,8 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
       <div>
         <h3 data-i18n="metho_s1">D'où viennent les prix ?</h3>
         <p data-i18n="metho_p1">Chaque relevé est collecté automatiquement le 2 du mois sur les pages publiques des sites officiels des opérateurs : iam.ma (Maroc Telecom), orange.ma, boutique.orange.ma et yoxo.ma (Orange), inwi.ma (inwi). Aucune donnée de presse ni de comparateur tiers n'est utilisée comme source de prix.</p>
+        <h3 data-i18n="metho_s5">Paniers d'usage</h3>
+        <p data-i18n="metho_p5">Comparer des forfaits sur le seul prix du Go est biaisé : certains incluent beaucoup d'heures d'appels, d'autres presque aucune. Comme le font les régulateurs (méthode des paniers de consommation), le baromètre définit des profils d'usage (data + appels) et retient, pour chaque opérateur, le forfait le moins cher qui couvre tout le profil. Les appels illimités limités au réseau de l'opérateur ne sont pas comptés ; les offres dont le volume ou les appels ne sont pas publiés sont exclues.</p>
         <h3 data-i18n="metho_s2">Ce que le baromètre ne voit pas</h3>
         <p data-i18n="metho_p2">Les prix relevés sont les prix catalogue TTC affichés en ligne. Les promotions temporaires, offres de fidélisation ou remises négociées en boutique ne sont pas captées.</p>
       </div>
@@ -773,8 +819,19 @@ const I18N = {
     footer_src: "Source : sites officiels des opérateurs — relevé automatisé le 2 de chaque mois, prix catalogue TTC.",
     dh_go: "DH/Go", dh_mbps: "DH/Mbps",
     dh: "DH", go_unit: "Go", mega: "Mb/s", giga: "Gb/s",
+    pan_titre: "Paniers d'usage — comparer à besoin égal",
+    pan_hint: "Pour chaque profil de consommation, le forfait le moins cher de chaque opérateur qui couvre à la fois la data et les heures d'appels. La comparaison n'est plus faussée par les appels inclus.",
+    pan_profil: "Profil d'usage", pan_moins_cher: "le moins cher",
+    pan_besoin_h: h => `≥ ${h} h d'appels`, pan_besoin_illim: "appels illimités",
+    pan_aucune: "Aucun forfait ne couvre ce profil", pan_non_releve: "Non relevé ce mois",
+    pan_par_mois: "/mois",
+    pan_exclues: n => `${n} forfait${n > 1 ? "s" : ""} hors comparaison ce mois : volume de data ou heures d'appels non publiés.`,
+    pan_note_archive: "Mois reconstruit depuis les archives : la couverture est partielle, des forfaits peuvent manquer à la comparaison.",
+    pan_note_onnet: "Les appels illimités vers le seul réseau de l'opérateur ne sont pas comptés comme des heures d'appels.",
+    metho_s5: "Paniers d'usage",
+    metho_p5: "Comparer des forfaits sur le seul prix du Go est biaisé : certains incluent beaucoup d'heures d'appels, d'autres presque aucune. Comme le font les régulateurs (méthode des paniers de consommation), le baromètre définit des profils d'usage (data + appels) et retient, pour chaque opérateur, le forfait le moins cher qui couvre tout le profil. Les appels illimités limités au réseau de l'opérateur ne sont pas comptés ; les offres dont le volume ou les appels ne sont pas publiés sont exclues.",
     val_titre: "Le vrai prix du Go",
-    val_hint: "Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord.",
+    val_hint: "Rapport qualité-prix : prix ramené au Go (forfaits) ou au Mbps (fibre) — les meilleures affaires d'abord. Ce ratio ignore les appels inclus dans les forfaits : pour comparer à besoin égal, voir les paniers d'usage ci-dessus.",
     val_mobile: "Forfaits — DH/Go", val_fibre: "Fibre — DH/Mbps",
     val_box: "Box — DH/Mbps",
     val_frais: "Inclure les frais (amortis sur 12 mois)",
@@ -850,8 +907,19 @@ const I18N = {
     footer_src: "المصدر : المواقع الرسمية للمشغلين — رصد آلي في اليوم الثاني من كل شهر، أسعار الكتالوج شاملة للضرائب.",
     dh_go: "درهم/جيغا", dh_mbps: "درهم/ميغا",
     dh: "درهم", go_unit: "جيغا", mega: "ميغا", giga: "جيغا",
+    pan_titre: "سلال الاستهلاك — المقارنة بنفس الحاجة",
+    pan_hint: "لكل نمط استهلاك، أرخص باقة لدى كل مشغل تغطي حجم البيانات وساعات المكالمات معاً. هكذا لا تتأثر المقارنة بالمكالمات المضمّنة.",
+    pan_profil: "نمط الاستهلاك", pan_moins_cher: "الأرخص",
+    pan_besoin_h: h => `≥ ${h} س من المكالمات`, pan_besoin_illim: "مكالمات غير محدودة",
+    pan_aucune: "لا توجد باقة تغطي هذا النمط", pan_non_releve: "لم يُرصد هذا الشهر",
+    pan_par_mois: "/شهر",
+    pan_exclues: n => `${n} باقة خارج المقارنة هذا الشهر : حجم البيانات أو ساعات المكالمات غير منشور.`,
+    pan_note_archive: "شهر أُعيد بناؤه من الأرشيف : التغطية جزئية وقد تغيب بعض الباقات عن المقارنة.",
+    pan_note_onnet: "المكالمات غير المحدودة نحو شبكة المشغل فقط لا تُحتسب ضمن ساعات المكالمات.",
+    metho_s5: "سلال الاستهلاك",
+    metho_p5: "مقارنة الباقات بسعر الجيغا وحده مضلّلة : بعضها يتضمن ساعات مكالمات كثيرة وبعضها لا يكاد يتضمن شيئاً. على غرار هيئات التقنين (منهجية سلال الاستهلاك)، يحدد الباروميتر أنماط استهلاك (بيانات + مكالمات) ويحتفظ لكل مشغل بأرخص باقة تغطي النمط كاملاً. المكالمات غير المحدودة نحو شبكة المشغل فقط لا تُحتسب، والعروض التي لا يُنشر حجمها أو مكالماتها تُستبعد.",
     val_titre: "السعر الحقيقي للجيغا",
-    val_hint: "القيمة مقابل الثمن : السعر مقسوماً على الجيغا (الباقات) أو الميغا (الفيبر) — أفضل الصفقات أولاً.",
+    val_hint: "القيمة مقابل الثمن : السعر مقسوماً على الجيغا (الباقات) أو الميغا (الفيبر) — أفضل الصفقات أولاً. هذه النسبة لا تأخذ المكالمات المضمّنة في الاعتبار : للمقارنة بنفس الحاجة، انظر سلال الاستهلاك أعلاه.",
     val_mobile: "الباقات — درهم/جيغا", val_fibre: "الفيبر — درهم/ميغا",
     val_box: "بوكس — درهم/ميغا",
     val_frais: "احتساب رسوم التفعيل (موزعة على 12 شهراً)",
@@ -972,6 +1040,14 @@ const fmtUnit = u => u
 let ALL = [];          // toutes les lignes du CSV
 let RESUMES = {};      // resumes.json : paragraphe éditorial par mois
 let ANNOTS = [];       // annotations.json : événements marqués sur l'évolution
+/* paniers d'usage par défaut — remplacés par data/paniers.json (éditable via Pages CMS) */
+let PANIERS = [
+  { id: "essentiel", nom: "Essentiel", nom_ar: "الأساسي", go: 5, heures: 1 },
+  { id: "standard", nom: "Standard", nom_ar: "المتوسط", go: 20, heures: 2 },
+  { id: "gros_data", nom: "Gros consommateur de data", nom_ar: "استهلاك كبير للبيانات", go: 50, heures: 5 },
+  { id: "voix", nom: "Gros appelant", nom_ar: "كثير المكالمات", go: 10, heures: 10 },
+  { id: "illimite", nom: "Appels illimités", nom_ar: "مكالمات غير محدودة", go: 60, heures: 0, appels_illimites: true },
+];
 let COMMENTS = {};     // commentaires.json : commentaires saisis par l'admin (Pages CMS)
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
@@ -1023,6 +1099,12 @@ async function loadData() {
     const resp = await fetch("data/commentaires.json", { cache: "no-store" });
     if (resp.ok) COMMENTS = (await resp.json()) || {};
   } catch (e) { /* pas de commentaires */ }
+  try {
+    const resp = await fetch("data/paniers.json", { cache: "no-store" });
+    const p = resp.ok ? (await resp.json()).paniers : null;
+    if (Array.isArray(p) && p.length)
+      PANIERS = p.filter(x => x && x.nom && Number(x.go) >= 0);
+  } catch (e) { /* paniers par défaut */ }
   init();
 }
 
@@ -1533,6 +1615,102 @@ function renderMobile() {
     } else hideTip();
   });
   overlay.addEventListener("pointerleave", hideTip);
+}
+
+/* ---------- paniers d'usage : le moins cher à besoin égal ---------- */
+
+/* data d'un forfait en Go : nombre, Infinity (illimité) ou null (non publié) */
+function goOf(r) {
+  if (/illimit/i.test(r.debit_ou_data || "")) return Infinity;
+  return parseDebit(r.debit_ou_data).go ?? null;
+}
+/* heures d'appels tous réseaux : nombre, Infinity (illimité national) ou null.
+   « 4h + illimité vers inwi » = 4 h : l'illimité vers le seul réseau de
+   l'opérateur n'est pas compté. Champ vide : illimité si le nom de l'offre
+   le dit (« Forfait Appels illimités + 35Go »), sinon inconnu. */
+function heuresOf(r) {
+  const t = (r.appels_inclus || "").trim();
+  if (!t) return /appels\s+illimit/i.test(r.offre || "") ? Infinity : null;
+  const base = t.split("+")[0];
+  if (/illimit/i.test(base)) return Infinity;
+  const m = base.match(/(\d+(?:[.,]\d+)?)\s*(h|min)/i);
+  if (!m) return null;
+  const v = parseFloat(m[1].replace(",", "."));
+  return m[2].toLowerCase() === "min" ? v / 60 : v;
+}
+
+function renderPaniers() {
+  const card = document.getElementById("paniers");
+  const mob = rowsOfMonth(state.month)
+    .filter(r => r.categorie === "Forfait mobile" && r.prix);
+  const ops = OPS.filter(o => state.ops.has(o.name));
+  const visible = mob.length && ops.length && PANIERS.length &&
+    (state.cat === "Toutes" || state.cat === "Forfait mobile");
+  card.hidden = !visible;
+  if (!visible) return;
+
+  const offres = mob.map(r => ({ r, go: goOf(r), h: heuresOf(r) }));
+  const connues = offres.filter(x => x.go != null && x.h != null);
+  const fmtH = h => Number(h).toLocaleString("fr-FR");
+  const table = document.getElementById("pan-table");
+  const mk = (tag, cls, txt) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt != null) e.textContent = txt;
+    return e;
+  };
+
+  const thead = mk("thead"), trh = mk("tr");
+  trh.append(mk("th", "", T("pan_profil")));
+  ops.forEach(o => { const th = mk("th"); th.append(brandBadge(o.name, true)); trh.append(th); });
+  thead.append(trh);
+
+  const tbody = mk("tbody");
+  PANIERS.forEach(p => {
+    const besoinH = p.appels_illimites ? Infinity : (Number(p.heures) || 0);
+    const tr = mk("tr");
+    const th = mk("th"); th.scope = "row";
+    th.append(mk("span", "pan-nom", LANG === "ar" && p.nom_ar ? p.nom_ar : p.nom),
+              mk("span", "pan-besoin", "≥ " + p.go + " " + T("go_unit") + " · " +
+                (p.appels_illimites ? T("pan_besoin_illim") : T("pan_besoin_h")(fmtH(besoinH)))));
+    tr.append(th);
+    const best = ops.map(o => connues
+      .filter(x => x.r.operateur === o.name && x.go >= p.go && x.h >= besoinH)
+      .sort((a, b) => a.r.prix - b.r.prix)[0] || null);
+    const min = Math.min(...best.filter(Boolean).map(x => x.r.prix));
+    ops.forEach((o, i) => {
+      const x = best[i];
+      if (!x) {
+        const releve = mob.some(r => r.operateur === o.name);
+        const vide = mk("td", "vide");
+        const opv = mk("div", "pan-op"); opv.append(brandBadge(o.name, true));
+        vide.append(opv, document.createTextNode(T(releve ? "pan_aucune" : "pan_non_releve")));
+        tr.append(vide);
+        return;
+      }
+      const td = mk("td", x.r.prix === min ? "best" : "");
+      const op = mk("div", "pan-op"); op.append(brandBadge(o.name, true));
+      td.append(op);
+      const prix = mk("div", "pan-prix", x.r.prix.toLocaleString("fr-FR") + " ");
+      prix.append(mk("small", "", T("dh") + T("pan_par_mois")));
+      prix.append(mk("span", "pan-ecart", x.r.prix === min ? T("pan_moins_cher")
+        : T("plus_dh")((x.r.prix - min).toLocaleString("fr-FR"))));
+      td.append(prix, mk("div", "pan-offre", x.r.offre),
+                mk("div", "pan-spec", [x.r.debit_ou_data, x.r.appels_inclus]
+                  .filter(Boolean).join(" · ")));
+      tr.append(td);
+    });
+    tbody.append(tr);
+  });
+  table.replaceChildren(thead, tbody);
+
+  const notes = document.getElementById("pan-notes");
+  notes.replaceChildren();
+  const exclues = offres.length - connues.length;
+  if (exclues) notes.append(mk("li", "", T("pan_exclues")(exclues)));
+  if (mob.some(r => r.fiabilite === "officiel_archive"))
+    notes.append(mk("li", "", T("pan_note_archive")));
+  notes.append(mk("li", "", T("pan_note_onnet")));
 }
 
 /* ---------- le vrai prix du Go : barres horizontales ---------- */
@@ -2141,6 +2319,7 @@ function render() {
   renderFinder();
   renderFibre();
   renderMobile();
+  renderPaniers();
   renderValeur();
   renderEvo();
   renderDiff();

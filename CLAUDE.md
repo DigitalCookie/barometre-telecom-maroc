@@ -112,6 +112,14 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   mois d'archives partiels sont exclus du calcul.
 - Annotations : `data/annotations.json` `[{date, texte, texte_ar}]` —
   pointillés sur le graphique d'évolution + liste dessous.
+- Paniers d'usage (dashboard, JS `renderPaniers`) : comparaison des forfaits
+  mobiles à besoin égal, pour neutraliser le biais des heures d'appels
+  incluses (le DH/Go les ignore). Profils dans `data/paniers.json`
+  `[{id, nom, nom_ar, go, heures, appels_illimites}]` (éditables via Pages
+  CMS) ; par profil et par opérateur, le forfait le moins cher qui couvre
+  data ET appels. Règles : `heuresOf` ne compte pas « illimité vers inwi »
+  (on-net), lit « Appels illimités » dans le nom si le champ est vide ;
+  offres sans Go ou sans heures publiés exclues (note sous le tableau).
 - Commentaires de l'admin : `data/commentaires.json` `{signature, mois:
   [{mois, texte, texte_ar, remplacer}], analyse: {essentiel, s1…s5, methodo}}`
   — édité par formulaire via Pages CMS (`.pages.yml`, app.pagescms.org),

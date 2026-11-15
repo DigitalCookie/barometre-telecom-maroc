@@ -1,0 +1,9 @@
+{
+ "paniers": [
+  { "id": "essentiel", "nom": "Essentiel", "nom_ar": "الأساسي", "go": 5, "heures": 1, "appels_illimites": false },
+  { "id": "standard", "nom": "Standard", "nom_ar": "المتوسط", "go": 20, "heures": 2, "appels_illimites": false },
+  { "id": "gros_data", "nom": "Gros consommateur de data", "nom_ar": "استهلاك كبير للبيانات", "go": 50, "heures": 5, "appels_illimites": false },
+  { "id": "voix", "nom": "Gros appelant", "nom_ar": "كثير المكالمات", "go": 10, "heures": 10, "appels_illimites": false },
+  { "id": "illimite", "nom": "Appels illimités", "nom_ar": "مكالمات غير محدودة", "go": 60, "heures": 0, "appels_illimites": true }
+ ]
+}
