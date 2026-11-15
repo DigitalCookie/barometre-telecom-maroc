@@ -137,6 +137,19 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   data ET appels. Règles : `heuresOf` ne compte pas « illimité vers inwi »
   (on-net), lit « Appels illimités » dans le nom si le champ est vide ;
   offres sans Go ou sans heures publiés exclues (note sous le tableau).
+- Prix moyen du Go à besoin égal (1er graphique du dashboard, `renderGoMoyen`) :
+  par opérateur et par mois, moyenne sur les profils de (prix du forfait le
+  moins cher couvrant le profil ÷ Go du profil) ; sélecteur par profil.
+  Un opérateur n'a de point que si toutes ses pages de forfaits (référence =
+  dernier relevé) sont présentes ce mois-là et qu'il couvre le(s) profil(s).
+  Série possible depuis 2026-08 seulement (heures absentes des archives).
+- Repère ANRT (`data/anrt.json`, sous le même graphique) : indicateurs
+  trimestriels officiels — ARPM, facture Internet moyenne, minutes (open data
+  data.gov.ma, ODbL, XLSX mis à jour chaque trimestre) + usage data par
+  client et revenu moyen par Go (mémos PDF anrt.ma « Analyse des marchés »,
+  relevés à la main ; le revenu/Go n'est publié que depuis T3-2025). À
+  compléter à chaque nouveau mémo. Dérogation assumée à la règle d'or : ce
+  sont des agrégats du régulateur, jamais des prix d'offres.
 - Commentaires de l'admin : `data/commentaires.json` `{signature, mois:
   [{mois, texte, texte_ar, remplacer}], analyse: {essentiel, s1…s5, methodo}}`
   — édité par formulaire via Pages CMS (`.pages.yml`, app.pagescms.org),

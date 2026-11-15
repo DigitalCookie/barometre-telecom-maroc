@@ -1,0 +1,220 @@
+{
+ "source": "ANRT — observatoires trimestriels du secteur des télécommunications",
+ "liens": {
+  "open_data": "https://data.gov.ma/data/organization/anrt",
+  "memos": "https://www.anrt.ma/observatoires/donnees-du-secteur/analyse-des-marches"
+ },
+ "note": "arpm_dhht, facture_internet_dhht et minutes : jeux de données ouverts de l'ANRT (data.gov.ma, licence ODbL). usage_data_* et revenu_go_dhht : mémos trimestriels de l'ANRT (PDF), relevés à la main le 15/11/2026 ; null = non publié dans le mémo du trimestre. Montants hors taxes.",
+ "releve_le": "2026-11-15",
+ "trimestres": [
+  {
+   "t": "T1-2022",
+   "arpm_dhht": 0.2,
+   "facture_internet_dhht": 30,
+   "minutes_mobile": 87,
+   "minutes_prepaye": 46,
+   "minutes_postpaye": 389,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T2-2022",
+   "arpm_dhht": 0.21,
+   "facture_internet_dhht": 30.2,
+   "minutes_mobile": 87,
+   "minutes_prepaye": 46,
+   "minutes_postpaye": 385,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T3-2022",
+   "arpm_dhht": 0.21,
+   "facture_internet_dhht": 30.8,
+   "minutes_mobile": 87,
+   "minutes_prepaye": 47,
+   "minutes_postpaye": 385,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T4-2022",
+   "arpm_dhht": 0.21,
+   "facture_internet_dhht": 30.9,
+   "minutes_mobile": 85,
+   "minutes_prepaye": 46,
+   "minutes_postpaye": 373,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T1-2023",
+   "arpm_dhht": 0.22,
+   "facture_internet_dhht": 29,
+   "minutes_mobile": 79,
+   "minutes_prepaye": 41,
+   "minutes_postpaye": 339,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T2-2023",
+   "arpm_dhht": 0.22,
+   "facture_internet_dhht": 30.4,
+   "minutes_mobile": 79,
+   "minutes_prepaye": 42,
+   "minutes_postpaye": 337,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T3-2023",
+   "arpm_dhht": 0.22,
+   "facture_internet_dhht": 37,
+   "minutes_mobile": 79,
+   "minutes_prepaye": 42,
+   "minutes_postpaye": 336,
+   "usage_data_go": 36.8,
+   "usage_data_mobile_go": 14,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T4-2023",
+   "arpm_dhht": 0.17,
+   "facture_internet_dhht": 36,
+   "minutes_mobile": 77,
+   "minutes_prepaye": 40,
+   "minutes_postpaye": 333,
+   "usage_data_go": 34.2,
+   "usage_data_mobile_go": 12.3,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T1-2024",
+   "arpm_dhht": 0.18,
+   "facture_internet_dhht": 36,
+   "minutes_mobile": 70,
+   "minutes_prepaye": 34,
+   "minutes_postpaye": 323,
+   "usage_data_go": 37.2,
+   "usage_data_mobile_go": 12.3,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T2-2024",
+   "arpm_dhht": 0.18,
+   "facture_internet_dhht": 37,
+   "minutes_mobile": 71,
+   "minutes_prepaye": 35,
+   "minutes_postpaye": 318,
+   "usage_data_go": 37.4,
+   "usage_data_mobile_go": 12,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T3-2024",
+   "arpm_dhht": 0.18,
+   "facture_internet_dhht": 38,
+   "minutes_mobile": 70,
+   "minutes_prepaye": 35,
+   "minutes_postpaye": 310,
+   "usage_data_go": 37.6,
+   "usage_data_mobile_go": 12.4,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T4-2024",
+   "arpm_dhht": 0.18,
+   "facture_internet_dhht": 38,
+   "minutes_mobile": 68,
+   "minutes_prepaye": 33,
+   "minutes_postpaye": 305,
+   "usage_data_go": 37.6,
+   "usage_data_mobile_go": 12.4,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T1-2025",
+   "arpm_dhht": 0.19,
+   "facture_internet_dhht": 37,
+   "minutes_mobile": 60,
+   "minutes_prepaye": 27,
+   "minutes_postpaye": 275,
+   "usage_data_go": 40,
+   "usage_data_mobile_go": 12.6,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T2-2025",
+   "arpm_dhht": 0.19,
+   "facture_internet_dhht": 38,
+   "minutes_mobile": 61,
+   "minutes_prepaye": 28,
+   "minutes_postpaye": 274,
+   "usage_data_go": 42,
+   "usage_data_mobile_go": 13.2,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T3-2025",
+   "arpm_dhht": 0.19,
+   "facture_internet_dhht": 39,
+   "minutes_mobile": 59,
+   "minutes_prepaye": 27,
+   "minutes_postpaye": 267,
+   "usage_data_go": 43,
+   "usage_data_mobile_go": 14,
+   "revenu_go_dhht": 0.97
+  },
+  {
+   "t": "T4-2025",
+   "arpm_dhht": 0.19,
+   "facture_internet_dhht": 39,
+   "minutes_mobile": 58,
+   "minutes_prepaye": 26,
+   "minutes_postpaye": 261,
+   "usage_data_go": 46,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": 0.91
+  },
+  {
+   "t": "T1-2026",
+   "arpm_dhht": 0.22,
+   "facture_internet_dhht": 41,
+   "minutes_mobile": 49,
+   "minutes_prepaye": 21,
+   "minutes_postpaye": 213,
+   "usage_data_go": 60,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": 0.73
+  },
+  {
+   "t": "T2-2026",
+   "arpm_dhht": 0.21,
+   "facture_internet_dhht": 44,
+   "minutes_mobile": 52,
+   "minutes_prepaye": 24,
+   "minutes_postpaye": 219,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  },
+  {
+   "t": "T3-2026",
+   "arpm_dhht": 0.21,
+   "facture_internet_dhht": 45,
+   "minutes_mobile": 51,
+   "minutes_prepaye": 24,
+   "minutes_postpaye": 213,
+   "usage_data_go": null,
+   "usage_data_mobile_go": null,
+   "revenu_go_dhht": null
+  }
+ ]
+}
