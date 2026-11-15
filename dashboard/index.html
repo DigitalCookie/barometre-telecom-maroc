@@ -886,7 +886,7 @@ const I18N = {
     gm_moyenne: "Moyenne des profils", gm_unite: "DH/Go",
     gm_long: "Historique long",
     gm_hint_long: "Prix moyen du Go dans la grille de forfaits de chaque opérateur : le total des prix mensuels divisé par le total des Go inclus. C'est la seule mesure calculable sur plus de dix ans, car les forfaits d'il y a dix ans ne couvrent pas les profils d'usage d'aujourd'hui.",
-    gm_note_long: "Points creux : grille reconstituée depuis les pages et brochures officielles archivées de l'opérateur (dernière grille connue du mois). Points pleins : relevé du baromètre.",
+    gm_note_long: "Points creux : grille reconstituée depuis les pages et brochures officielles archivées de l'opérateur. Points pleins : relevé du baromètre.",
     gm_note_long_limite: "Les heures d'appels incluses ne sont pas neutralisées ici et les forfaits à data illimitée sont exclus ; pour comparer les opérateurs aujourd'hui, préférez les profils d'usage.",
     gm_note_debut: "Série calculable depuis août 2026 : avant cette date, les heures d'appels ne figurent pas dans les archives.",
     gm_note_complet: "Un opérateur n'apparaît que les mois où toutes ses pages de forfaits ont été relevées et où il couvre le profil (tous les profils pour la moyenne).",
@@ -1010,7 +1010,7 @@ const I18N = {
     gm_moyenne: "متوسط الأنماط", gm_unite: "درهم/جيغا",
     gm_long: "السلسلة الطويلة",
     gm_hint_long: "متوسط سعر الجيغا في شبكة باقات كل مشغل : مجموع الأسعار الشهرية مقسوماً على مجموع الجيغات المضمّنة. هذا هو المقياس الوحيد القابل للحساب على أكثر من عشر سنوات، لأن باقات ما قبل عشر سنوات لا تغطي أنماط الاستهلاك الحالية.",
-    gm_note_long: "النقاط المفرغة : شبكة أُعيد بناؤها من الصفحات والكتيبات الرسمية المؤرشفة للمشغل (آخر شبكة معروفة في الشهر). النقاط الممتلئة : رصد الباروميتر.",
+    gm_note_long: "النقاط المفرغة : شبكة أُعيد بناؤها من الصفحات والكتيبات الرسمية المؤرشفة للمشغل. النقاط الممتلئة : رصد الباروميتر.",
     gm_note_long_limite: "ساعات المكالمات المضمّنة غير محيَّدة هنا والباقات ذات البيانات غير المحدودة مستثناة ؛ لمقارنة المشغلين اليوم، يُفضَّل الاعتماد على أنماط الاستهلاك.",
     gm_note_debut: "السلسلة قابلة للحساب منذ غشت 2026 : قبل ذلك لا تتوفر ساعات المكالمات في الأرشيف.",
     gm_note_complet: "لا يظهر المشغل إلا في الأشهر التي رُصدت فيها جميع صفحات باقاته ويغطي فيها النمط (جميع الأنماط بالنسبة للمتوسط).",
@@ -1787,9 +1787,10 @@ function goMoyenSeries(profilId) {
    des prix ÷ total des Go de ses forfaits (data illimitée et exemples de
    forfaits à composer exclus). Avant les relevés du baromètre, les grilles
    viennent d'historique_mobile.csv (pages et brochures officielles
-   archivées, dernière grille du mois) : points « partiels ». Les mois du
+   archivées, offres du mois dédoublonnées) : points « partiels ». Les mois du
    baromètre ne comptent que si toutes les pages de forfaits sont relevées. */
 const ECART_LONG_MOIS = 14;
+const GRILLE_MIN_OFFRES = 4;   // en dessous, document partiel : mois écarté
 function grilleSeries() {
   const prixGo = rows => {
     const l = rows.map(r => ({ p: r.prix, go: goOf(r) }))
@@ -1802,9 +1803,13 @@ function grilleSeries() {
   OPS.forEach(o => {
     const h = HISTO.filter(r => r.operateur === o.name && !/exemple/i.test(r.offre));
     [...new Set(h.map(r => r.month))].forEach(m => {
-      const duMois = h.filter(r => r.month === m);
-      const date = duMois.map(r => r.date_releve).sort().pop();
-      pose(m, o.name, prixGo(duMois.filter(r => r.date_releve === date)), true);
+      /* une offre lue dans deux documents du mois ne compte qu'une fois */
+      const vues = new Map();
+      h.filter(r => r.month === m).forEach(r =>
+        vues.set([r.debit_ou_data, r.appels_inclus, r.prix].join("|"), r));
+      const grille = [...vues.values()];
+      if (grille.filter(r => isFinite(goOf(r) ?? NaN)).length < GRILLE_MIN_OFFRES) return;
+      pose(m, o.name, prixGo(grille), true);
     });
   });
   const ms0 = months();
