@@ -237,18 +237,88 @@ def parse_iam_fibre(text, url):
     return rows
 
 
+def duree_en_minutes(txt):
+    """« 180 min », « 3H 30 min », « 14 H » -> minutes (None si illisible).
+    iam.ma affichait des minutes jusqu'en 10/2026, des heures depuis."""
+    m = re.fullmatch(r"\s*(?:(\d+)\s*H)?\s*(?:(\d+)\s*min)?\s*", txt or "", re.I)
+    if not m or not (m.group(1) or m.group(2)):
+        return None
+    return int(m.group(1) or 0) * 60 + int(m.group(2) or 0)
+
+
 def parse_iam_forfaits(text, url):
-    """iam.ma/forfaits-mobile — « 165 DH/mois 30 Go 180 min [1 Go Roaming] »."""
+    """iam.ma/forfaits-mobile (gamme Liberté Plus) —
+    « 165 DH/mois 30 Go 180 min [1 Go Roaming] », ou depuis 11/2026
+    « 165 DH/mois 35 Go 3H 30 min ». Les appels restent écrits en minutes
+    pour que l'offre garde la même signature d'un mois à l'autre."""
     t = norm(text)
     rows = []
-    pat = re.compile(r"(\d+)\s*DH/mois\s+(\d+)\s*Go\s+(\d+)\s*min"
-                     r"(?:\s*(\d+)\s*Go\s*Roaming)?")
-    for prix, go, mn, roam in pat.findall(t):
+    pat = re.compile(r"(\d+)\s*DH/mois\s+(\d+)\s*Go\s+"
+                     r"((?:\d+\s*H)?\s*(?:\d+\s*min)?)"
+                     r"(?:\s*(\d+)\s*Go\s*Roaming)?", re.I)
+    for prix, go, duree, roam in pat.findall(t):
+        mn = duree_en_minutes(duree)
+        if mn is None:
+            continue
         rem = f"+{roam} Go roaming Z1" if roam else ""
         rows.append(row("Maroc Telecom", "Forfait mobile",
                         f"Liberte Plus {prix} ({go} Go)",
                         f"{go} Go", f"{mn} min", prix, rem, url))
     return rows
+
+
+def parse_iam_liberte(text, url):
+    """iam.ma/forfaits-exclusifs-5g — gamme « Liberté » (entrée de gamme,
+    dès 59 DH), sur son propre onglet depuis la refonte 2026 :
+    « Liberté [NOUVEAU] 59 DH/mois 3 Go 3 H 300 SMS Pass et options Acheter ».
+    Même nommage que l'ancien format (`parse_iam_forfaits_liberte`) pour
+    raccorder l'historique. « Liberté Plus » ne matche pas (page distincte)."""
+    t = norm(text)
+    rows = []
+    pat = re.compile(r"Libert[ée](?:\s+NOUVEAU)?(?:\s+4G\+/5G)?\s+(\d{2,3})\s*DH/mois"
+                     r"\s*(.{0,60}?)(?:Pass et options|Acheter|\Z)", re.S)
+    for prix, corps in pat.findall(t):
+        go = re.search(r"(\d+)\s*Go\b", corps)
+        heures = re.search(r"(\d+)\s*H\b", corps)
+        sms = re.search(r"(\d+)\s*SMS\b", corps)
+        if not go:
+            continue
+        rows.append(row("Maroc Telecom", "Forfait mobile",
+                        f"Forfait Liberte {prix} ({go.group(1)} Go)",
+                        f"{go.group(1)} Go",
+                        f"{heures.group(1)}h" if heures else "", prix,
+                        f"{sms.group(1)} SMS" if sms else "", url))
+    return dedup(rows, key=lambda r_: (r_["offre"], r_["prix_dh_mois"],
+                                       r_["appels_inclus"]))
+
+
+def parse_iam_illimites(text, url):
+    """iam.ma/illimites-mobile — « Appels illimités + 12 Go 259 DH/mois … »
+    et « Appels et Internet illimités 699 DH/mois … 10 Go Roaming ».
+    Le volume vient du TITRE de la carte : le corps mentionne aussi des Go
+    de roaming, qui ne sont pas la data du forfait."""
+    t = norm(text)
+    rows = []
+    pat = re.compile(r"(Appels (?:et Internet )?illimit[ée]s(?:\s*\+\s*\d+\s*Go)?)"
+                     r"\s+(\d{3,4})\s*DH/mois\s*(.{0,220}?)"
+                     r"(?:Pass et options|Acheter|\Z)", re.S | re.I)
+    for titre, prix, corps in pat.findall(t):
+        go = re.search(r"\+\s*(\d+)\s*Go", titre)
+        inter = re.search(r"(\d+)\s*H\s*vers l.international", corps, re.I)
+        roam = re.search(r"(\d+)\s*Go\s*Roaming", corps, re.I)
+        rem = ", ".join(x for x in (
+            f"{inter.group(1)} H vers l'international" if inter else "",
+            f"+{roam.group(1)} Go roaming" if roam else "") if x)
+        if go:
+            rows.append(row("Maroc Telecom", "Forfait mobile",
+                            f"Forfait Illimite {prix} ({go.group(1)} Go)",
+                            f"{go.group(1)} Go", "Illimite national", prix,
+                            rem, url))
+        elif re.search(r"Internet", titre, re.I):
+            rows.append(row("Maroc Telecom", "Forfait mobile",
+                            f"Forfait Illimite {prix} (Tout illimite)",
+                            "Tout illimite", "Tout illimite", prix, rem, url))
+    return dedup(rows)
 
 
 def parse_iam_forfaits_liberte(text, url):
@@ -291,8 +361,11 @@ def parse_iam_box(text, url, produit):
     for prix, corps in pat.findall(t):
         debit = " / ".join(dict.fromkeys(
             re.findall(r"\d+\s*(?:Go|Mb/s|M[ée]ga)", corps)))[:40]
+        # « 60 min » jusqu'en 10/2026, « 1 H » depuis : toujours en minutes.
+        durees = [duree_en_minutes(d) for d in
+                  re.findall(r"\d+\s*H\b(?:\s*\d+\s*min\b)?|\d+\s*min\b", corps)]
         minutes = " / ".join(dict.fromkeys(
-            re.findall(r"\d+\s*min\b", corps)))[:30]
+            f"{d} min" for d in durees if d is not None))[:30]
         rows.append(row("Maroc Telecom", "Box", f"{produit} {prix} DH",
                         debit, minutes, prix, source=url))
     return dedup(rows)
@@ -593,6 +666,12 @@ PAGES = [
     dict(op="iam", label="IAM forfaits mobile", method="js",
          url="https://www.iam.ma/forfaits-mobile",
          parse=lambda txt, u: parse_iam_forfaits(txt, u)),
+    dict(op="iam", label="IAM forfaits Liberté", method="js",
+         url="https://www.iam.ma/forfaits-exclusifs-5g",
+         parse=lambda txt, u: parse_iam_liberte(txt, u)),
+    dict(op="iam", label="IAM forfaits illimités", method="js",
+         url="https://www.iam.ma/illimites-mobile",
+         parse=lambda txt, u: parse_iam_illimites(txt, u)),
     dict(op="iam", label="IAM Box El Manzil 5G", method="js",
          url="https://www.iam.ma/box-el-manzil-5g",
          parse=lambda txt, u: parse_iam_box(txt, u, "El Manzil 5G")),
@@ -1043,6 +1122,14 @@ def _mesure(r_):
     return (int(m.group(1)), m.group(2)) if m else None
 
 
+def page_source(r_):
+    """Page d'origine d'une ligne, comparable d'un mois à l'autre : l'URL
+    sans préfixe web.archive.org (horodaté), ni schéma, ni « www. »."""
+    src = re.sub(r"^https?://web\.archive\.org/web/\d+[a-z_]*/", "",
+                 r_.get("source") or "")
+    return re.sub(r"^https?://(www\.)?", "", src).split("?")[0].rstrip("/")
+
+
 def diff_changes(rows, prev, curr):
     """Changements structurés entre deux mois du master : liste de dicts
     {type: nouveau|prix|retire|contenu|renomme, cle: (op, cat, offre), …}.
@@ -1051,7 +1138,10 @@ def diff_changes(rows, prev, curr):
     (toutes les pages ne sont pas capturées chaque mois) : un « nouveau »
     ou un « retiré » n'a de sens que si le périmètre (opérateur, catégorie)
     était observé dans les DEUX mois — sinon c'est un trou de couverture,
-    pas un mouvement de grille.
+    pas un mouvement de grille. Le périmètre descend à la PAGE source :
+    une page ajoutée au relevé (onglet « Liberté » d'iam.ma, 11/2026) ou
+    injoignable un mois (blocage anti-robots) n'est ni un lancement ni un
+    retrait d'offres.
 
     « contenu » = shrinkflation (ou l'inverse) : prix identique mais volume
     de data/débit modifié. Détecté sur les offres au même nom, ET par
@@ -1065,12 +1155,12 @@ def diff_changes(rows, prev, curr):
                 and r_["prix_dh_mois"]}
 
     a, b = index(prev), index(curr)
-    scope_a = {(op, cat) for op, cat, _ in a}
-    scope_b = {(op, cat) for op, cat, _ in b}
+    scope_a = {(k[0], k[1], page_source(r_)) for k, r_ in a.items()}
+    scope_b = {(k[0], k[1], page_source(r_)) for k, r_ in b.items()}
     changes, nouveaux, retires = [], [], []
     for key in sorted(b):
         if key not in a:
-            if (key[0], key[1]) in scope_a:
+            if (key[0], key[1], page_source(b[key])) in scope_a:
                 nouveaux.append(key)
         elif a[key]["prix_dh_mois"] != b[key]["prix_dh_mois"]:
             changes.append(dict(type="prix", cle=key,
@@ -1083,7 +1173,7 @@ def diff_changes(rows, prev, curr):
                                     prix=b[key]["prix_dh_mois"],
                                     avant_mesure=ma, mesure=mb_))
     for key in sorted(set(a) - set(b)):
-        if (key[0], key[1]) in scope_b:
+        if (key[0], key[1], page_source(a[key])) in scope_b:
             retires.append(key)
 
     # appariement nouveau×retiré : même opérateur, catégorie et prix
@@ -1766,6 +1856,35 @@ SAMPLES = {
         Dar Box 5G 300 Go 299 DH /mois Je choisis
     """,
     # Extraits des dumps réels 09/2026 (data/raw/2026-09/iam-box-*.txt).
+    "iam_forfaits_heures": """
+        Liberté Plus 4G+/5G 165 DH/mois 35 Go 3H 30 min Pass et options Acheter
+        Liberté Plus 4G+/5G 165 DH/mois 14 Go 14 H Pass et options Acheter
+        Liberté Plus 4G+/5G 199 DH/mois 50 Go 1H 30 min 1 Go Roaming*
+        Pass et options Acheter
+        Liberté Plus 4G+/5G 479 DH/mois 100 Go 40 H 4 Go Roaming*
+        Pass et options Acheter
+    """,
+    "iam_liberte": """
+        Liberté 59 DH/mois 11 Go 1 H Pass et options Acheter
+        Liberté 59 DH/mois 3 Go 3 H 300 SMS Pass et options Acheter
+        Liberté 99 DH/mois 20 Go 1 H Pass et options Acheter
+        Liberté NOUVEAU 120 DH/mois 12 Go 12 H Pass et options Acheter
+    """,
+    "iam_illimites": """
+        Appels illimités + 12 Go 259 DH/mois Appels illimités Vers le national
+        12 Go SMS illimités (3) Pass et options Acheter
+        Appels illimités + 35 Go 439 DH/mois Appels illimités Vers le national
+        100 H vers l’international 35 Go SMS illimités (3) Pass et options Acheter
+        Appels et Internet illimités 699 DH/mois Appels illimités vers le national
+        Appels illimités vers l'international (1) Internet Illimité (2) SMS
+        illimités (3) 10 Go Roaming (4) Pass et options Acheter
+    """,
+    "iam_box_4g_heures": """
+        Box 4G+ internet Forfaits internet
+        Box 4G+ 199 DH/mois 1 H 60 Go Acheter
+        Box 4G+ 350 DH/mois 2 H 90 Go Acheter
+        20 DH 2 Go 30 DH 3 Go
+    """,
     "iam_box_5g": """
         Wifi
         Box El Manzil
@@ -1853,6 +1972,44 @@ def test():
     ok &= {(x["prix_dh_mois"], x["debit_ou_data"]) for x in r} == {
         ("165", "30 Go"), ("199", "50 Go"), ("479", "100 Go")}
     ok &= any("4 Go roaming" in x["remarques"] for x in r)
+
+    # Format 11/2026 : appels en heures — même sortie en minutes qu'avant.
+    r = parse_iam_forfaits(SAMPLES["iam_forfaits_heures"], "test")
+    print(f"[iam_forfaits_h]   {len(r)} offres :",
+          [(x['debit_ou_data'], x['appels_inclus'], x['prix_dh_mois']) for x in r])
+    ok &= [(x["offre"], x["appels_inclus"]) for x in r] == [
+        ("Liberte Plus 165 (35 Go)", "210 min"),
+        ("Liberte Plus 165 (14 Go)", "840 min"),
+        ("Liberte Plus 199 (50 Go)", "90 min"),
+        ("Liberte Plus 479 (100 Go)", "2400 min")]
+    ok &= r[2]["remarques"] == "+1 Go roaming Z1"
+
+    r = parse_iam_liberte(SAMPLES["iam_liberte"], "test")
+    print(f"[iam_liberte_5g]   {len(r)} offres :",
+          [(x['offre'], x['appels_inclus'], x['prix_dh_mois']) for x in r])
+    ok &= [(x["offre"], x["appels_inclus"], x["remarques"]) for x in r] == [
+        ("Forfait Liberte 59 (11 Go)", "1h", ""),
+        ("Forfait Liberte 59 (3 Go)", "3h", "300 SMS"),
+        ("Forfait Liberte 99 (20 Go)", "1h", ""),
+        ("Forfait Liberte 120 (12 Go)", "12h", "")]
+    # La gamme Liberté Plus n'est pas lue par ce parser.
+    ok &= parse_iam_liberte(SAMPLES["iam_forfaits_heures"], "test") == []
+
+    r = parse_iam_illimites(SAMPLES["iam_illimites"], "test")
+    print(f"[iam_illimites]    {len(r)} offres :",
+          [(x['offre'], x['debit_ou_data'], x['prix_dh_mois']) for x in r])
+    # Les « 10 Go Roaming » du 699 DH ne sont pas pris pour la data.
+    ok &= [(x["debit_ou_data"], x["appels_inclus"], x["prix_dh_mois"]) for x in r] == [
+        ("12 Go", "Illimite national", "259"),
+        ("35 Go", "Illimite national", "439"),
+        ("Tout illimite", "Tout illimite", "699")]
+
+    r = parse_iam_box(SAMPLES["iam_box_4g_heures"], "test", "Box 4G+")
+    print(f"[iam_box_4g_h]     {len(r)} offres :",
+          [(x['debit_ou_data'], x['appels_inclus'], x['prix_dh_mois']) for x in r])
+    ok &= sorted((x["debit_ou_data"], x["appels_inclus"], x["prix_dh_mois"])
+                 for x in r) == [("60 Go", "60 min", "199"),
+                                 ("90 Go", "120 min", "350")]
 
     for nom in ("orange_pro_fibre", "orange_pro_fibre_compact"):
         r = parse_orange_pro_fibre(SAMPLES[nom], "test")
@@ -2005,6 +2162,23 @@ def test():
     # commun inwi garde ses 3 mouvements (prix, nouveau, retiré).
     ok &= not any(c["cle"][0] == "Maroc Telecom" for c in ch)
     ok &= sorted(c["type"] for c in ch) == ["nouveau", "prix", "retire"]
+
+    # Périmètre à la PAGE : même opérateur et même catégorie, mais une page
+    # absente un mois (bloquée) ou ajoutée au relevé ne crée ni retrait ni
+    # lancement ; un vrai retrait sur une page lue les deux mois reste vu.
+    def _p(d, offre, prix, src):
+        return dict(zip(FIELDNAMES, (d, "Maroc Telecom", "Forfait mobile", offre,
+                                     "10 Go", "", prix, "", src, "officiel_site")))
+    pages = [
+        _p("2026-10-02", "Plus 165", "165", "https://www.iam.ma/forfaits-mobile"),
+        _p("2026-10-02", "Plus 349", "349", "https://www.iam.ma/forfaits-mobile"),
+        _p("2026-11-02", "Plus 165", "165",
+           "https://web.archive.org/web/20261102000000/https://www.iam.ma/forfaits-mobile"),
+        _p("2026-11-02", "Liberte 59", "59", "https://www.iam.ma/forfaits-exclusifs-5g"),
+    ]
+    ch = diff_changes(pages, "2026-10", "2026-11")
+    print(f"[diff_pages]       {[(c['type'], c['cle'][2]) for c in ch]}")
+    ok &= [(c["type"], c["cle"][2]) for c in ch] == [("retire", "Plus 349")]
 
     # Shrinkflation : même nom + même prix mais data réduite -> « contenu » ;
     # nouveau×retiré au même prix avec data différente -> « contenu » apparié ;

@@ -466,6 +466,12 @@ function heuresOf(r) {
   return m[2].toLowerCase() === "min" ? v / 60 : v;
 }
 
+/* page d'origine d'une ligne (cf. page_source, barometre.py) */
+const pageSource = r => (r.source || "")
+  .replace(/^https?:\/\/web\.archive\.org\/web\/\d+[a-z_]*\//, "")
+  .replace(/^https?:\/\/(www\.)?/, "").split("?")[0].replace(/\/+$/, "");
+const scopeKey = r => r.operateur + "|" + r.categorie + "|" + pageSource(r);
+
 /* construit une carte-stat en DOM (aucun innerHTML sur données scrapées) */
 function statCard(v, l, cls = "") {
   const d = document.createElement("div"); d.className = "stat";
@@ -713,15 +719,15 @@ async function run() {
     const A = new Map(), B = new Map();
     ALL.filter(r => r.month === ma && r.prix).forEach(r => A.set(key(r), r));
     ALL.filter(r => r.month === mb && r.prix).forEach(r => B.set(key(r), r));
-    const scA = new Set([...A.values()].map(r => r.operateur + "|" + r.categorie));
-    const scB = new Set([...B.values()].map(r => r.operateur + "|" + r.categorie));
+    const scA = new Set([...A.values()].map(scopeKey));
+    const scB = new Set([...B.values()].map(scopeKey));
     const bump = r => { if (r.categorie === "Forfait mobile") chMob++; else chFixe++; };
     B.forEach((r, k) => {
-      if (!A.has(k)) { if (scA.has(r.operateur + "|" + r.categorie)) bump(r); }
+      if (!A.has(k)) { if (scA.has(scopeKey(r))) bump(r); }
       else if (A.get(k).prix !== r.prix) bump(r);
     });
     A.forEach((r, k) => {
-      if (!B.has(k) && scB.has(r.operateur + "|" + r.categorie)) bump(r);
+      if (!B.has(k) && scB.has(scopeKey(r))) bump(r);
     });
   }
   setTxt("s5-counts", `${chMob} mouvements d'offres mobiles contre ${chFixe} sur le fixe ` +

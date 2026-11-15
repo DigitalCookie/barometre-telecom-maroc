@@ -51,6 +51,8 @@ depuis web.archive.org, pages rendues serveur uniquement, sortie
 |---|---|---|
 | iam.ma/fibre-optique | HTTP (Liferay, rendu serveur) | dédié, testé |
 | iam.ma/forfaits-mobile | HTTP | dédié, testé |
+| iam.ma/forfaits-exclusifs-5g (gamme Liberté, dès 59 DH) | Playwright | dédié (`parse_iam_liberte`), testé — ajouté 11/2026, la page n'était pas relevée avant |
+| iam.ma/illimites-mobile | Playwright | dédié (`parse_iam_illimites`), testé — ajouté 11/2026 |
 | pro.orange.ma/Fixe-et-Internet/Business-Box-Fibre | HTTP | dédié, testé — grille identique au résidentiel B2C aujourd'hui, **à surveiller si divergence** |
 | orange.ma résidentiel fibre | cartes SVG `fibre-cards/20go.svg`…`1000go.svg` | contrôle croisé ; **vérifier que le prix est bien en texte dans le SVG** |
 | inwi.ma fibre | HTTP | dédié, testé |
@@ -86,6 +88,21 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
 - SVG Orange résidentiel : les paliers sont détectés mais le prix est
   vectorisé (pas de texte) → depuis 09/2026 ces paliers sont **ignorés**
   (plus de lignes vides), pro.orange.ma fait foi.
+
+## iam.ma bloqué par Cloudflare (depuis 10/2026)
+- iam.ma refuse tout accès automatisé (curl 403, Playwright headless et
+  headed, runner GitHub comme IP résidentielle) ; aucune capture Wayback
+  depuis 05/2026. Dès 10/2026 les pages fibre et El Manzil 5G rendaient la
+  page de vérification (dumps de 305 octets) : IAM fibre et El Manzil
+  manquent au relevé d'octobre. **Ne pas contourner la protection.**
+- Rattrapage : lire les 6 pages IAM dans un vrai navigateur, déposer le
+  texte dans `data/raw/YYYY-MM/iam-*.txt` (noms = `slugify(label)`), puis
+  `replay --month YYYY-MM --write` et `feed`. Fait pour 2026-11 le 15/11.
+- iam.ma affiche désormais les appels en heures (« 3H 30 min », « 14 H ») :
+  les parsers les réécrivent en minutes (signature d'offre stable).
+- `diff_changes` (et les diffs JS des deux pages) bornent nouveau/retiré au
+  périmètre (opérateur, catégorie, **page source**) : une page ajoutée au
+  relevé ou injoignable un mois n'est pas un mouvement de grille.
 
 ## Dashboard (dashboard/index.html)
 - Page unique sans framework ; déployée par `.github/workflows/pages.yml`

@@ -1993,6 +1993,12 @@ function renderEvo() {
 
 /* ---------- diff ---------- */
 
+/* page d'origine d'une ligne, comparable d'un mois à l'autre (cf. page_source, barometre.py) */
+const pageSource = r => (r.source || "")
+  .replace(/^https?:\/\/web\.archive\.org\/web\/\d+[a-z_]*\//, "")
+  .replace(/^https?:\/\/(www\.)?/, "").split("?")[0].replace(/\/+$/, "");
+const scopeKey = r => r.operateur + "|" + r.categorie + "|" + pageSource(r);
+
 function diffs() {
   const ms = months();
   const mi = ms.indexOf(state.month);
@@ -2000,10 +2006,10 @@ function diffs() {
   const prev = ms[mi - 1], curr = state.month;
   const key = r => [r.operateur, r.categorie, r.offre].join(" / ");
   const idx = m => new Map(rowsOfMonth(m).filter(r => r.prix).map(r => [key(r), r]));
-  /* couverture partielle des mois d'archives : nouveau/retiré n'ont de sens
-     que si le périmètre (opérateur, catégorie) est observé les DEUX mois */
-  const scope = m => new Set(rowsOfMonth(m).filter(r => r.prix)
-    .map(r => r.operateur + "|" + r.categorie));
+  /* couverture partielle : nouveau/retiré n'ont de sens que si le périmètre
+     (opérateur, catégorie, page source) est observé les DEUX mois — une page
+     ajoutée au relevé ou injoignable un mois n'est pas un mouvement de grille */
+  const scope = m => new Set(rowsOfMonth(m).filter(r => r.prix).map(scopeKey));
   const a = idx(prev), b = idx(curr);
   const sa = scope(prev), sb = scope(curr);
   /* volume comparable : [25, "Go"] / [100, "Mb"] / null */
@@ -2015,7 +2021,7 @@ function diffs() {
   const changes = [], nouveaux = [], retires = [];
   b.forEach((r, k) => {
     if (!a.has(k)) {
-      if (sa.has(r.operateur + "|" + r.categorie)) nouveaux.push(k);
+      if (sa.has(scopeKey(r))) nouveaux.push(k);
     } else if (a.get(k).prix !== r.prix) {
       changes.push({ type: "prix", k, r, avant: a.get(k).prix });
     } else {
@@ -2025,7 +2031,7 @@ function diffs() {
     }
   });
   a.forEach((r, k) => {
-    if (!b.has(k) && sb.has(r.operateur + "|" + r.categorie)) retires.push(k);
+    if (!b.has(k) && sb.has(scopeKey(r))) retires.push(k);
   });
   /* appariement nouveau×retiré au même (opérateur, catégorie, prix) :
      la shrinkflation déguisée en retrait + nouveauté */

@@ -1,8 +1,84 @@
-www.iam.ma
-Vérification de sécurité en cours
-
-Ce site utilise un service de sécurité pour se protéger contre les bots malveillants. Cette page s’affiche pendant que le site vérifie que vous n’êtes pas un bot.
-
-Ray ID: a5449c4d2b2480fd
-Performances et sécurité par Cloudflare
-Confidentialité
+[Capture manuelle du 15/11/2026 — page lue dans un navigateur (iam.ma refuse l'accès automatisé depuis 10/2026). Zone principale uniquement, menu et pied de page non recopiés.]
+Accueil
+Mobile
+Forfaits Mobile
+Liberté
+Liberté Plus
+Illimité
+Choisissez l’offre qui vous convient
+Trier par
+Prix croissant
+Prix décroissant
+Filtrer
+Budget
+DH
+-
+DH
+Liberté Plus
+4G+/5G
+165 DH/mois
+35 Go
+3H 30 min
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+165 DH/mois
+14 Go
+14 H
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+199 DH/mois
+50 Go
+1H 30 min
+1 Go Roaming*
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+220 DH/mois
+12 Go
+22 H
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+220 DH/mois
+30 Go
+12 H
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+249 DH/mois
+25 Go
+20 H
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+259 DH/mois
+65 Go
+3 H
+2 Go Roaming*
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+329 DH/mois
+80 Go
+20 H
+3 Go Roaming*
+Pass et options
+Acheter
+Liberté Plus
+4G+/5G
+479 DH/mois
+100 Go
+40 H
+4 Go Roaming*
+Pass et options
+Acheter
+*Internet Roaming valable dans les pays de la zone 1. Pour plus de détails, consultez notre catalogue des offres.
