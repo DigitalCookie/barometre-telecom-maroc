@@ -173,11 +173,14 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   `officiel_archive` | `officiel_catalogue`. inwi : 2014-09 → 2025-10
   (trous 2021-06→2022-06 et 2022-08→2023-06). Maroc Telecom : 2015-01 →
   2025-10 (catalogues PDF 2015-2017, pages et catalogues en ligne ensuite ;
-  2018 = un seul relevé partiel en décembre). Profil « Historique long »
+  2018 = un seul relevé partiel en décembre). Orange : 2012-07 → 2025-12
+  (meditel.ma jusqu'en 2016, orange.ma, boutique.orange.ma 2019-2024,
+  yoxo.ma 2022-2025 ; gamme Yo 2025 non retrouvée). Profil « Historique long »
   (par défaut) du graphique « détail par opérateur » : `grilleSeries()` =
   total des prix ÷ total des Go de la grille (offres du mois dédoublonnées
-  par data + appels + prix, mois de moins de 4 offres écarté, data
-  illimitée et lignes « exemple » de win exclues) ; points creux =
+  par data + appels + prix, mois de moins de 3 offres écarté ; exclus : data
+  illimitée, forfaits de moins de 1 Go (forfaits voix Méditel 2012-2014),
+  marques en ligne Yoxo et win, dans les archives comme dans les relevés) ; points creux =
   archives, points pleins = relevés du baromètre dont toutes les pages sont
   présentes. Les heures d'appels n'y sont pas neutralisées (les profils
   d'usage d'aujourd'hui ne sont pas couvrables par les grilles de 2014).

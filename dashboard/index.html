@@ -887,7 +887,7 @@ const I18N = {
     gm_long: "Historique long",
     gm_hint_long: "Prix moyen du Go dans la grille de forfaits de chaque opérateur : le total des prix mensuels divisé par le total des Go inclus. C'est la seule mesure calculable sur plus de dix ans, car les forfaits d'il y a dix ans ne couvrent pas les profils d'usage d'aujourd'hui.",
     gm_note_long: "Points creux : grille reconstituée depuis les pages et brochures officielles archivées de l'opérateur. Points pleins : relevé du baromètre.",
-    gm_note_long_limite: "Les heures d'appels incluses ne sont pas neutralisées ici et les forfaits à data illimitée sont exclus ; pour comparer les opérateurs aujourd'hui, préférez les profils d'usage.",
+    gm_note_long_limite: "Les heures d'appels incluses ne sont pas neutralisées ici et les forfaits à data illimitée, ceux de moins de 1 Go et les marques en ligne (Yoxo, win) sont exclus ; pour comparer les opérateurs aujourd'hui, préférez les profils d'usage.",
     gm_note_debut: "Série calculable depuis août 2026 : avant cette date, les heures d'appels ne figurent pas dans les archives.",
     gm_note_complet: "Un opérateur n'apparaît que les mois où toutes ses pages de forfaits ont été relevées et où il couvre le profil (tous les profils pour la moyenne).",
     gm_vide: "Pas assez de données pour ce profil.",
@@ -1011,7 +1011,7 @@ const I18N = {
     gm_long: "السلسلة الطويلة",
     gm_hint_long: "متوسط سعر الجيغا في شبكة باقات كل مشغل : مجموع الأسعار الشهرية مقسوماً على مجموع الجيغات المضمّنة. هذا هو المقياس الوحيد القابل للحساب على أكثر من عشر سنوات، لأن باقات ما قبل عشر سنوات لا تغطي أنماط الاستهلاك الحالية.",
     gm_note_long: "النقاط المفرغة : شبكة أُعيد بناؤها من الصفحات والكتيبات الرسمية المؤرشفة للمشغل. النقاط الممتلئة : رصد الباروميتر.",
-    gm_note_long_limite: "ساعات المكالمات المضمّنة غير محيَّدة هنا والباقات ذات البيانات غير المحدودة مستثناة ؛ لمقارنة المشغلين اليوم، يُفضَّل الاعتماد على أنماط الاستهلاك.",
+    gm_note_long_limite: "ساعات المكالمات المضمّنة غير محيَّدة هنا والباقات ذات البيانات غير المحدودة، والتي تقل عن 1 جيغا، والعلامات الرقمية (Yoxo، win) مستثناة ؛ لمقارنة المشغلين اليوم، يُفضَّل الاعتماد على أنماط الاستهلاك.",
     gm_note_debut: "السلسلة قابلة للحساب منذ غشت 2026 : قبل ذلك لا تتوفر ساعات المكالمات في الأرشيف.",
     gm_note_complet: "لا يظهر المشغل إلا في الأشهر التي رُصدت فيها جميع صفحات باقاته ويغطي فيها النمط (جميع الأنماط بالنسبة للمتوسط).",
     gm_vide: "لا توجد بيانات كافية لهذا النمط.",
@@ -1789,26 +1789,29 @@ function goMoyenSeries(profilId) {
    viennent d'historique_mobile.csv (pages et brochures officielles
    archivées, offres du mois dédoublonnées) : points « partiels ». Les mois du
    baromètre ne comptent que si toutes les pages de forfaits sont relevées. */
-const ECART_LONG_MOIS = 14;
-const GRILLE_MIN_OFFRES = 4;   // en dessous, document partiel : mois écarté
+const ECART_LONG_MOIS = 24;
+const GRILLE_MIN_OFFRES = 3;   // en dessous, document partiel : mois écarté
+const GRILLE_GO_MIN = 1;       // forfaits voix à data symbolique (300-500 Mo) écartés
+const MARQUE_EN_LIGNE = /yoxo|win by/i;   // marques 100 % en ligne : hors série longue
 function grilleSeries() {
   const prixGo = rows => {
     const l = rows.map(r => ({ p: r.prix, go: goOf(r) }))
-      .filter(x => x.p && x.go && isFinite(x.go));
+      .filter(x => x.p && x.go >= GRILLE_GO_MIN && isFinite(x.go));
     const go = l.reduce((s_, x) => s_ + x.go, 0);
     return go ? l.reduce((s_, x) => s_ + x.p, 0) / go : null;
   };
   const par = {};
   const pose = (m, op, v, partiel) => { if (v != null) (par[m] = par[m] || {})[op] = { v, offre: "", partiel }; };
   OPS.forEach(o => {
-    const h = HISTO.filter(r => r.operateur === o.name && !/exemple/i.test(r.offre));
+    const h = HISTO.filter(r => r.operateur === o.name && !MARQUE_EN_LIGNE.test(r.offre));
     [...new Set(h.map(r => r.month))].forEach(m => {
       /* une offre lue dans deux documents du mois ne compte qu'une fois */
       const vues = new Map();
       h.filter(r => r.month === m).forEach(r =>
         vues.set([r.debit_ou_data, r.appels_inclus, r.prix].join("|"), r));
       const grille = [...vues.values()];
-      if (grille.filter(r => isFinite(goOf(r) ?? NaN)).length < GRILLE_MIN_OFFRES) return;
+      if (grille.filter(r => { const g = goOf(r); return g >= GRILLE_GO_MIN && isFinite(g); })
+            .length < GRILLE_MIN_OFFRES) return;
       pose(m, o.name, prixGo(grille), true);
     });
   });
@@ -1821,9 +1824,12 @@ function grilleSeries() {
     OPS.forEach(o => {
       const ref = pagesOf(refRows, o.name), vues = pagesOf(rows, o.name);
       if (!vues.size || [...ref].some(pg => !vues.has(pg))) return;
-      const duOp = rows.filter(r => r.operateur === o.name);
+      const duOp = rows.filter(r => r.operateur === o.name && !MARQUE_EN_LIGNE.test(r.offre));
       /* grille dont la data n'est pas publiée pour l'essentiel : non comparable */
       if (duOp.filter(r => goOf(r) == null).length > duOp.length / 4) return;
+      /* page relevée mais grille tronquée (un seul onglet de prix) : écarté */
+      const nRef = refRows.filter(r => r.operateur === o.name && !MARQUE_EN_LIGNE.test(r.offre)).length;
+      if (duOp.length < nRef / 2) return;
       pose(m, o.name, prixGo(duOp), false);
     });
   });
