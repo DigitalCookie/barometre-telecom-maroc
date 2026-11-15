@@ -164,6 +164,20 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
   PA.NUS.FCRF). À régénérer à chaque édition annuelle (décembre). Seule
   source d'historique long : nos relevés mensuels complets ne commencent
   qu'en 2026-08.
+- Historique long par opérateur (`data/historique_mobile.csv`, même schéma
+  que `barometre.csv`, chargé dans `HISTO`, jamais écrit par `barometre.py`
+  ni mélangé à `barometre.csv` : il ne touche ni les diffs, ni les résumés,
+  ni l'indice). Grilles de forfaits mobiles reconstituées depuis les pages
+  et brochures officielles archivées (web.archive.org), une ligne = une
+  offre lue dans un document, `source` = URL d'archive, `fiabilite` =
+  `officiel_archive` | `officiel_catalogue`. inwi : 2014-09 → 2025-10
+  (trous 2021-06→2022-06 et 2022-08→2023-06). Profil « Historique long »
+  (par défaut) du graphique « détail par opérateur » : `grilleSeries()` =
+  total des prix ÷ total des Go de la grille (dernière grille du mois, data
+  illimitée et lignes « exemple » de win exclues) ; points creux =
+  archives, points pleins = relevés du baromètre dont toutes les pages sont
+  présentes. Les heures d'appels n'y sont pas neutralisées (les profils
+  d'usage d'aujourd'hui ne sont pas couvrables par les grilles de 2014).
 - Repère ANRT (`data/anrt.json`, sous le même graphique) : indicateurs
   trimestriels officiels — ARPM, facture Internet moyenne, minutes (open data
   data.gov.ma, ODbL, XLSX mis à jour chaque trimestre) + usage data par

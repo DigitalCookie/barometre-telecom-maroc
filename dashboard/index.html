@@ -884,6 +884,10 @@ const I18N = {
     gm_note_national_simple: "Moyenne nationale : moyenne simple des trois opérateurs, tracée seulement les mois où ils sont tous les trois comparables.",
     gm_hint: "Pour chaque profil d'usage, le forfait le moins cher qui couvre la data et les appels demandés ; son prix est rapporté aux Go du profil, puis on fait la moyenne des profils. Les heures d'appels incluses ne faussent plus la comparaison.",
     gm_moyenne: "Moyenne des profils", gm_unite: "DH/Go",
+    gm_long: "Historique long",
+    gm_hint_long: "Prix moyen du Go dans la grille de forfaits de chaque opérateur : le total des prix mensuels divisé par le total des Go inclus. C'est la seule mesure calculable sur plus de dix ans, car les forfaits d'il y a dix ans ne couvrent pas les profils d'usage d'aujourd'hui.",
+    gm_note_long: "Points creux : grille reconstituée depuis les pages et brochures officielles archivées de l'opérateur (dernière grille connue du mois). Points pleins : relevé du baromètre.",
+    gm_note_long_limite: "Les heures d'appels incluses ne sont pas neutralisées ici et les forfaits à data illimitée sont exclus ; pour comparer les opérateurs aujourd'hui, préférez les profils d'usage.",
     gm_note_debut: "Série calculable depuis août 2026 : avant cette date, les heures d'appels ne figurent pas dans les archives.",
     gm_note_complet: "Un opérateur n'apparaît que les mois où toutes ses pages de forfaits ont été relevées et où il couvre le profil (tous les profils pour la moyenne).",
     gm_vide: "Pas assez de données pour ce profil.",
@@ -1004,6 +1008,10 @@ const I18N = {
     gm_note_national_simple: "المتوسط الوطني : متوسط بسيط للمشغلين الثلاثة، يُرسم فقط في الأشهر التي يكونون فيها جميعاً قابلين للمقارنة.",
     gm_hint: "لكل نمط استهلاك، أرخص باقة تغطي البيانات والمكالمات المطلوبة ؛ يُقسم سعرها على جيغات النمط ثم يُحسب متوسط الأنماط. هكذا لا تؤثر ساعات المكالمات المضمّنة في المقارنة.",
     gm_moyenne: "متوسط الأنماط", gm_unite: "درهم/جيغا",
+    gm_long: "السلسلة الطويلة",
+    gm_hint_long: "متوسط سعر الجيغا في شبكة باقات كل مشغل : مجموع الأسعار الشهرية مقسوماً على مجموع الجيغات المضمّنة. هذا هو المقياس الوحيد القابل للحساب على أكثر من عشر سنوات، لأن باقات ما قبل عشر سنوات لا تغطي أنماط الاستهلاك الحالية.",
+    gm_note_long: "النقاط المفرغة : شبكة أُعيد بناؤها من الصفحات والكتيبات الرسمية المؤرشفة للمشغل (آخر شبكة معروفة في الشهر). النقاط الممتلئة : رصد الباروميتر.",
+    gm_note_long_limite: "ساعات المكالمات المضمّنة غير محيَّدة هنا والباقات ذات البيانات غير المحدودة مستثناة ؛ لمقارنة المشغلين اليوم، يُفضَّل الاعتماد على أنماط الاستهلاك.",
     gm_note_debut: "السلسلة قابلة للحساب منذ غشت 2026 : قبل ذلك لا تتوفر ساعات المكالمات في الأرشيف.",
     gm_note_complet: "لا يظهر المشغل إلا في الأشهر التي رُصدت فيها جميع صفحات باقاته ويغطي فيها النمط (جميع الأنماط بالنسبة للمتوسط).",
     gm_vide: "لا توجد بيانات كافية لهذا النمط.",
@@ -1150,12 +1158,13 @@ let PANIERS = [
 ];
 let PANIERS_FIBRE = [{ id: "f20", mb: 20 }, { id: "f100", mb: 100 },
                       { id: "f200", mb: 200 }, { id: "f1000", mb: 1000 }];
+let HISTO = [];        // historique_mobile.csv : grilles de forfaits archivées (avant le baromètre)
 let UIT = null;          // uit.json : paniers de prix annuels de l'UIT pour le Maroc
 let ANRT = null;         // anrt.json : indicateurs officiels trimestriels du régulateur
 let COMMENTS = {};     // commentaires.json : commentaires saisis par l'admin (Pages CMS)
 let state = { month: "", cat: "Toutes", ops: new Set(OPS.map(o => o.name)),
               evo: "", query: "", sort: { col: "operateur", dir: 1 },
-              besoin: "Fibre", crit: 0, val: "mobile", gmProfil: "", gmMode: "mobile",
+              besoin: "Fibre", crit: 0, val: "mobile", gmProfil: "long", gmMode: "mobile",
               valCrit: 0, valBudget: 0, valFrais: false };
 
 /* ---------- état ↔ URL (vues partageables) ---------- */
@@ -1216,6 +1225,11 @@ async function loadData() {
     const resp = await fetch("data/anrt.json", { cache: "no-store" });
     if (resp.ok) ANRT = await resp.json();
   } catch (e) { /* pas de repère ANRT */ }
+  try {
+    const resp = await fetch("data/historique_mobile.csv", { cache: "no-store" });
+    if (resp.ok) HISTO = parseCSV(await resp.text()).map(r => ({ ...r,
+      month: r.date_releve.slice(0, 7), prix: Number(r.prix_dh_mois) || 0 }));
+  } catch (e) { /* pas d'historique long */ }
   try {
     const resp = await fetch("data/uit.json", { cache: "no-store" });
     if (resp.ok) UIT = await resp.json();
@@ -1769,6 +1783,49 @@ function goMoyenSeries(profilId) {
   return { ms: keep.map(i => ms[i]), parMois: keep.map(i => parMois[i]) };
 }
 
+/* Historique long : prix moyen du Go de la grille d'un opérateur = total
+   des prix ÷ total des Go de ses forfaits (data illimitée et exemples de
+   forfaits à composer exclus). Avant les relevés du baromètre, les grilles
+   viennent d'historique_mobile.csv (pages et brochures officielles
+   archivées, dernière grille du mois) : points « partiels ». Les mois du
+   baromètre ne comptent que si toutes les pages de forfaits sont relevées. */
+const ECART_LONG_MOIS = 14;
+function grilleSeries() {
+  const prixGo = rows => {
+    const l = rows.map(r => ({ p: r.prix, go: goOf(r) }))
+      .filter(x => x.p && x.go && isFinite(x.go));
+    const go = l.reduce((s_, x) => s_ + x.go, 0);
+    return go ? l.reduce((s_, x) => s_ + x.p, 0) / go : null;
+  };
+  const par = {};
+  const pose = (m, op, v, partiel) => { if (v != null) (par[m] = par[m] || {})[op] = { v, offre: "", partiel }; };
+  OPS.forEach(o => {
+    const h = HISTO.filter(r => r.operateur === o.name && !/exemple/i.test(r.offre));
+    [...new Set(h.map(r => r.month))].forEach(m => {
+      const duMois = h.filter(r => r.month === m);
+      const date = duMois.map(r => r.date_releve).sort().pop();
+      pose(m, o.name, prixGo(duMois.filter(r => r.date_releve === date)), true);
+    });
+  });
+  const ms0 = months();
+  const mobile = m => rowsOfMonth(m).filter(r => r.categorie === "Forfait mobile" && r.prix);
+  const pagesOf = (rows, op) => new Set(rows.filter(r => r.operateur === op).map(pageSource));
+  const refRows = mobile(ms0[ms0.length - 1]);
+  ms0.forEach(m => {
+    const rows = mobile(m);
+    OPS.forEach(o => {
+      const ref = pagesOf(refRows, o.name), vues = pagesOf(rows, o.name);
+      if (!vues.size || [...ref].some(pg => !vues.has(pg))) return;
+      const duOp = rows.filter(r => r.operateur === o.name);
+      /* grille dont la data n'est pas publiée pour l'essentiel : non comparable */
+      if (duOp.filter(r => goOf(r) == null).length > duOp.length / 4) return;
+      pose(m, o.name, prixGo(duOp), false);
+    });
+  });
+  const ms = Object.keys(par).sort();
+  return { ms, parMois: ms.map(m => par[m]) };
+}
+
 /* Fibre « à besoin égal » : par débit de référence, l'offre la moins chère
    de l'opérateur qui atteint au moins ce débit (DH/mois) ; moyenne des
    débits, ou un seul. Point « partiel » = mois non relevé sur le site
@@ -1827,16 +1884,18 @@ function initGoMoyen() {
     const b = document.createElement("button");
     b.textContent = T(k);
     b.setAttribute("aria-pressed", String(id === gmMode()));
-    b.onclick = () => { state.gmMode = id; state.gmProfil = ""; renderGoMoyen(); };
+    b.onclick = () => { state.gmMode = id; state.gmProfil = id === "mobile" ? "long" : ""; renderGoMoyen(); };
     return b;
   }));
   segM.parentElement.style.display = state.cat === "Toutes" ? "" : "none";
-  document.getElementById("gm-hint").textContent = T(fibre ? "gm_hint_fibre" : "gm_hint");
   const seg = document.getElementById("gm-profil");
-  const opts = [["", T("gm_moyenne")], ...(fibre
+  const opts = [...(!fibre && HISTO.length ? [["long", T("gm_long")]] : []),
+    ["", T("gm_moyenne")], ...(fibre
     ? PANIERS_FIBRE.map(p => [p.id, tierLabel(p.mb)])
     : PANIERS.map(p => [p.id, LANG === "ar" && p.nom_ar ? p.nom_ar : p.nom]))];
   if (!opts.some(([id]) => id === state.gmProfil)) state.gmProfil = "";
+  document.getElementById("gm-hint").textContent =
+    T(fibre ? "gm_hint_fibre" : state.gmProfil === "long" ? "gm_hint_long" : "gm_hint");
   seg.replaceChildren(...opts.map(([id, label]) => {
     const b = document.createElement("button");
     b.dataset.id = id;
@@ -1858,7 +1917,9 @@ function renderGoMoyen() {
   renderUit(fibre);
   renderAnrt(!fibre);
   host.replaceChildren();
-  const { ms, parMois } = fibre ? fibreMoyenSeries(state.gmProfil) : goMoyenSeries(state.gmProfil);
+  const long = !fibre && state.gmProfil === "long";
+  const { ms, parMois } = fibre ? fibreMoyenSeries(state.gmProfil)
+    : long ? grilleSeries() : goMoyenSeries(state.gmProfil);
   const ops = OPS.filter(o => state.ops.has(o.name));
   const series = ops.map(o => ({
     op: o.name, color: opColor(o.name),
@@ -1878,7 +1939,9 @@ function renderGoMoyen() {
   const pn = poidsNationaux(ms[ms.length - 1] || "", fibre);
   const pct = v => Math.round(v * 100) + " %";
   notes.replaceChildren(
-    ...(fibre ? [li(T("gm_note_fibre"))] : [li(T("gm_note_debut")), li(T("gm_note_complet"))]),
+    ...(fibre ? [li(T("gm_note_fibre"))]
+      : long ? [li(T("gm_note_long")), li(T("gm_note_long_limite"))]
+      : [li(T("gm_note_debut")), li(T("gm_note_complet"))]),
     li(pn ? T(fibre ? "gm_note_national_fibre" : "gm_note_national")(pn.t, OPS.map(o =>
         o.name.replace("Maroc Telecom", "IAM") + " " + pct(pn.w[o.name])).join(", "))
           : T("gm_note_national_simple")));
@@ -1896,7 +1959,7 @@ function renderGoMoyen() {
     dash: s_.dash, court: s_.court,
     pts: s_.pts.map(p => ({ i: p.i, v: p.v, detail: p.offre, creux: !!p.partiel })) })),
     { unite: T(fibre ? "gm_unite_fibre" : "gm_unite"), aria: T("gm_titre"), dec: fibre ? 0 : 2,
-      pos: ms.map(m => (rang(m) - rang(ms[0])) / span), ecartMax: 3 / span });
+      pos: ms.map(m => (rang(m) - rang(ms[0])) / span), ecartMax: (long ? ECART_LONG_MOIS : 3) / span });
 }
 
 /* Tendance longue : paniers annuels de l'UIT pour le Maroc (uit.json).
@@ -1985,6 +2048,9 @@ function traceLignes(host, labels, series, { unite, aria, pos = null, ecartMax =
   }).sort((a, b) => a.ly - b.ly);
   for (let i = 1; i < ends.length; i++)
     if (ends[i].ly - ends[i - 1].ly < 14) ends[i].ly = ends[i - 1].ly + 14;
+  /* la pile d'étiquettes ne déborde pas sous l'axe */
+  const trop = ends.length ? ends[ends.length - 1].ly - (M.t + ih) : 0;
+  if (trop > 0) ends.forEach(e => { e.ly -= trop; });
   ends.forEach(e => {
     const px = x(e.last.i), py = y(e.last.v);
     if (Math.abs(e.ly - py) > 3)
