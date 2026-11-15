@@ -93,3 +93,11 @@ content:
           - { name: go, label: "Data minimale (Go)", type: number, required: true }
           - { name: heures, label: "Heures d'appels minimales", description: "Ignoré si « Appels illimités » est coché.", type: number }
           - { name: appels_illimites, label: "Appels illimités exigés", type: boolean, default: false }
+      - name: fibre
+        label: Débits de référence pour la fibre
+        description: "Pour chaque débit, le site retient l'offre fibre la moins chère de chaque opérateur qui atteint au moins ce débit."
+        type: object
+        list: true
+        fields:
+          - { name: id, label: "Identifiant technique (sans espace)", type: string, required: true }
+          - { name: mb, label: "Débit minimal (Mb/s — 1000 pour 1 Gb/s)", type: number, required: true }

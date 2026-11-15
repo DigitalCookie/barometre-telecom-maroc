@@ -4,7 +4,7 @@
   "open_data": "https://data.gov.ma/data/organization/anrt",
   "memos": "https://www.anrt.ma/observatoires/donnees-du-secteur/analyse-des-marches"
  },
- "note": "arpm_dhht, facture_internet_dhht et minutes : jeux de données ouverts de l'ANRT (data.gov.ma, licence ODbL). usage_data_* et revenu_go_dhht : mémos trimestriels de l'ANRT (PDF), relevés à la main le 15/11/2026 ; null = non publié dans le mémo du trimestre. Montants hors taxes. parc_internet_mobile_milliers : parc Internet mobile par opérateur (Itissalat Al-Maghrib = Maroc Telecom, Medi Telecom = Orange, Wana Corporate = inwi), open data ANRT ; sert de pondération à la moyenne nationale du baromètre.",
+ "note": "arpm_dhht, facture_internet_dhht et minutes : jeux de données ouverts de l'ANRT (data.gov.ma, licence ODbL). usage_data_* et revenu_go_dhht : mémos trimestriels de l'ANRT (PDF), relevés à la main le 15/11/2026 ; null = non publié dans le mémo du trimestre. Montants hors taxes. parc_internet_mobile_milliers : parc Internet mobile par opérateur (Itissalat Al-Maghrib = Maroc Telecom, Medi Telecom = Orange, Wana Corporate = inwi), open data ANRT ; sert de pondération à la moyenne nationale du baromètre. parts_ftth : parts de marché du parc FTTH (observatoire Internet de l'ANRT, PDF, lu sur le graphique 2.3.2) ; pondère la moyenne nationale fibre.",
  "releve_le": "2026-11-15",
  "trimestres": [
   {
@@ -277,6 +277,11 @@
     "Maroc Telecom": 11114,
     "Orange": 10465,
     "inwi": 16560
+   },
+   "parts_ftth": {
+    "Maroc Telecom": 0.5023,
+    "Orange": 0.3486,
+    "inwi": 0.1491
    }
   },
   {
