@@ -721,7 +721,8 @@ async function run() {
     ALL.filter(r => r.month === mb && r.prix).forEach(r => B.set(key(r), r));
     const scA = new Set([...A.values()].map(scopeKey));
     const scB = new Set([...B.values()].map(scopeKey));
-    const bump = r => { if (r.categorie === "Forfait mobile") chMob++; else chFixe++; };
+    /* le prépayé est mobile : ses mouvements ne comptent pas comme du fixe */
+    const bump = r => { if (/^(Forfait mobile|Prépayé)$/.test(r.categorie)) chMob++; else chFixe++; };
     B.forEach((r, k) => {
       if (!A.has(k)) { if (scA.has(scopeKey(r))) bump(r); }
       else if (A.get(k).prix !== r.prix) bump(r);
