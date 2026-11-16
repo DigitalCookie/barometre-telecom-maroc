@@ -211,3 +211,17 @@ Astuce boutique Orange : les slugs d'URL encodent l'offre
 7. Profils d'usage dans le finder.
 8. Bonus : archiver les catalogues PDF mensuels d'IAM dans
    `data/catalogues/`.
+- Prépayé (16/11/2026) : catégorie `Prépayé` de `barometre.csv` = pass
+  internet *3 des trois opérateurs. `prix_dh_mois` porte le prix du PASS
+  (pas un prix mensuel), `debit_ou_data` le volume servi le jour du relevé
+  (promo comprise), `remarques` la validité et le volume barré (« valable
+  14 jours - hors promo : 3 Go »). inwi se relève automatiquement ; IAM se
+  lit à la main (Cloudflare) ; Orange publie sa grille en images : page
+  `method="manuel"`, transcription à l'œil dans
+  `data/raw/YYYY-MM/orange-recharge-internet.txt` + capture, fiabilité
+  `officiel_image` (cf. `data/raw/README.md`). Sans transcription, le mois
+  n'a pas de prépayé Orange. Le prépayé reste hors indice, hors paniers
+  d'usage et hors graphiques du prix du Go : il a sa section
+  (`renderPrepaye`) — à budget égal, puis coût pour tenir 30 jours en
+  rachetant un même pass. Recharges ×N, pass voix et réseaux sociaux non
+  relevés.

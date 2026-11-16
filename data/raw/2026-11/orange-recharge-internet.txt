@@ -1,0 +1,13 @@
+# Transcription à l'œil de la grille « Les Recharges Internet chez Orange »
+# (publiée en images) — page lue le 2026-11-16, capture : orange-recharge-internet.png
+# Format : prix | volume servi | validité | hors promo <volume barré>
+5 Dh | 500 Mo | 1 jour
+10 Dh | 1 Go | 3 jours
+20 Dh | 2 Go | 7 jours
+30 Dh | 6 Go | 14 jours | hors promo 3 Go
+50 Dh | 11 Go | 30 jours | hors promo 5 Go
+100 Dh | 24 Go | 30 jours | hors promo 10 Go
+200 Dh | 48 Go | 30 jours | hors promo 20 Go
+300 Dh | 72 Go | 30 jours | hors promo 30 Go
+500 Dh | 120 Go | 30 jours | hors promo 50 Go
+1000 Dh | 200 Go | 30 jours

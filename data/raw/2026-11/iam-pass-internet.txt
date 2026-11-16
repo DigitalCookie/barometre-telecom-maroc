@@ -1,0 +1,91 @@
+Recharge Multiple
+Pass *1
+SMS
+Pass *11
+Rassid Flex
+Pass *2
+Appels nationaux et internet
+Pass *22
+Appels nationaux
+Pass *3
+Internet
+Pass *4
+Appels internationaux
+Pass *5
+Koulchi
+Pass *6
+Réseaux sociaux
+Pass *9
+Achats sur stores
+Pass*3
+Restez connecté avec *3
+Restez connecté partout, tout le temps!
+Pass *3
+5 DH
+500 Mo
+Valable : 1 Jour
+Pass *3
+10 DH
+1 Go
+Valable : 3 Jours
+Recharger
+Pass *3
+20 DH
+2 Go
+Valable : 7 Jours
+Recharger
+Pass *3
+25 DH
+2.5 Go
+Valable : 7 Jours
+Recharger
+Pass *3
+Promo
+30 DH
+6 Go
+3 Go
+Valable : 14 Jours
+Recharger
+Pass *3
+Promo
+50 DH
+10 Go
+5 Go
+Valable : 1 Mois
+Recharger
+Pass *3
+Promo
+100 DH
+20 Go
+10 Go
+Valable : 1 Mois
+Recharger
+Pass *3
+Promo
+200 DH
+40 Go
+20 Go
+Valable : 1 Mois
+Recharger
+Pass *3
+Promo
+300 DH
+60 Go
+30 Go
+Valable : 2 Mois
+Recharger
+Pass *3
+Promo
+500 DH
+100 Go
+50 Go
+Valable : 3 Mois
+Recharger
+Pass *3
+Promo
+1000 DH
+200 Go
+100 Go
+Valable : 3 Mois
+Recharger
+Services Pratiques

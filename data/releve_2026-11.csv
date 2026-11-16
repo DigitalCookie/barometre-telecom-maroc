@@ -34,12 +34,12 @@
 2026-11-02;Orange;Forfait mobile;Forfait YO 2Go + 1H 49 Dh;2Go;1H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-11-02;Orange;Forfait mobile;Forfait YO 5h + 1Go 49 Dh;1Go;5H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-11-02;Orange;Forfait mobile;Forfait YO 11Go+1H 49 Dh;11Go;1H d'appels;49;illimite reseaux sociaux;https://boutique.orange.ma/offres-mobile;officiel_site
-2026-11-02;Orange;Forfait mobile;Forfait Yo Max 499 Dh;160 Go;Illimite national;499;+8 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
-2026-11-02;Orange;Forfait mobile;Forfait Yo Max 99 Dh;25 Go;1h;99;detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
-2026-11-02;Orange;Forfait mobile;Forfait Yo Max 299 Dh;80 Go;;299;+2 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-11-02;Orange;Forfait mobile;Forfait Yo Max 649 Dh;Tout illimite;Tout illimite;649;+10 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
-2026-11-02;Orange;Forfait mobile;Forfait Yo Max 199 Dh;52 Go;10h;199;detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-11-02;Orange;Forfait mobile;Forfait Yo Max 99 Dh;25 Go;1h;99;detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-11-02;Orange;Forfait mobile;Forfait Yo Max 399 Dh;120 Go;Illimite national;399;+5 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-11-02;Orange;Forfait mobile;Forfait Yo Max 199 Dh;52 Go;10h;199;detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-11-02;Orange;Forfait mobile;Forfait Yo Max 299 Dh;80 Go;;299;+2 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
+2026-11-02;Orange;Forfait mobile;Forfait Yo Max 499 Dh;160 Go;Illimite national;499;+8 Go roaming - detail du slug boutique;https://boutique.orange.ma/offres-mobile;officiel_site
 2026-11-02;Orange;Box;Dar Box 5G 299 DH;50 Méga;3H;299;Frais de mise en service 299 DH;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_site
 2026-11-02;Orange;Box;Dar Box 5G 349 DH;100 Méga;4H;349;Frais de mise en service 349 DH;https://boutique.orange.ma/offres-dar-box/dar-box-5g;officiel_site
 2026-11-02;Orange;Box;Dar Box 4G+ 199 DH;Internet illimite;2H;199;Frais de mise en service 199 DH;https://boutique.orange.ma/dar-box;officiel_site
@@ -71,3 +71,31 @@
 2026-11-02;inwi;Forfait mobile;Forfait appels illimités +75 Go;75Go / 2Go;;349;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
 2026-11-02;inwi;Forfait mobile;Forfait appels illimités +125 Go;125Go / 3Go;;549;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
 2026-11-02;inwi;Forfait mobile;Forfait appels illimités +150 Go;150Go / 6Go;;649;;https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 5 DH;500 Mo;;5;valable 1 jour;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 10 DH;1 Go;;10;valable 3 jours;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 20 DH;2 Go;;20;valable 7 jours;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 25 DH;2,5 Go;;25;valable 7 jours;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 30 DH;6 Go;;30;valable 14 jours - hors promo : 3 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 50 DH;10 Go;;50;valable 30 jours - hors promo : 5 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 100 DH;20 Go;;100;valable 30 jours - hors promo : 10 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 200 DH;40 Go;;200;valable 30 jours - hors promo : 20 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 300 DH;60 Go;;300;valable 60 jours - hors promo : 30 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 500 DH;100 Go;;500;valable 90 jours - hors promo : 50 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Maroc Telecom;Prépayé;Pass Internet *3 1000 DH;200 Go;;1000;valable 90 jours - hors promo : 100 Go;https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240;officiel_site
+2026-11-02;Orange;Prépayé;Pass Internet *3 5 DH;500 Mo;;5;valable 1 jour;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 10 DH;1 Go;;10;valable 3 jours;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 20 DH;2 Go;;20;valable 7 jours;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 30 DH;6 Go;;30;valable 14 jours - hors promo : 3 Go;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 50 DH;11 Go;;50;valable 30 jours - hors promo : 5 Go;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 100 DH;24 Go;;100;valable 30 jours - hors promo : 10 Go;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 200 DH;48 Go;;200;valable 30 jours - hors promo : 20 Go;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 300 DH;72 Go;;300;valable 30 jours - hors promo : 30 Go;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 500 DH;120 Go;;500;valable 30 jours - hors promo : 50 Go;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;Orange;Prépayé;Pass Internet *3 1000 DH;200 Go;;1000;valable 30 jours;https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet;officiel_image
+2026-11-02;inwi;Prépayé;Pass Internet *3 5 DH;500 Mo;;5;valable 1 jour;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site
+2026-11-02;inwi;Prépayé;Pass Internet *3 10 DH;1 Go;;10;valable 7 jours;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site
+2026-11-02;inwi;Prépayé;Pass Internet *3 20 DH;2 Go;;20;valable 14 jours - hors promo : 7 jours;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site
+2026-11-02;inwi;Prépayé;Pass Internet *3 25 DH;2,5 Go;;25;valable 7 jours;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site
+2026-11-02;inwi;Prépayé;Pass Internet *3 30 DH;6 Go;;30;valable 14 jours - hors promo : 3 Go;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site
+2026-11-02;inwi;Prépayé;Pass Internet *3 50 DH;11 Go;;50;valable 30 jours - hors promo : 5 Go;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site
+2026-11-02;inwi;Prépayé;Pass Internet *3 100 DH;24 Go;;100;valable 30 jours - hors promo : 10 Go;https://inwi.ma/fr/particuliers/recharge/pass/pass-internet;officiel_site

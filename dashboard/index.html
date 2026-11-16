@@ -383,6 +383,9 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
   .pan-notes { font-size: 11.5px; color: var(--muted); margin: 10px 0 0; padding: 0; list-style: none; }
   .pan-notes li { margin-top: 3px; }
   .pan-notes a { color: var(--accent); }
+  .pre-sous { font-family: var(--head); font-size: 15px; font-weight: 800; color: var(--ink);
+              margin: 22px 0 4px; }
+  .pre-promo { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
   #gm-profil { max-width: 100%; overflow-x: auto; flex-wrap: nowrap; }
   #gm-profil button { white-space: nowrap; flex: none; }
   .sous-titre { font-family: var(--head); font-size: 15px; font-weight: 700; margin: 22px 0 4px;
@@ -678,6 +681,17 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
     <ul class="pan-notes" id="pan-notes"></ul>
   </section>
 
+  <section class="card" id="prepaye" hidden>
+    <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 18h4"/><path d="M12.5 6.5l-2.5 4h4l-2.5 4"/></svg></span>
+      <span data-i18n="pre_titre">Prépayé — les pass internet à budget égal</span></h2>
+    <p class="hint" data-i18n="pre_hint">Ce que chaque opérateur donne pour la même recharge internet (*3), avec la durée de validité : un pass n'est pas un prix mensuel.</p>
+    <div class="pan-wrap"><table class="pan-table" id="pre-table"></table></div>
+    <h3 class="pre-sous" data-i18n="pre_titre_mois">Tenir 30 jours en prépayé</h3>
+    <p class="hint" data-i18n="pre_hint_mois">Le coût le plus bas pour disposer du volume pendant 30 jours en rachetant le même pass autant de fois qu'il le faut.</p>
+    <div class="pan-wrap"><table class="pan-table" id="pre-mois"></table></div>
+    <ul class="pan-notes" id="pre-notes"></ul>
+  </section>
+
   <section class="card" id="valeur">
     <h2><span class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.5 5a3 3 0 0 0 5 0L5 7zM19 7l-2.5 5a3 3 0 0 0 5 0L19 7z"/></svg></span>
       <span data-i18n="val_titre">Le vrai prix du Go</span></h2>
@@ -750,7 +764,7 @@ const l=localStorage.getItem("bt-lang");if(l==="ar"){document.documentElement.la
       </div>
       <div>
         <h3 data-i18n="metho_s3">Niveaux de fiabilité</h3>
-        <p data-i18n-html="metho_p3"><code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_catalogue</code> : extrait d'un catalogue tarifaire officiel archivé (PDF daté). <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.</p>
+        <p data-i18n-html="metho_p3"><code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_image</code> : grille publiée en image, transcrite à l'œil (capture conservée). <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_catalogue</code> : extrait d'un catalogue tarifaire officiel archivé (PDF daté). <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.</p>
         <h3 data-i18n="metho_s4">Données ouvertes</h3>
         <p data-i18n-html="metho_p4">Les données sont librement réutilisables : <a href="data/barometre.csv" download>CSV complet</a>, <a href="data/changements.xml">flux RSS des changements</a>, <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">code source et historique sur GitHub</a>.</p>
       </div>
@@ -849,7 +863,7 @@ const I18N = {
     metho_s2: "Ce que le baromètre ne voit pas",
     metho_p2: "Les prix relevés sont les prix catalogue TTC affichés en ligne. Les promotions temporaires, offres de fidélisation ou remises négociées en boutique ne sont pas captées. Le coût 1ère année = 12 mensualités + frais de mise en service, uniquement quand l'opérateur les publie (certains affichent le libellé sans le montant).",
     metho_s3: "Niveaux de fiabilité",
-    metho_p3: "<code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_catalogue</code> : extrait d'un catalogue tarifaire officiel archivé (PDF daté). <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.",
+    metho_p3: "<code>officiel_site</code> : extrait par un parser dédié à la page. <code>officiel_svg</code> : lu dans les visuels tarifaires officiels. <code>officiel_image</code> : grille publiée en image, transcrite à l'œil (capture conservée). <code>officiel_archive</code> : historique reconstruit depuis une capture web.archive.org de la page officielle. <code>officiel_catalogue</code> : extrait d'un catalogue tarifaire officiel archivé (PDF daté). <code>officiel_js_generique</code> / <code>a_completer</code> : extraction générique, à confirmer manuellement.",
     metho_s4: "Données ouvertes",
     metho_p4: 'Les données sont librement réutilisables : <a href="data/barometre.csv" download>CSV complet</a>, <a href="data/changements.xml">flux RSS des changements</a>, <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">code source et historique sur GitHub</a>.',
     footer_src: "Source : sites officiels des opérateurs — relevé automatisé le 2 de chaque mois, prix catalogue TTC.",
@@ -900,6 +914,21 @@ const I18N = {
     pan_exclues: n => `${n} forfait${n > 1 ? "s" : ""} hors comparaison ce mois : volume de data ou heures d'appels non publiés.`,
     pan_note_archive: "Mois reconstruit depuis les archives : la couverture est partielle, des forfaits peuvent manquer à la comparaison.",
     pan_note_onnet: "Les appels illimités vers le seul réseau de l'opérateur ne sont pas comptés comme des heures d'appels.",
+    cat_prepaye: "Prépayé",
+    pre_titre: "Prépayé — les pass internet à budget égal",
+    pre_hint: "Ce que chaque opérateur donne pour la même recharge internet (*3), avec la durée de validité : un pass n'est pas un prix mensuel.",
+    pre_budget: "Recharge", pre_avec: p => `Avec ${p} DH`,
+    pre_jours: j => j === 1 ? "valable 1 jour" : `valable ${j} jours`,
+    pre_plus: "le plus de data",
+    pre_hors_promo: v => `hors promo : ${v}`,
+    pre_pas_ce_prix: "Pas de pass à ce prix",
+    pre_titre_mois: "Tenir 30 jours en prépayé",
+    pre_hint_mois: "Le coût le plus bas pour disposer du volume pendant 30 jours en rachetant le même pass autant de fois qu'il le faut.",
+    pre_besoin: "Besoin", pre_go_30j: g => `${g} Go sur 30 jours`,
+    pre_par_30j: "/30 j", pre_combien: (n, p) => `${n} × pass ${p} DH`,
+    pre_note_promo: "Volumes relevés le jour du relevé, promotions comprises ; le volume hors promotion est indiqué quand l'opérateur l'affiche.",
+    pre_note_image: "Orange publie sa grille en images : elle est lue à l'œil et marquée « officiel_image ».",
+    pre_note_mois: "Calcul sur un seul type de pass, sans mélange ; un pass valable plus de 30 jours est compté en entier.",
     metho_s5: "Paniers d'usage",
     metho_p5: "Comparer des forfaits sur le seul prix du Go est biaisé : certains incluent beaucoup d'heures d'appels, d'autres presque aucune. Comme le font les régulateurs (méthode des paniers de consommation), le baromètre définit des profils d'usage (data + appels) et retient, pour chaque opérateur, le forfait le moins cher qui couvre tout le profil. Les appels illimités limités au réseau de l'opérateur ne sont pas comptés ; les offres dont le volume ou les appels ne sont pas publiés sont exclues.",
     val_titre: "Le vrai prix du Go",
@@ -973,7 +1002,7 @@ const I18N = {
     metho_s2: "ما لا يراه الباروميتر",
     metho_p2: "الأسعار المرصودة هي أسعار الكتالوج المعروضة على الإنترنت (شاملة للضرائب). العروض الترويجية المؤقتة وتخفيضات الوكالات غير مشمولة. كلفة السنة الأولى = 12 قسطاً شهرياً + رسوم التفعيل، فقط عندما ينشرها المشغل.",
     metho_s3: "مستويات الموثوقية",
-    metho_p3: "<code>officiel_site</code> : مستخرج بمحلل مخصص للصفحة. <code>officiel_svg</code> : مقروء من الصور التعريفية الرسمية. <code>officiel_archive</code> : تاريخ مُعاد بناؤه من أرشيف web.archive.org للصفحة الرسمية. <code>officiel_catalogue</code> : مستخرج من كتالوج تعريفات رسمي مؤرشف (PDF مؤرخ). <code>officiel_js_generique</code> / <code>a_completer</code> : استخراج عام، يتطلب تأكيداً يدوياً.",
+    metho_p3: "<code>officiel_site</code> : مستخرج بمحلل مخصص للصفحة. <code>officiel_svg</code> : مقروء من الصور التعريفية الرسمية. <code>officiel_image</code> : جدول منشور في صورة، منقول بالعين (مع حفظ لقطة الشاشة). <code>officiel_archive</code> : تاريخ مُعاد بناؤه من أرشيف web.archive.org للصفحة الرسمية. <code>officiel_catalogue</code> : مستخرج من كتالوج تعريفات رسمي مؤرشف (PDF مؤرخ). <code>officiel_js_generique</code> / <code>a_completer</code> : استخراج عام، يتطلب تأكيداً يدوياً.",
     metho_s4: "بيانات مفتوحة",
     metho_p4: 'البيانات قابلة لإعادة الاستعمال بحرية : <a href="data/barometre.csv" download>ملف CSV كامل</a>، <a href="data/changements.xml">تدفق RSS للتغييرات</a>، <a href="https://github.com/DigitalCookie/barometre-telecom-maroc">الشيفرة المصدرية على GitHub</a>.',
     footer_src: "المصدر : المواقع الرسمية للمشغلين — رصد آلي في اليوم الثاني من كل شهر، أسعار الكتالوج شاملة للضرائب.",
@@ -1024,6 +1053,21 @@ const I18N = {
     pan_exclues: n => `${n} باقة خارج المقارنة هذا الشهر : حجم البيانات أو ساعات المكالمات غير منشور.`,
     pan_note_archive: "شهر أُعيد بناؤه من الأرشيف : التغطية جزئية وقد تغيب بعض الباقات عن المقارنة.",
     pan_note_onnet: "المكالمات غير المحدودة نحو شبكة المشغل فقط لا تُحتسب ضمن ساعات المكالمات.",
+    cat_prepaye: "الدفع المسبق",
+    pre_titre: "الدفع المسبق — باقات الإنترنت بنفس الميزانية",
+    pre_hint: "ما يمنحه كل مشغل مقابل نفس تعبئة الإنترنت (*3)، مع مدة الصلاحية: التعبئة ليست سعراً شهرياً.",
+    pre_budget: "التعبئة", pre_avec: p => `بـ ${p} درهم`,
+    pre_jours: j => j === 1 ? "صالحة ليوم واحد" : `صالحة ${j} يوماً`,
+    pre_plus: "أكبر حجم",
+    pre_hors_promo: v => `خارج العرض الترويجي: ${v}`,
+    pre_pas_ce_prix: "لا توجد تعبئة بهذا السعر",
+    pre_titre_mois: "30 يوماً بالدفع المسبق",
+    pre_hint_mois: "أقل تكلفة للحصول على الحجم لمدة 30 يوماً بإعادة شراء نفس التعبئة كلما لزم.",
+    pre_besoin: "الحاجة", pre_go_30j: g => `${g} جيغا خلال 30 يوماً`,
+    pre_par_30j: "/30 يوماً", pre_combien: (n, p) => `${n} × تعبئة ${p} درهم`,
+    pre_note_promo: "الأحجام كما رُصدت يوم الرصد، بما فيها العروض الترويجية؛ يُذكر الحجم خارج العرض عندما يعرضه المشغل.",
+    pre_note_image: "أورنج تنشر جدولها في صور: يُقرأ بالعين ويوسم «officiel_image».",
+    pre_note_mois: "الحساب بنوع واحد من التعبئة دون مزج؛ التعبئة الصالحة لأكثر من 30 يوماً تُحتسب كاملة.",
     metho_s5: "سلال الاستهلاك",
     metho_p5: "مقارنة الباقات بسعر الجيغا وحده مضلّلة : بعضها يتضمن ساعات مكالمات كثيرة وبعضها لا يكاد يتضمن شيئاً. على غرار هيئات التقنين (منهجية سلال الاستهلاك)، يحدد الباروميتر أنماط استهلاك (بيانات + مكالمات) ويحتفظ لكل مشغل بأرخص باقة تغطي النمط كاملاً. المكالمات غير المحدودة نحو شبكة المشغل فقط لا تُحتسب، والعروض التي لا يُنشر حجمها أو مكالماتها تُستبعد.",
     val_titre: "السعر الحقيقي للجيغا",
@@ -1053,7 +1097,8 @@ try { if (localStorage.getItem("bt-lang") === "ar") LANG = "ar"; } catch (e) {}
 const T = key => I18N[LANG][key];
 
 /* libellé d'affichage d'une catégorie (les valeurs de données restent FR) */
-const CAT_LABELS = { "Fibre": "cat_fibre", "Forfait mobile": "cat_mobile", "Box": "cat_box" };
+const CAT_LABELS = { "Fibre": "cat_fibre", "Forfait mobile": "cat_mobile", "Box": "cat_box",
+                     "Prépayé": "cat_prepaye" };
 const catLabel = c => CAT_LABELS[c] ? T(CAT_LABELS[c]) : c;
 
 /* traduit les nœuds statiques annotés data-i18n / data-i18n-html / data-i18n-ph.
@@ -1129,12 +1174,17 @@ function fraisOf(r) {
 }
 /* coût réel de la première année : 12 mensualités + frais publiés */
 function coutAn1(r) {
+  if (r.categorie === "Prépayé") return null;   // un pass n'est pas une mensualité
   return r.prix == null ? null : r.prix * 12 + (fraisOf(r) || 0);
 }
 
 /* prix à l'unité : DH/Go (data) ou DH/Mbps (débit) — l'indicateur de valeur */
 function unitPrice(r) {
   if (r.prix == null) return null;
+  if (r.categorie === "Prépayé") {
+    const go = passGo(r);
+    return go ? { v: r.prix / go, unit: "dh_go" } : null;
+  }
   const d = parseDebit(r.debit_ou_data);
   if (d.go) return { v: r.prix / d.go, unit: "dh_go" };
   if (d.mb) return { v: r.prix / d.mb, unit: "dh_mbps" };
@@ -2221,6 +2271,120 @@ function renderPaniers() {
   notes.append(mk("li", "", T("pan_note_onnet")));
 }
 
+/* ---------- prépayé : pass internet à budget égal ---------- */
+
+const PRE_BESOINS_GO = [5, 20, 50];   // volumes du tableau « tenir 30 jours »
+const PRE_PERIODE_J = 30;
+/* volume d'un pass en Go (« 500 Mo » = 0,5) et validité en jours, lus dans
+   les colonnes du relevé (« valable 14 jours - hors promo : 3 Go ») */
+function passGo(r) {
+  const m = (r.debit_ou_data || "").match(/(\d+(?:[.,]\d+)?)\s*(Go|Mo)/i);
+  if (!m) return null;
+  const v = parseFloat(m[1].replace(",", "."));
+  return m[2].toLowerCase() === "mo" ? v / 1000 : v;
+}
+const passJours = r => +((r.remarques || "").match(/valable (\d+) jour/) || [])[1] || null;
+const passHorsPromo = r => ((r.remarques || "").match(/hors promo : ([^-]+)/) || [])[1]?.trim() || "";
+
+function renderPrepaye() {
+  const card = document.getElementById("prepaye");
+  const pre = rowsOfMonth(state.month).filter(r => r.categorie === "Prépayé" && r.prix)
+    .map(r => ({ r, go: passGo(r), j: passJours(r) })).filter(x => x.go && x.j);
+  const ops = OPS.filter(o => state.ops.has(o.name));
+  const visible = pre.length && ops.length &&
+    (state.cat === "Toutes" || state.cat === "Prépayé");
+  card.hidden = !visible;
+  if (!visible) return;
+
+  const mk = (tag, cls, txt) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt != null) e.textContent = txt;
+    return e;
+  };
+  const nb = (v, max = 2) => v.toLocaleString("fr-FR", { maximumFractionDigits: max });
+  const entete = libelle => {
+    const thead = mk("thead"), tr = mk("tr");
+    tr.append(mk("th", "", libelle));
+    ops.forEach(o => { const th = mk("th"); th.append(brandBadge(o.name, true)); tr.append(th); });
+    thead.append(tr);
+    return thead;
+  };
+  const vide = (o, cle) => {
+    const td = mk("td", "vide");
+    const op = mk("div", "pan-op"); op.append(brandBadge(o.name, true));
+    td.append(op, document.createTextNode(T(cle)));
+    return td;
+  };
+  const releves = ops.filter(o => pre.some(x => x.r.operateur === o.name));
+
+  /* 1. à budget égal : les prix proposés par tous les opérateurs relevés */
+  const prixCommuns = [...new Set(pre.map(x => x.r.prix))].sort((a, b) => a - b)
+    .filter(p => releves.every(o => pre.some(x => x.r.operateur === o.name && x.r.prix === p)));
+  const tbody = mk("tbody");
+  prixCommuns.forEach(p => {
+    const tr = mk("tr");
+    const th = mk("th"); th.scope = "row";
+    th.append(mk("span", "pan-nom", T("pre_avec")(nb(p))));
+    tr.append(th);
+    const lus = ops.map(o => pre.find(x => x.r.operateur === o.name && x.r.prix === p) || null);
+    const max = Math.max(...lus.filter(Boolean).map(x => x.go));
+    /* tout le monde à égalité : rien à distinguer, aucune case mise en avant */
+    const departage = lus.some(x => x && x.go !== max);
+    ops.forEach((o, i) => {
+      const x = lus[i];
+      if (!x) { tr.append(vide(o, "pan_non_releve")); return; }
+      const mieux = departage && x.go === max;
+      const td = mk("td", mieux ? "best" : "");
+      const op = mk("div", "pan-op"); op.append(brandBadge(o.name, true));
+      const vol = mk("div", "pan-prix", x.r.debit_ou_data);
+      if (mieux) vol.append(mk("span", "pan-ecart", T("pre_plus")));
+      td.append(op, vol,
+        mk("div", "pan-offre", T("pre_jours")(x.j) + " · " + nb(p / x.go) + " " + T("dh_go")));
+      const hp = passHorsPromo(x.r);
+      if (hp) td.append(mk("div", "pre-promo", T("pre_hors_promo")(hp)));
+      tr.append(td);
+    });
+    tbody.append(tr);
+  });
+  document.getElementById("pre-table").replaceChildren(entete(T("pre_budget")), tbody);
+
+  /* 2. tenir 30 jours : même pass racheté n fois (volume ET durée couverts) */
+  const tb2 = mk("tbody");
+  PRE_BESOINS_GO.forEach(g => {
+    const tr = mk("tr");
+    const th = mk("th"); th.scope = "row";
+    th.append(mk("span", "pan-nom", T("pre_go_30j")(g)));
+    tr.append(th);
+    const best = ops.map(o => pre.filter(x => x.r.operateur === o.name)
+      .map(x => { const n = Math.max(Math.ceil(g / x.go), Math.ceil(PRE_PERIODE_J / x.j));
+                  return { x, n, cout: n * x.r.prix }; })
+      .sort((a, b) => a.cout - b.cout || a.n - b.n)[0] || null);
+    const min = Math.min(...best.filter(Boolean).map(b => b.cout));
+    const departage = best.some(b => b && b.cout !== min);
+    ops.forEach((o, i) => {
+      const b = best[i];
+      if (!b) { tr.append(vide(o, "pan_non_releve")); return; }
+      const td = mk("td", departage && b.cout === min ? "best" : "");
+      const op = mk("div", "pan-op"); op.append(brandBadge(o.name, true));
+      const prix = mk("div", "pan-prix", nb(b.cout) + " ");
+      prix.append(mk("small", "", T("dh") + T("pre_par_30j")));
+      if (departage) prix.append(mk("span", "pan-ecart", b.cout === min
+        ? T("pan_moins_cher") : T("plus_dh")(nb(b.cout - min))));
+      td.append(op, prix, mk("div", "pan-offre", T("pre_combien")(b.n, nb(b.x.r.prix))),
+        mk("div", "pan-spec", b.x.r.debit_ou_data + " · " + T("pre_jours")(b.x.j)));
+      tr.append(td);
+    });
+    tb2.append(tr);
+  });
+  document.getElementById("pre-mois").replaceChildren(entete(T("pre_besoin")), tb2);
+
+  const notes = document.getElementById("pre-notes");
+  notes.replaceChildren(mk("li", "", T("pre_note_promo")), mk("li", "", T("pre_note_mois")));
+  if (pre.some(x => x.r.fiabilite === "officiel_image"))
+    notes.append(mk("li", "", T("pre_note_image")));
+}
+
 /* ---------- le vrai prix du Go : barres horizontales ---------- */
 
 const VAL_DIMS = ["mobile", "fibre", "box"];
@@ -2678,7 +2842,9 @@ function renderTable() {
     const tdOp = document.createElement("td");
     tdOp.append(brandBadge(r.operateur, true));
     tr.append(tdOp,
-      cell(catLabel(r.categorie)), cellWrap(r.offre), cell(r.debit_ou_data),
+      cell(catLabel(r.categorie)), cellWrap(r.offre),
+      cell(r.categorie === "Prépayé" && passJours(r)
+        ? r.debit_ou_data + " · " + T("pre_jours")(passJours(r)) : r.debit_ou_data),
       cellWrap(r.appels_inclus),
       cellNum(r.prix != null ? fmtDH(r.prix) : "—"),
       cellNum(fmtUnit(unitPrice(r)) || "—"),
@@ -2835,6 +3001,7 @@ function render() {
   renderFibre();
   renderMobile();
   renderPaniers();
+  renderPrepaye();
   renderValeur();
   renderEvo();
   renderDiff();

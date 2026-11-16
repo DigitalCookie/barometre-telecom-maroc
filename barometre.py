@@ -76,8 +76,11 @@ FIELDNAMES = [
 # Valeurs autorisées pour la colonne fiabilite (cf. CLAUDE.md).
 # officiel_archive : relevé rétrospectif reconstruit depuis une capture
 # web.archive.org d'une page officielle (commande `backfill`).
+# officiel_image : grille publiée en image sur la page officielle, transcrite
+# à l'œil (recharges Orange) — la capture est conservée à côté du dump.
 FIABILITES = {"officiel_site", "officiel_svg", "officiel_catalogue",
-              "officiel_js_generique", "officiel_archive", "a_completer"}
+              "officiel_js_generique", "officiel_archive", "officiel_image",
+              "a_completer"}
 
 # Adresse publique du dashboard (flux RSS, liens du résumé).
 SITE_URL = "https://digitalcookie.github.io/barometre-telecom-maroc/"
@@ -85,6 +88,11 @@ SITE_URL = "https://digitalcookie.github.io/barometre-telecom-maroc/"
 # Fourchette plausible d'un prix mensuel en DH : hors bornes = extraction
 # suspecte (un numéro de téléphone, un débit, un prix d'équipement…).
 PRIX_MIN, PRIX_MAX = 20, 3000
+
+# Prépayé : la colonne prix_dh_mois porte le prix du PASS (pas un prix
+# mensuel) ; la validité est dans remarques (« valable 14 jours »).
+CAT_PREPAYE = "Prépayé"
+PRIX_MIN_PREPAYE = 5
 
 
 def today() -> str:
@@ -602,6 +610,78 @@ def parse_inwi_forfaits(text, url):
     return dedup(rows)
 
 
+def _volume(txt):
+    """« 2.5 Go », « 2,5Go », « 500Mo » -> « 2,5 Go », « 500 Mo »."""
+    m = re.match(r"\s*(\d+(?:[.,]\d+)?)\s*(Go|Mo)", txt, re.I)
+    return f"{m.group(1).replace('.', ',')} {m.group(2).capitalize()}"
+
+
+def ligne_pass(op, prix, volume, jours, url, base_volume="", base_jours="",
+               fiabilite="officiel_site"):
+    """Ligne « Prépayé » d'un pass internet *3. `volume` et `jours` sont ce
+    que le client reçoit le jour du relevé ; quand la page affiche une promo,
+    la valeur barrée va dans remarques (« hors promo : 3 Go ») pour qu'une
+    fin de promo ne passe pas pour une hausse de prix."""
+    jours = int(jours)
+    rem = [f"valable {jours} jour{'s' if jours > 1 else ''}"]
+    if base_volume:
+        rem.append(f"hors promo : {_volume(base_volume)}")
+    if base_jours:
+        rem.append(f"hors promo : {int(base_jours)} jours")
+    return row(op, CAT_PREPAYE, f"Pass Internet *3 {prix} DH", _volume(volume),
+               "", str(prix), " - ".join(rem), url, fiabilite)
+
+
+def parse_iam_pass(text, url):
+    """iam.ma pass Jawal *3 — « Pass *3 Promo 30 DH 6 Go 3 Go Valable :
+    14 Jours Recharger » (lecture 11/2026). En promo le volume servi vient en
+    premier, le volume de base ensuite. « 1 Mois » = 30 jours."""
+    vol = r"\d+(?:[.,]\d+)?\s*(?:Go|Mo)"
+    pat = re.compile(
+        rf"Pass \*3\s+(?:Promo\s+)?(\d{{1,4}})\s*DH\s+({vol})\s+(?:({vol})\s+)?"
+        r"Valable\s*:\s*(\d+)\s*(Jours?|Mois)", re.I)
+    rows = []
+    for prix, servi, base, n, unite in pat.findall(norm(text)):
+        jours = int(n) * (30 if unite.lower() == "mois" else 1)
+        rows.append(ligne_pass("Maroc Telecom", prix, servi, jours, url,
+                               base_volume=base))
+    return dedup(rows)
+
+
+def parse_inwi_pass(text, url):
+    """inwi.ma pass internet *3 — « 30Dhs 3Go 6Go valable 14 jours Choisir »
+    (run 11/2026). En promo le volume barré vient en premier, le volume servi
+    ensuite ; pour la durée c'est l'inverse : « * 14 jours valable 7 jours »
+    = 14 jours servis, 7 jours barrés (vérifié sur capture)."""
+    vol = r"\d+(?:[.,]\d+)?\s*(?:Go|Mo)"
+    pat = re.compile(
+        rf"(\d{{1,4}})\s*Dhs\s+({vol})\s+(?:({vol})\s+)?"
+        r"(?:\*\s*(\d+)\s*jours?\s+)?valable\s+(\d+)\s*jours?", re.I)
+    rows = []
+    for prix, v1, v2, promo_j, j in pat.findall(norm(text)):
+        rows.append(ligne_pass("inwi", prix, v2 or v1, promo_j or j, url,
+                               base_volume=v1 if v2 else "",
+                               base_jours=j if promo_j else ""))
+    return dedup(rows)
+
+
+def parse_orange_pass(text, url):
+    """orange.ma recharge internet *3 — la grille est publiée en images : le
+    dump est une TRANSCRIPTION à l'œil (cf. data/raw/README.md), une ligne
+    par carte : « 30 Dh | 6 Go | 14 jours | hors promo 3 Go »."""
+    rows = []
+    for ligne in text.splitlines():
+        m = re.match(
+            r"\s*(\d{1,4})\s*Dh\s*\|\s*([\d.,]+\s*(?:Go|Mo))\s*\|\s*(\d+)\s*jours?"
+            r"(?:\s*\|\s*hors promo\s+([\d.,]+\s*(?:Go|Mo)))?\s*$", ligne, re.I)
+        if m:
+            prix, servi, jours, base = m.groups()
+            rows.append(ligne_pass("Orange", prix, servi, jours, url,
+                                   base_volume=base or "",
+                                   fiabilite="officiel_image"))
+    return dedup(rows)
+
+
 def parse_generic(text, url, operateur, categorie, offre_prefixe):
     """Filet générique pour les pages JS dont la structure n'est pas encore
     connue (box IAM…) : repère chaque prix mensuel et capture le contexte
@@ -707,6 +787,19 @@ PAGES = [
     dict(op="inwi", label="inwi forfaits mobile", method="js",
          url="https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile",
          parse=lambda txt, u: parse_inwi_forfaits(txt, u)),
+    # ----------------------------------------------- Prépayé (pass internet)
+    dict(op="iam", label="IAM pass internet", method="js",
+         url="https://www.iam.ma/fr/pass-jawal/pass-3/internet/116240",
+         parse=lambda txt, u: parse_iam_pass(txt, u)),
+    # Grille en images : pas de relevé automatique. `manuel` = le dump du
+    # mois est une transcription déposée à la main ; absent, la page est
+    # simplement sautée (ni échec ni ligne).
+    dict(op="orange", label="Orange recharge internet", method="manuel",
+         url="https://www.orange.ma/Recharges/Recharge-Internet/Recharge-Internet",
+         parse=lambda txt, u: parse_orange_pass(txt, u)),
+    dict(op="inwi", label="inwi pass internet", method="js",
+         url="https://inwi.ma/fr/particuliers/recharge/pass/pass-internet",
+         parse=lambda txt, u: parse_inwi_pass(txt, u)),
 ]
 
 # --------------------------------------------------------------------------
@@ -733,16 +826,21 @@ def run(only=None, no_js=False, force=False):
     with Navigateur() as nav:
         for page in pages_selectionnees(only, no_js):
             print(f"  [{page['method']:>8}] {page['label']} …", end=" ", flush=True)
+            dump = raw_month_dir / f"{slugify(page['label'])}.txt"
+            if page["method"] == "manuel" and not dump.exists():
+                print("pas de transcription ce mois-ci — sautée")
+                continue
             try:
-                if page["method"] == "http":
+                if page["method"] == "manuel":
+                    content = dump.read_text(encoding="utf-8")
+                elif page["method"] == "http":
                     content = html_to_text(fetch_html(page["url"]))
                 elif page["method"] == "html_raw":
                     content = fetch_html(page["url"])
                 else:  # js
                     content = nav.text(page["url"], clicks=page.get("clicks", ()),
                                        links=page.get("links", False))
-                (raw_month_dir / f"{slugify(page['label'])}.txt").write_text(
-                    content, encoding="utf-8")
+                dump.write_text(content, encoding="utf-8")
                 rows = page["parse"](content, page["url"])
                 all_rows.extend(rows)
                 print(f"{len(rows)} offre(s)")
@@ -990,7 +1088,8 @@ def signaler_anomalies(rows):
         if prix:
             if not prix.isdigit():
                 alertes.append(f"prix non numérique « {prix} » sur {' / '.join(cle)}")
-            elif not (PRIX_MIN <= int(prix) <= PRIX_MAX):
+            elif not ((PRIX_MIN_PREPAYE if r_["categorie"] == CAT_PREPAYE
+                       else PRIX_MIN) <= int(prix) <= PRIX_MAX):
                 alertes.append(f"prix hors fourchette ({prix} DH) sur {' / '.join(cle)}")
     for cle, doublons in vus.items():
         if len(doublons) > 1:
@@ -1252,21 +1351,23 @@ def _fmt_mesure(m):
 
 def _libelle_change(c):
     """Phrase française d'un changement structuré."""
-    op, _cat, offre = c["cle"]
+    op, cat, offre = c["cle"]
+    # Un pass prépayé n'a pas de prix mensuel.
+    dh = "DH" if cat == CAT_PREPAYE else "DH/mois"
     if c["type"] == "nouveau":
-        return f"{op} lance « {offre} » à {c['prix']} DH/mois"
+        return f"{op} lance « {offre} » à {c['prix']} {dh}"
     if c["type"] == "prix":
         sens = "baisse" if int(c["prix"]) < int(c["avant"]) else "passe"
-        return f"« {offre} » ({op}) {sens} de {c['avant']} à {c['prix']} DH/mois"
+        return f"« {offre} » ({op}) {sens} de {c['avant']} à {c['prix']} {dh}"
     if c["type"] == "contenu":
         av, ap = c["avant_mesure"], c["mesure"]
         sens = "réduit" if ap[0] < av[0] else "augmente"
         return (f"{op} {sens} le contenu de « {offre} » à prix constant "
-                f"({c['prix']} DH/mois) : {_fmt_mesure(av)} -> {_fmt_mesure(ap)}")
+                f"({c['prix']} {dh}) : {_fmt_mesure(av)} -> {_fmt_mesure(ap)}")
     if c["type"] == "renomme":
         return (f"{op} renomme « {c['avant_offre']} » en « {offre} » "
-                f"({c['prix']} DH/mois, contenu identique)")
-    return f"{op} retire « {offre} » (était {c['prix']} DH/mois)"
+                f"({c['prix']} {dh}, contenu identique)")
+    return f"{op} retire « {offre} » (était {c['prix']} {dh})"
 
 
 def ecrire_feed():
@@ -1824,6 +1925,71 @@ SAMPLES = {
         DHS
         /mois
     """,
+    # Pass internet prépayés (lectures réelles du 16/11/2026).
+    "iam_pass": """
+        Pass *3
+        Internet
+        Pass*3
+        Restez connecté avec *3
+        Pass *3
+        5 DH
+        500 Mo
+        Valable : 1 Jour
+        Pass *3
+        25 DH
+        2.5 Go
+        Valable : 7 Jours
+        Recharger
+        Pass *3
+        Promo
+        30 DH
+        6 Go
+        3 Go
+        Valable : 14 Jours
+        Recharger
+        Pass *3
+        Promo
+        300 DH
+        60 Go
+        30 Go
+        Valable : 2 Mois
+        Recharger
+    """,
+    "inwi_pass": """
+        Pass Internet
+        *3
+        5Dhs
+        500Mo
+        valable
+        1 jour
+        Choisir
+        *Promo digitale
+        10Dhs
+        1Go
+        valable
+        7 jours
+        Choisir
+        20Dhs
+        2Go
+        *
+        14 jours
+        valable
+        7 jours
+        Choisir
+        Promotion
+        30Dhs
+        3Go
+        6Go
+        valable
+        14 jours
+        Choisir
+    """,
+    "orange_pass": """
+        # Transcription à l'œil
+        5 Dh | 500 Mo | 1 jour
+        30 Dh | 6 Go | 14 jours | hors promo 3 Go
+        1000 Dh | 200 Go | 30 jours
+    """,
     "inwi_forfaits": """
         Les forfaits Max Réseaux Sociaux 4G/5G
         Forfait FLEXI Réseaux Sociaux
@@ -2234,6 +2400,40 @@ def test():
                                   ("100 Mb/s", "1 Gb/s", "200 Méga", "25 Go")})
     ok &= (norm_debit("100 Mb/s") == norm_debit("100 Méga") == "100Mb")
     ok &= norm_debit("1 Gb/s") == "1000Mb" and norm_debit("25 Go") == "25Go"
+
+    def _pass(rows):
+        return [(x["prix_dh_mois"], x["debit_ou_data"], x["remarques"])
+                for x in rows]
+
+    r = parse_iam_pass(SAMPLES["iam_pass"], "test")
+    print(f"[iam_pass]         {len(r)} offres :", _pass(r))
+    ok &= _pass(r) == [
+        ("5", "500 Mo", "valable 1 jour"),
+        ("25", "2,5 Go", "valable 7 jours"),
+        ("30", "6 Go", "valable 14 jours - hors promo : 3 Go"),
+        ("300", "60 Go", "valable 60 jours - hors promo : 30 Go")]
+    ok &= all(x["categorie"] == "Prépayé" for x in r)
+
+    r = parse_inwi_pass(SAMPLES["inwi_pass"], "test")
+    print(f"[inwi_pass]        {len(r)} offres :", _pass(r))
+    ok &= _pass(r) == [
+        ("5", "500 Mo", "valable 1 jour"),
+        ("10", "1 Go", "valable 7 jours"),
+        ("20", "2 Go", "valable 14 jours - hors promo : 7 jours"),
+        ("30", "6 Go", "valable 14 jours - hors promo : 3 Go")]
+
+    r = parse_orange_pass(SAMPLES["orange_pass"], "test")
+    print(f"[orange_pass]      {len(r)} offres :", _pass(r))
+    ok &= _pass(r) == [
+        ("5", "500 Mo", "valable 1 jour"),
+        ("30", "6 Go", "valable 14 jours - hors promo : 3 Go"),
+        ("1000", "200 Go", "valable 30 jours")]
+    ok &= all(x["fiabilite"] == "officiel_image" for x in r)
+
+    # Un pass à 5 DH est plausible en prépayé, pas ailleurs (cf. ci-dessous).
+    ok &= signaler_anomalies(parse_orange_pass(SAMPLES["orange_pass"], "t")) == []
+    ok &= _libelle_change({"type": "nouveau", "prix": "5", "cle": (
+        "inwi", "Prépayé", "Pass Internet *3 5 DH")}).endswith("à 5 DH")
 
     anomalies = signaler_anomalies([
         row("inwi", "Fibre", "Test", "20 Mb/s", "", "249"),
